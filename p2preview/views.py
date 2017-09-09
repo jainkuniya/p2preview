@@ -11,10 +11,10 @@ import random
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'p2preview/home.html')
 
 def login_page(request):
-    return render(request, 'login.html')
+    return render(request, 'p2preview/login.html')
 
 @csrf_exempt
 def login(request):
