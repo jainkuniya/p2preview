@@ -5,7 +5,7 @@ from django.db import models
 
 # Create your models here.
 class Person(models.Model):
-    name = models.CharField(max_length=15, blank=False, default='')
+    name = models.CharField(max_length=25, blank=False, default='')
     email = models.EmailField(max_length=20, blank=False, default='', unique=True)
     password = models.CharField(max_length=20, blank=False, default='')
     personType = models.IntegerField(blank=False)
