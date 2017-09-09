@@ -10,8 +10,11 @@ import string
 import random
 
 # Create your views here.
-def index(request):
-    return HttpResponse('Welcome to P2P Review System.')
+def home(request):
+    return render(request, 'home.html')
+
+def login_page(request):
+    return render(request, 'login.html')
 
 @csrf_exempt
 def login(request):
