@@ -13,6 +13,6 @@ import p2preview.views
 # url(r'^blog/', include('blog.urls')),
 
 urlpatterns = [
-    url(r'^$', include(p2preview_urls.urlpatterns)),
+    url(r'^', include(p2preview_urls.urlpatterns)),
     url(r'^admin/', include(admin.site.urls)),
 ]
