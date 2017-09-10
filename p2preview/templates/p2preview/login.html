@@ -4,7 +4,7 @@
 {% load staticfiles%}
 
 {% block extrastyles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/signin.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/signin.css' %}"/>
 {% endblock %}
 
 {% block body %}
@@ -27,9 +27,12 @@
     </form>
 
   </div>
+  
+</body>
+{% endblock %}
+{% block extrajavascripts %}
   <script type="text/javascript" src="{% static 'p2preview/js/signin.js' %}"/>
   <script>
 
   </script>
-</body>
 {% endblock %}
