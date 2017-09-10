@@ -12,6 +12,9 @@ class Person(models.Model):
     lastLogined = models.DateTimeField(auto_now_add=True)
     token = models.CharField(max_length=20, blank=True, default='')
 
+    def __str__(self):
+        return self.name
+
 class Student(models.Model):
     sId = models.ForeignKey(Person, on_delete=models.CASCADE)
     rollNo = models.CharField(max_length=8, blank=False, default='')
