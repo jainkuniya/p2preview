@@ -16,6 +16,12 @@ def home(request):
 def login_page(request):
     return render(request, 'p2preview/login.html')
 
+def course(request):
+    return render(request, 'p2preview/course.html')
+
+def new_course_page(request):
+    return render(request, 'p2preview/course_new.html')
+
 @csrf_exempt
 def login(request):
     """

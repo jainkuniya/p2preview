@@ -15,8 +15,31 @@
   
   {% block extrastyles %}{% endblock %}
 
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  
+  {% block extrafonts %}{% endblock %}
+
 </head>
   <body>
+    <div class="navbar">
+      <div class="row container-fluid">
+        <div class="topic col-md-3">
+          <a href="/">Peer Review System</a>
+        </div>
+        <div class="topic col-md-2">
+          <a href="/rubricTemplate">Rubric Template</a>
+        </div>
+        <div class="topic col-md-2">
+          <a href="/addActivity">Add Activity</a>
+        </div>
+        <div class="topic col-md-2">
+          <a href="/statistics">Statistics</a>
+        </div>
+        <div class="topic col-md-3">
+          <a href="/login">Login</a>
+        </div>
+      </div>
+    </div>
     {% block body %}
     {% endblock %}
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>  
