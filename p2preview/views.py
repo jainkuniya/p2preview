@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from p2preview.models import Person, Student, Instrutor
 
 import string
@@ -11,10 +11,28 @@ import random
 
 # Create your views here.
 def home(request):
-    return render(request, 'p2preview/home.html')
+    token = request.COOKIES.get('token')
+    person = Person.objects.filter(token=token)
+    if person.count() == 1:
+        return render(request, 'p2preview/home.html')
+    elif person.count() == 0:
+        return HttpResponseRedirect('login/')
+    else:
+        response = HttpResponseRedirect('login/')
+        response.delete_cookie('token')
+        return response
 
 def login_page(request):
-    return render(request, 'p2preview/login.html')
+    token = request.COOKIES.get('token')
+    person = Person.objects.filter(token=token)
+    if person.count() == 1:
+        return HttpResponseRedirect('/')
+    elif person.count() == 0:
+        return render(request, 'p2preview/login.html')
+    else:
+        response = HttpResponseRedirect('login/')
+        response.delete_cookie('token')
+        return response
 
 def course(request):
     return render(request, 'p2preview/course.html')
@@ -31,9 +49,11 @@ def login(request):
         person = Person.objects.filter(email=request.POST['email'], password=request.POST['password'])
         if (person.count() == 1):
             char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
-            person.update(token=''.join(random.sample(char_set*10, 10)))
+            token = ''.join(random.sample(char_set*10, 10))
+            person.update(token=token)
             data = {
                 'success': 1,
+                'token': token,
                 'message': 'Successfully logged In'
             }
         elif (person.count() > 1):
