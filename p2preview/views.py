@@ -68,10 +68,15 @@ def login(request):
                     'success': 0,
                     'message': 'Hi, ' + person[0].name + ' your password is wrong. Please try again'
                 }
-            else:
+            elif (person.count() == 0):
                 data = {
                     'success': 0,
-                    'message': 'Multiple accounts are associated with this email id. Please contact administrator'
+                    'message': "Sorry, this email address isn't registered with us."
+                }
+            elif (person.count() > 1):
+                data = {
+                    'success': 0,
+                    'message': "Multiple accounts are associated with this email id. Please contact administrator"
                 }
 
         return JsonResponse(data, safe=True)
