@@ -15,6 +15,7 @@ $("#signInForm").submit(function () {
     dataType: 'json',
     success: function (data) {
       if (data.success === 1) {
+        document.cookie = "token=" +  data.token + "; path=/";
         $(location).attr('href', '/')
       }else {
         $('#id_error').text(data.message);
