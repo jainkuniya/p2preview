@@ -9,17 +9,40 @@
 
 {% block body %}
 <body>
-  <div class="container">
-    <div class="row">
-      
+  <% for( i=0; i< results.length; i++) { %>
+    <div class="row container">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12 col-lg-10 columns">
+            Course Name : Software Engineering <br>
+          </div>
+          <div class="small-12 large-2 columns">
+            Course Code : CS101X
+          </div>
+          <br><br>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-lg-10 columns">
+          </div>
+        </div>
+        <div class="table-responsive">
+
+          <table class="table table-striped table-hover">
+            <caption>Registered Students</caption>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email Id</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
+  <% } %>
   
 </body>
 {% endblock %}
 {% block extrajavascripts %}
-  <script type="text/javascript" src="{% static 'p2preview/js/signin.js' %}"/>
-  <script>
-
-  </script>
 {% endblock %}
