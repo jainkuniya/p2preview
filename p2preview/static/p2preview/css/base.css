@@ -12,10 +12,11 @@
 body {
   background-color: #eee;
   font-family: 'Raleway', sans-serif;
+  color: var(--primary-text-color);
 }
 .navbar{
 	background-color: var(--dark-primary-color);
-	padding: 20px;
+	padding: 12px;
 }
 .navitem a{
 	position: relative;
@@ -41,6 +42,14 @@ body {
 	visibility: visible;
  	transform: scaleX(1);
  }
+ .emphasize{
+ 	font-weight: bold;
+ 	font-size: x-large;
+	letter-spacing: 0.7px;
+ }
 .topic{
 /*	border: 1px solid black;*/
+}
+.loggedIn a{
+	color: var(--primary-text-color) !important;
 }

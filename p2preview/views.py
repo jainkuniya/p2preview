@@ -40,6 +40,9 @@ def course(request):
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
+def rubric_template(request):
+    return render(request, 'p2preview/rubric_template.html')
+
 @csrf_exempt
 def login(request):
     """

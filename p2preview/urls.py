@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^login/$', views.login_page),
     url(r'^course/$', views.course),
     url(r'^course/new/$', views.new_course_page),
+    url(r'^rubricTemplate/$', views.rubric_template),
     
 ]

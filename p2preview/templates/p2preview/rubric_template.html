@@ -4,28 +4,60 @@
 {% load staticfiles%}
 
 {% block extrastyles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/course.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/rubric.css' %}"/>
 {% endblock %}
 
 {% block body %}
 <body>
-  <div class="container coursesList">
+  <div class="container rubric">
     <div class="row">
-      <div class="col-md-12">
-        <div class="container-fluid ">
-          <div class="row couseName">
-            <div class="col-md-12 col-lg-10 columns">
-              Course Name : <b>Software Engineering</b> <br>
-            </div>
-            <div class="small-12 large-2 columns">
-              Course Code : <b>CS101X</b>
-            </div>
-            <hr>
-          </div>
-
-          <div class="table-responsive">
+      <div class="col-md-2">
+        #
+      </div>
+      <div class="col-md-2">
+        A
+      </div>
+      <div class="col-md-2">
+        B
+      </div>
+      <div class="col-md-2">
+        C
+      </div>
+      <div class="col-md-2">
+        D
+      </div>
+      <div class="col-md-2">
+        Best Answer
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        #
+      </div>
+      <div class="col-md-2">
+        A
+      </div>
+      <div class="col-md-2">
+        B
+      </div>
+      <div class="col-md-2">
+        C
+      </div>
+      <div class="col-md-2">
+        D
+      </div>
+      <div class="col-md-2">
+        Best Answer
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+{% block extrajavascripts %}
+{% endblock %}
+<!--          <div class="table-responsive">
             <table class="table table-hover table-bordered">
-            <!--<caption>Registered Students</caption>-->
+            <caption>Registered Students</caption>
               <thead>
                 <tr>
                   <th>#</th>
@@ -56,12 +88,4 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-{% endblock %}
-{% block extrajavascripts %}
-{% endblock %}
+          </div>-->
