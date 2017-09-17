@@ -40,11 +40,11 @@
             <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="/login">{{ person_name }}</a>
             <div class="dropdown-menu dropdown-menu-right loggedIn" aria-labelledby="dropdownMenuLink">
               <a class="dropdown-item" href="#">Edit Profile</a>
-              <a class="dropdown-item" href="#">Logout</a>
               <a class="dropdown-item" href="/course/new">Courses</a>
             </div>
           </div>
         </div>
+        <button type="button" onclick="logout()">Logout</button>
       </div>
     </div>
 
@@ -55,6 +55,8 @@
     <script type="text/javascript" src="{% static 'p2preview/js/bootstrap.min.js' %}"/>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/
     bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'p2preview/js/commonJs.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'p2preview/js/baseJs.js' %}" ></script>
     {% block extrajavascripts %}
     {% endblock %}
   </body>

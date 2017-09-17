@@ -14,20 +14,15 @@ import random
 # Create your views here.
 @csrf_exempt
 def home(request):
-    token = request.COOKIES.get('token')
-    persons = Person.objects.filter(token=token)
-    if persons.count() == 1:
+    person = validatePerson(request.COOKIES.get('token'))
+    if person != -1:
         template = loader.get_template('p2preview/home.html')
         context = {
-            'person_name': persons[0].name,
+            'person_name': person[0].name,
         }
         return HttpResponse(template.render(context, request))
-    elif person.count() == 0:
-        return HttpResponseRedirect('login/')
     else:
-        response = HttpResponseRedirect('login/')
-        response.delete_cookie('token')
-        return response
+        return redirectToLogin()
 
 @csrf_exempt
 def login_page(request):
@@ -121,10 +116,24 @@ def login(request):
 
         return JsonResponse(data, safe=True)
 
+@csrf_exempt
+def logout(request):
+    person = validatePerson(request.META['HTTP_TOKEN'])
+    if (person != -1):
+        person.update(token='')
+    data = {
+        'success': 1,
+        'message': "Successfully logged off"
+    }
+    return JsonResponse(data, safe=True)
+
 def validatePerson(token):
-    person = Person.objects.filter(token=token)
-    if (person.count() == 1):
-        return person
+    if token != '':
+        person = Person.objects.filter(token=token)
+        if (person.count() == 1):
+            return person
+        else:
+            return -1
     else:
         return -1
 

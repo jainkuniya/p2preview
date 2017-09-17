@@ -21,7 +21,6 @@ $.getScript('/static/p2preview/js/commonJs.js', function() {
       },
       dataType: 'json',
       success: function(data) {
-        console.log(data);
         if (data.success === 1) {
           $(location).attr('href', '/');
         } else {
