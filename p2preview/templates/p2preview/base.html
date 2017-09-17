@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>P2PReview-{% block title %}{% endblock %}</title>
+  <title>{% block title %}{% endblock %} - P2PReview</title>
 
   {% load staticfiles %}
 
@@ -23,19 +23,19 @@
   <body>
     <div class="navbar">
       <div class="navitem row container-fluid">
-        <div class="topic emphasize col-md-3">
+        <div class="emphasize col-md-3">
           <a href="/">Peer Review System</a>
         </div>
-        <div class="topic col-md-auto">
+        <div class="col-md-auto">
           <a href="/rubricTemplate">Rubric Template</a>
         </div>
-        <div class="topic col-md-auto">
+        <div class="col-md-auto">
           <a href="/addActivity">Add Activity</a>
         </div>
-        <div class="topic col-md-auto">
+        <div class="col-md-auto">
           <a href="/statistics">Statistics</a>
         </div>    
-        <div class="topic col" ><!--align="right"-->
+        <div class="col" ><!--align="right"-->
           <div class="dropdown show" >
             <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="/login">Login</a>
             <div class="dropdown-menu dropdown-menu-right loggedIn" aria-labelledby="dropdownMenuLink">

@@ -1,5 +1,5 @@
 {% extends './base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Rubric Template{% endblock %}
 
 {% load staticfiles%}
 
@@ -10,7 +10,7 @@
 {% block body %}
 <body>
   <div class="container rubric">
-    <div class="row">
+    <div class="row head">
       <div class="col-md-2">
         #
       </div>
@@ -30,26 +30,43 @@
         Best Answer
       </div>
     </div>
+    <form>
     <div class="row">
       <div class="col-md-2">
-        #
+        Criteria 1
       </div>
       <div class="col-md-2">
-        A
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionA" rows="3"></textarea>
+        </div>
       </div>
       <div class="col-md-2">
-        B
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionB" rows="3"></textarea>
+        </div>
       </div>
       <div class="col-md-2">
-        C
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionC" rows="3"></textarea>
+        </div>
       </div>
       <div class="col-md-2">
-        D
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionD" rows="3"></textarea>
+        </div>
       </div>
       <div class="col-md-2">
-        Best Answer
+      <div class="form-group">
+        <select class="form-control" id="Criteria1CorrectAnswer">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+        </select>
+      </div>
       </div>
     </div>
+    </form>
   </div>
 </body>
 {% endblock %}
