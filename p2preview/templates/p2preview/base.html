@@ -43,14 +43,13 @@
         </div>
         <div class="col" ><!--align="right"-->
           <div class="dropdown show" >
-            <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="/login">{{ person_name }}</a>
+            <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="/login">Hi, {{ person_name }}!</a>
             <div class="dropdown-menu dropdown-menu-right loggedIn" aria-labelledby="dropdownMenuLink">
               <a class="dropdown-item" href="#">Edit Profile</a>
-              <a class="dropdown-item" href="#">Logout</a>
+              <a class="dropdown-item" onclick="logout()" href="#">Logout</a>
             </div>          
           </div>
         </div>
-        <button type="button" onclick="logout()">Logout</button>
       </div>
     </div>
 
