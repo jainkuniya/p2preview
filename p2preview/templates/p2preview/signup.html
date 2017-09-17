@@ -1,0 +1,91 @@
+{% extends './base.html' %}
+{% block title %}Sign up{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/signup.css' %}"/>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container">
+    
+    <form class="form-horizontal form-signup" id="mainForm" role="form"
+      action="signup" method="post" autocomplete="off">  
+      <h2 class="form-signin-heading">Please register</h2>
+      <div class="form-group row">
+        <label for="firstName" class="col-sm-3 col-form-label">
+          Name
+        </label>
+        <div class="col-sm-9">
+          <input type="text" name="firstName" placeholder="Name"
+            class="form-control" maxlength="10" autofocus required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="col-sm-3 col-form-label">
+          Email
+        </label>
+        <div class="col-sm-9">
+          <input type="text" name="email" placeholder="Email"
+            class="form-control" maxlength="20" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password" class="col-sm-3 col-form-label">
+          Password
+        </label>
+        <div class="col-sm-9">
+          <input type="password" name="password" placeholder="Password"
+            class="form-control" maxlength="20" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="department" class="col-sm-3 col-form-label">
+          Department
+        </label>
+        <div class="col-sm-9">
+          <select id="department" name="department" class="form-control">
+            <option value="" selected disabled>Choose Department</option>
+            <option value="1">Computer Science and Engineering</option>
+            <option value="2">Electronics and Communication Engineering</option>
+            <option value="3">Mechanical and Mechatronics Engineering</option>
+            <option value="4">Mathematics</option>
+            <option value="5">Physics</option>
+            <option value="6">Humanities and Social Sciences</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="officeNo" class="col-sm-3 col-form-label">
+          Office No
+        </label>
+        <div class="col-sm-9">
+          <input type="number" name="officeNo" placeholder="Office No"
+            class="form-control" maxlength="10" autofocus required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="visitingHours" class="col-sm-3 col-form-label">
+          Visiting Hours
+        </label>
+        <div class="col-sm-9">
+          <input type="string" name="visitingHours" placeholder="Visiting Hours"
+            class="form-control" maxlength="10" autofocus required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+    <!-- /form -->
+  </div>
+  
+</body>
+{% endblock %}
+{% block extrajavascripts %}
+  <script type="text/javascript" src="{% static 'p2preview/js/signin.js' %}"/>
+  <script>
+
+  </script>
+{% endblock %}
