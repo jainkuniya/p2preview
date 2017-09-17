@@ -11,6 +11,7 @@ import string
 import random
 
 # Create your views here.
+@csrf_exempt
 def home(request):
     token = request.COOKIES.get('token')
     person = Person.objects.filter(token=token)
@@ -45,11 +46,17 @@ def create_course(request):
                             description=request.POST['description'],
                             instructorId=instrutor[0],
                             code=getRandomString(5))
-            course.save()
-            data = {
-                'success': 1,
-                'message': 'Course Successfully Created',
-            }
+            try:
+                course.save()
+                data = {
+                    'success': 1,
+                    'message': 'Course Successfully Created',
+                }
+            except:
+                data = {
+                    'success': 0,
+                    'message': 'Please try again',
+                }
             return JsonResponse(data, safe=True)
         else:
             return redirectToLogin()
@@ -57,11 +64,11 @@ def create_course(request):
         return redirectToLogin()
 
 
-
-
+@csrf_exempt
 def course(request):
     return render(request, 'p2preview/course.html')
 
+@csrf_exempt
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
