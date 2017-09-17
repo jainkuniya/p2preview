@@ -28,8 +28,9 @@ class Instrutor(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=15, blank=False, default='')
+    description = models.CharField(max_length=200, blank='True', default='')
     instructorId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
-    code = models.CharField(max_length=20, blank=False, default='')
+    code = models.CharField(max_length=20, blank=False, default='', unique=True)
 
 class Rubric(models.Model):
     name = models.CharField(max_length=15, blank=False, default='')

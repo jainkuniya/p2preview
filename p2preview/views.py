@@ -2,14 +2,16 @@
 from __future__ import unicode_literals
 
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor
+from p2preview.models import Person, Student, Instrutor, Course
 
 import string
 import random
 
 # Create your views here.
+@csrf_exempt
 def home(request):
     token = request.COOKIES.get('token')
     person = Person.objects.filter(token=token)
@@ -22,6 +24,7 @@ def home(request):
         response.delete_cookie('token')
         return response
 
+@csrf_exempt
 def login_page(request):
     token = request.COOKIES.get('token')
     person = Person.objects.filter(token=token)
@@ -30,13 +33,42 @@ def login_page(request):
     elif person.count() == 0:
         return render(request, 'p2preview/login.html')
     else:
-        response = HttpResponseRedirect('login/')
-        response.delete_cookie('token')
-        return response
+        return redirectToLogin()
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def create_course(request):
+    person = validatePerson(request.META['HTTP_TOKEN'])
+    if (person != -1):
+        instrutor = Instrutor.objects.filter(iId=person)
+        if instrutor.count() == 1:
+            course = Course(name=request.POST['name'],
+                            description=request.POST['description'],
+                            instructorId=instrutor[0],
+                            code=getRandomString(5))
+            try:
+                course.save()
+                data = {
+                    'success': 1,
+                    'message': 'Course Successfully Created',
+                }
+            except:
+                data = {
+                    'success': 0,
+                    'message': 'Please try again',
+                }
+            return JsonResponse(data, safe=True)
+        else:
+            return redirectToLogin()
+    else:
+        return redirectToLogin()
+
+
+@csrf_exempt
 def course(request):
     return render(request, 'p2preview/course.html')
 
+@csrf_exempt
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
@@ -83,3 +115,19 @@ def login(request):
                 }
 
         return JsonResponse(data, safe=True)
+
+def validatePerson(token):
+    person = Person.objects.filter(token=token)
+    if (person.count() == 1):
+        return person
+    else:
+        return -1
+
+def getRandomString(length):
+    char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
+    return ''.join(random.sample(char_set*length, length))
+
+def redirectToLogin():
+    response = HttpResponseRedirect('/login/')
+    response.delete_cookie('token')
+    return response
