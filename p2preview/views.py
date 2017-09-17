@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render
+from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from p2preview.models import Person, Student, Instrutor, Course
 
@@ -14,9 +15,13 @@ import random
 @csrf_exempt
 def home(request):
     token = request.COOKIES.get('token')
-    person = Person.objects.filter(token=token)
-    if person.count() == 1:
-        return render(request, 'p2preview/home.html')
+    persons = Person.objects.filter(token=token)
+    if persons.count() == 1:
+        template = loader.get_template('p2preview/home.html')
+        context = {
+            'person_name': persons[0].name,
+        }
+        return HttpResponse(template.render(context, request))
     elif person.count() == 0:
         return HttpResponseRedirect('login/')
     else:
