@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Person, Student, Instrutor, Course
+from .models import Person, Student, Instrutor, Course, RegisteredCourses
 
 # Register your models here.
 class PersonAdmin(admin.ModelAdmin):
@@ -17,7 +17,11 @@ class InstrutorAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['id', 'instructorId', 'name', 'description', 'code']
 
+class RegisteredCoursesAdmin(admin.ModelAdmin):
+    list_display = ['courseId', 'sId']
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Instrutor, InstrutorAdmin)
 admin.site.register(Course, CourseAdmin)
+admin.site.register(RegisteredCourses, RegisteredCoursesAdmin)

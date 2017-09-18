@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses
 
 import string
 import random
@@ -66,7 +66,25 @@ def create_course(request):
 
 @csrf_exempt
 def course(request):
-    return render(request, 'p2preview/course.html')
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if (instrutor != -1):
+        template = loader.get_template('p2preview/course.html')
+        courses = getInstructorCourses(instrutor)
+        courseDetails = []
+        for course in courses:
+            print course.name
+            courseDetails.append({
+                'course': course,
+                'students': getStudentsInCourse(course),
+                'count': getStudentsInCourse(course).count()
+            })
+        print courseDetails
+        context = {
+            'courses': courseDetails
+        }
+        return render_to_response('p2preview/course.html', context)
+    else:
+        redirectToLogin();
 
 @csrf_exempt
 def new_course_page(request):
@@ -140,6 +158,16 @@ def validatePerson(token):
     else:
         return -1
 
+def validateInstructor(token):
+    person = validatePerson(token)
+    if person == -1:
+        return -1
+    instrutors = Instrutor.objects.filter(iId=person)
+    if (instrutors.count() == 1):
+        return instrutors
+    else:
+        return -1
+
 def getRandomString(length):
     char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
     return ''.join(random.sample(char_set*length, length))
@@ -148,3 +176,9 @@ def redirectToLogin():
     response = HttpResponseRedirect('/login/')
     response.delete_cookie('token')
     return response
+
+def getInstructorCourses(iId):
+    return Course.objects.filter(instructorId=iId)
+
+def getStudentsInCourse(cId):
+    return RegisteredCourses.objects.filter(courseId=cId)

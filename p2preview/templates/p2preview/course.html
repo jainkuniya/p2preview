@@ -9,58 +9,55 @@
 
 {% block body %}
 <body>
-  <div class="container coursesList">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="container-fluid ">
-          <div class="row couseName">
-            <div class="col-md-12 col-lg-10 columns">
-              Course Name : <b>Software Engineering</b> <br>
+  {% for courseDetails in courses %}
+    <div class="container coursesList">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="container-fluid ">
+            <div class="row couseName">
+              <div class="col-md-12 col-lg-10 columns">
+                Course Name : <b>{{ courseDetails.course.name }}</b> <br>
+              </div>
+              <div class="small-12 large-2 columns">
+                Course Code : <b>{{ courseDetails.course.code }}</b>
+              </div>
+              <hr>
             </div>
-            <div class="small-12 large-2 columns">
-              Course Code : <b>CS101X</b>
-            </div>
-            <hr>
-          </div>
 
-          <div class="table-responsive">
-            <table class="table table-hover table-bordered">
-            <!--<caption>Registered Students</caption>-->
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Email Id</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Vishal Sanghai</td>
-                  <td>vcoolsanghai@gmail.com</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Vishwesh Jainkuniya</td>
-                  <td>vishwesh03071997@gmail.com</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Vishal Sanghai</td>
-                  <td>vcoolsanghai@gmail.com</td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>Vishwesh Jainkuniya</td>
-                  <td>vishwesh03071997@gmail.com</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              {% if courseDetails.students|length > 0 %}
+                <table class="table table-hover table-bordered">
+                <!--<caption>Registered Students</caption>-->
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Roll No</th>
+                      <th>Email Id</th>
+                      <th>Branch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for student in courseDetails.students %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.sId.sId.name }}</td>
+                        <td>{{ student.sId.rollNo }}</td>
+                        <td>{{ student.sId.sId.email }}</td>
+                        <td>{{ student.sId.branch }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                  <p>No students are registered for this course</p>
+                {% endif %}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  {% endfor %}
 </body>
 {% endblock %}
 {% block extrajavascripts %}
