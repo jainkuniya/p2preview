@@ -13,3 +13,8 @@ function getCookie(cname) {
   }
   return '';
 }
+
+function clearLoginCookie(){
+  document.cookie = "token=; path=/";
+  $(location).attr('href', '/')
+}

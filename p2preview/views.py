@@ -38,30 +38,30 @@ def login_page(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def create_course(request):
-    person = validatePerson(request.META['HTTP_TOKEN'])
-    if (person != -1):
-        instrutor = Instrutor.objects.filter(iId=person)
-        if instrutor.count() == 1:
-            course = Course(name=request.POST['name'],
-                            description=request.POST['description'],
-                            instructorId=instrutor[0],
-                            code=getRandomString(5))
-            try:
-                course.save()
-                data = {
-                    'success': 1,
-                    'message': 'Course Successfully Created',
-                }
-            except:
-                data = {
-                    'success': 0,
-                    'message': 'Please try again',
-                }
-            return JsonResponse(data, safe=True)
-        else:
-            return redirectToLogin()
+    instrutor = validateInstructor(request.META['HTTP_TOKEN'])
+    print request.META['HTTP_TOKEN']
+    if (instrutor != -1):
+        course = Course(name=request.POST['name'],
+                        description=request.POST['description'],
+                        instructorId=instrutor[0],
+                        code=getRandomString(5))
+        try:
+            course.save()
+            data = {
+                'success': 1,
+                'message': 'Course Successfully Created',
+            }
+        except:
+            data = {
+                'success': 0,
+                'message': 'Please try again',
+            }
     else:
-        return redirectToLogin()
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+        }
+    return JsonResponse(data, safe=True)
 
 
 @csrf_exempt
@@ -69,14 +69,13 @@ def course(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if (instrutor != -1):
         template = loader.get_template('p2preview/course.html')
-        courses = getInstructorCourses(instrutor)
+        courses = getInstructorCourses(instrutor).order_by('-pk')
         courseDetails = []
         for course in courses:
             print course.name
             courseDetails.append({
                 'course': course,
                 'students': getStudentsInCourse(course),
-                'count': getStudentsInCourse(course).count()
             })
         print courseDetails
         context = {
