@@ -39,7 +39,6 @@ def login_page(request):
 @csrf_exempt
 def create_course(request):
     instrutor = validateInstructor(request.META['HTTP_TOKEN'])
-    print request.META['HTTP_TOKEN']
     if (instrutor != -1):
         course = Course(name=request.POST['name'],
                         description=request.POST['description'],
@@ -72,12 +71,10 @@ def course(request):
         courses = getInstructorCourses(instrutor).order_by('-pk')
         courseDetails = []
         for course in courses:
-            print course.name
             courseDetails.append({
                 'course': course,
                 'students': getStudentsInCourse(course),
             })
-        print courseDetails
         context = {
             'courses': courseDetails
         }
