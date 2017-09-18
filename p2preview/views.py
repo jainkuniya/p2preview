@@ -86,6 +86,37 @@ def course(request):
     else:
         redirectToLogin();
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def register(request):
+    person = Person(name=request.POST['name'],
+                    email=request.POST['email'],
+                    password=request.POST['password'],
+                    personType=request.POST['personType'])
+    try:
+        person.save()
+        if request.POST['personType'] == 1:
+            instrutor = Instrutor(iId=person,
+                                  department=request.POST['department'],
+                                  office=request.POST['office'],
+                                  visitingHours=request.POST['visitingHours'])
+            instrutor.save()
+        elif request.POST['personType'] == 2:
+            student = Student(sId=person,
+                              rollNo=request.POST['rollNo'],
+                              branch=request.POST['branch'])
+            student.save()
+        data = {
+            'success': 1,
+            'message': 'Successfully registered',
+        }
+    except:
+        data = {
+            'success': 0,
+            'message': 'Please try again',
+        }
+    return JsonResponse(data, safe=True)
+
 @csrf_exempt
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')

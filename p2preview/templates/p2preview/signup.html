@@ -10,16 +10,16 @@
 {% block body %}
 <body>
   <div class="container">
-    
-    <form class="form-horizontal form-signup" id="mainForm" role="form"
-      action="signup" method="post" autocomplete="off">  
+
+    <form class="form-horizontal form-signup" id="signUpForm" role="form"
+      action="signup" method="post" autocomplete="off">
       <h2 class="form-signin-heading">Please register</h2>
       <div class="form-group row">
         <label for="firstName" class="col-sm-3 col-form-label">
           Name
         </label>
         <div class="col-sm-9">
-          <input type="text" name="firstName" placeholder="Name"
+          <input id="id_name" type="text" name="firstName" placeholder="Name"
             class="form-control" maxlength="10" autofocus required>
         </div>
       </div>
@@ -28,7 +28,7 @@
           Email
         </label>
         <div class="col-sm-9">
-          <input type="text" name="email" placeholder="Email"
+          <input id="id_email" type="text" name="email" placeholder="Email"
             class="form-control" maxlength="20" required>
         </div>
       </div>
@@ -37,7 +37,7 @@
           Password
         </label>
         <div class="col-sm-9">
-          <input type="password" name="password" placeholder="Password"
+          <input id="id_password" type="password" name="password" placeholder="Password"
             class="form-control" maxlength="20" required>
         </div>
       </div>
@@ -46,14 +46,14 @@
           Department
         </label>
         <div class="col-sm-9">
-          <select id="department" name="department" class="form-control">
+          <select id="id_department" name="department" class="form-control">
             <option value="" selected disabled>Choose Department</option>
-            <option value="1">Computer Science and Engineering</option>
-            <option value="2">Electronics and Communication Engineering</option>
-            <option value="3">Mechanical and Mechatronics Engineering</option>
-            <option value="4">Mathematics</option>
-            <option value="5">Physics</option>
-            <option value="6">Humanities and Social Sciences</option>
+            <option value="CSE">Computer Science and Engineering</option>
+            <option value="ECE">Electronics and Communication Engineering</option>
+            <option value="MME">Mechanical and Mechatronics Engineering</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="HSS">Humanities and Social Sciences</option>
           </select>
         </div>
       </div>
@@ -62,7 +62,7 @@
           Office No
         </label>
         <div class="col-sm-9">
-          <input type="number" name="officeNo" placeholder="Office No"
+          <input id="id_office" type="number" name="officeNo" placeholder="Office No"
             class="form-control" maxlength="10" autofocus required>
         </div>
       </div>
@@ -71,20 +71,20 @@
           Visiting Hours
         </label>
         <div class="col-sm-9">
-          <input type="string" name="visitingHours" placeholder="Visiting Hours"
+          <input id="id_visitingHours" type="string" name="visitingHours" placeholder="Visiting Hours"
             class="form-control" maxlength="10" autofocus required>
         </div>
       </div>
-
+      <span id="id_error"></span>
       <button type="submit" class="btn btn-primary btn-block">Register</button>
     </form>
     <!-- /form -->
   </div>
-  
+
 </body>
 {% endblock %}
 {% block extrajavascripts %}
-  <script type="text/javascript" src="{% static 'p2preview/js/signin.js' %}"/>
+  <script type="text/javascript" src="{% static 'p2preview/js/signup.js' %}"/>
   <script>
 
   </script>
