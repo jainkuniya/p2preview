@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
@@ -81,6 +82,30 @@ def course(request):
         return render_to_response('p2preview/course.html', context)
     else:
         redirectToLogin();
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def get_student_courses(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        registeredCourses = RegisteredCourses.objects.filter(sId=student).order_by('-pk')
+        courses = []
+        for reg in  registeredCourses:
+            courses.append({
+                'name': reg.courseId.name,
+                'description': reg.courseId.description
+                })
+        data = {
+            'success': 1,
+            'courses': courses
+        }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'courses': []
+        }
+    return JsonResponse(data, safe=True)
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -192,6 +217,16 @@ def validateInstructor(token):
     instrutors = Instrutor.objects.filter(iId=person)
     if (instrutors.count() == 1):
         return instrutors
+    else:
+        return -1
+
+def validateStudent(token):
+    person = validatePerson(token)
+    if person == -1:
+        return -1
+    students = Student.objects.filter(sId=person)
+    if (students.count() == 1):
+        return students
     else:
         return -1
 
