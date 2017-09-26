@@ -93,7 +93,9 @@ def get_student_courses(request):
         for reg in  registeredCourses:
             courses.append({
                 'name': reg.courseId.name,
-                'description': reg.courseId.description
+                'code': reg.courseId.code,
+                'description': reg.courseId.description,
+                'instructorName': reg.courseId.instructorId.iId.name
                 })
         data = {
             'success': 1,
