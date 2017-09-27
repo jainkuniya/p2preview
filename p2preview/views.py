@@ -168,9 +168,15 @@ def register(request):
             'message': 'Successfully registered',
         }
     except:
+        """Check if email already registered"""
+        persons = Person.objects.filter(email=request.POST['email'])
+        if (persons.count() > 0):
+            message = request.POST['email'] +  ' is already associated with another account.'
+        else:
+            message = 'Please try again'
         data = {
             'success': 0,
-            'message': 'Please try again',
+            'message': message,
         }
     return JsonResponse(data, safe=True)
 
