@@ -111,6 +111,40 @@ def get_student_courses(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def add_student_course(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        registeredCourse = addStudentInCourse(student[0], request.POST['code'])
+        if (registeredCourse == -1):
+            data = {
+                'success': -1,
+                'message': 'Please enter a valid code',
+                'course': []
+            }
+        else:
+            course = validateCourse(request.POST['code'])
+            coursesResponse = []
+            coursesResponse.append({
+                'name': course[0].name,
+                'code': course[0].code,
+                'description': course[0].description,
+                'instructorName': course[0].instructorId.iId.name
+            })
+            data = {
+                'success': 1,
+                'message': 'Course successfully added',
+                'course': coursesResponse
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'course': []
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def register(request):
     person = Person(name=request.POST['name'],
                     email=request.POST['email'],
@@ -232,6 +266,13 @@ def validateStudent(token):
     else:
         return -1
 
+def validateCourse(code):
+    courses = Course.objects.filter(code=code)
+    if (courses.count() == 1):
+        return courses
+    else:
+        return -1
+
 def getRandomString(length):
     char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
     return ''.join(random.sample(char_set*length, length))
@@ -246,3 +287,19 @@ def getInstructorCourses(iId):
 
 def getStudentsInCourse(cId):
     return RegisteredCourses.objects.filter(courseId=cId)
+
+def addStudentInCourse(student, courseCode):
+    course = validateCourse(courseCode)
+    if (course == -1):
+        return -1
+    else:
+        """Check if already registered"""
+        registeredCourse = RegisteredCourses.objects.filter(courseId=course[0], sId=student)
+        if (registeredCourse.count() == 1):
+            return registeredCourse[0]
+        try:
+            registeredCourse = RegisteredCourses(courseId=course[0], sId=student)
+            registeredCourse.save()
+            return registeredCourse
+        except:
+            return -1
