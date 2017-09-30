@@ -7,10 +7,45 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group
 
 import string
 import random
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def fetch_self(request):
+    person = validatePerson(request.META['HTTP_TOKEN'])
+    if person != -1:
+        if person[0].personType == 1:
+            instrutor = Instrutor.objects.filter(iId=person[0])
+            data = {
+                'success': 1,
+                'message': '',
+                'self': {
+                    'name': person[0].name,
+                    'email': person[0].email,
+                }
+            }
+        elif person[0].personType == 2:
+            student = Student.objects.filter(sId=person[0])
+            data = {
+                'success': 1,
+                'message': '',
+                'self': {
+                    'name': person[0].name,
+                    'email': person[0].email,
+                    'rollNo': student[0].rollNo,
+                    'branch': student[0].branch,
+                }
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+        }
+    return JsonResponse(data, safe=True)
+
 
 # Create your views here.
 @csrf_exempt
@@ -106,6 +141,33 @@ def get_student_courses(request):
             'success': -99,
             'message': 'Please login again',
             'courses': []
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def get_student_groups(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
+        groups = []
+        for group in groupDetails:
+            groups.append({
+                'members': get_group_members(group.groupId),
+                'name': group.groupId.name,
+                'id': group.groupId.pk,
+                })
+        data = {
+            'success': 1,
+            'data': {
+                'groups': groups
+            }
+        }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'data': {}
         }
     return JsonResponse(data, safe=True)
 
@@ -241,6 +303,100 @@ def logout(request):
         'message': "Successfully logged off"
     }
     return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def verify_student(request):
+    person = validatePerson(request.META['HTTP_TOKEN'])
+    if (person != -1):
+        student = get_student_from_email(request.POST['email'])
+        if (student == -1):
+            data = {
+                'success': 0,
+                'message': "No student is associated with this email ID."
+            }
+        elif (student == -2):
+            data = {
+                'success': 0,
+                'message': "This email ID is not registered with our system."
+            }
+        else:
+            data = {
+                'success': 1,
+                'message': "Student is valid",
+                'data': {
+                    'student': student
+                }
+            }
+    else:
+        date = {
+            'success': -99,
+            'message': "Please login again",
+        }
+    return JsonResponse(data, safe=True)
+
+def get_student_from_email(email):
+    persons = Person.objects.filter(personType=2, email=email)
+    if (persons.count() == 1):
+        students = Student.objects.filter(sId=persons[0])
+        if (students.count() == 1):
+            return {
+                'name': persons[0].name,
+                'email': persons[0].email,
+                'rollNo': students[0].rollNo,
+            }
+        else:
+            return -1
+    else:
+        return -2
+
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def create_student_group(request):
+    person = validatePerson(request.META['HTTP_TOKEN'])
+    if (person != -1):
+        group = Group(name="")
+        try:
+            group.save()
+            emails = request.POST['emails'].split(',')
+            for email in emails:
+                student = get_student_from_email(email)
+                if (student != -1):
+                    sId = Student.objects.filter(rollNo=student['rollNo'])
+                    groupDetail = GroupDetail(groupId=group, sId=sId[0])
+                    groupDetail.save()
+        except:
+            data = {}
+        data = {
+            'success': 1,
+            'message': 'Group successfully created',
+            'data': {
+                'groups': [{
+                    'members': get_group_members(group),
+                    'name': group.name,
+                    'id': group.pk
+                }]
+            }
+        }
+    else:
+        date = {
+            'success': -99,
+            'message': "Please login again",
+        }
+    return JsonResponse(data, safe=True)
+
+def get_group_members(group):
+    groupDetail = GroupDetail.objects.filter(groupId=group)
+    members = []
+    for member in groupDetail:
+        members.append({
+            'name': member.sId.sId.name,
+            'email': member.sId.sId.email,
+            'rollNo': member.sId.rollNo,
+        })
+    return members
 
 def validatePerson(token):
     if token != '':

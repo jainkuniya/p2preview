@@ -20,6 +20,9 @@ class Student(models.Model):
     rollNo = models.CharField(max_length=8, blank=False, default='')
     branch = models.CharField(max_length=5, blank=False, default='')
 
+    def __str__(self):
+        return self.sId.name + " " + self.rollNo
+
 class Instrutor(models.Model):
     iId = models.ForeignKey(Person, on_delete=models.CASCADE)
     department = models.CharField(max_length=5, blank=False, default='')
@@ -50,12 +53,12 @@ class Activity(models.Model):
     isActive = models.BooleanField(blank=False, default=False)
     groupSize = models.IntegerField(default=1)
 
-class Groups(models.Model):
+class Group(models.Model):
     creationDate = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=10, blank=True, default='')
 
-class GroupDetails(models.Model):
-    groupId = models.ForeignKey(Groups, on_delete=models.CASCADE)
+class GroupDetail(models.Model):
+    groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     sId = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 class Generic(models.Model):
@@ -72,7 +75,7 @@ class Criteria(models.Model):
     genericId = models.ForeignKey(Generic, on_delete=models.CASCADE)
 
 class Response(models.Model):
-    groupId = models.ForeignKey(Groups, on_delete=models.CASCADE)
+    groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     activityId = models.ForeignKey(Activity, on_delete=models.CASCADE)
     response = models.CharField(max_length=1, blank=False, default='')
     comment = models.CharField(max_length=30, blank=True, default='')
