@@ -29,50 +29,78 @@ class Instrutor(models.Model):
     office = models.CharField(max_length=10, blank=False, default='')
     visitingHours = models.CharField(max_length=20, blank=False, default='')
 
+    def __str__(self):
+        return self.iId.name
+
 class Course(models.Model):
     name = models.CharField(max_length=15, blank=False, default='')
     description = models.CharField(max_length=200, blank='True', default='')
     instructorId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
     code = models.CharField(max_length=20, blank=False, default='', unique=True)
 
+    def __str__(self):
+        return self.name
+
 class RegisteredCourses(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     sId = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 class Rubric(models.Model):
-    name = models.CharField(max_length=15, blank=False, default='')
+    name = models.CharField(max_length=30, blank=False, default='')
     lastModified = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 class Activity(models.Model):
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     rubricId = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     name = models.CharField(max_length=15, blank=False, default='')
     code = models.CharField(max_length=5, blank=False, default='')
-    imageURL = models.URLField(blank=False)
+    fileURL = models.CharField(max_length=100, blank=False, default='')
     duration = models.IntegerField(blank=False)
     isActive = models.BooleanField(blank=False, default=False)
     groupSize = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.name
 
 class Group(models.Model):
     creationDate = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=10, blank=True, default='')
 
+    def __str__(self):
+        return self.name
+
 class GroupDetail(models.Model):
     groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     sId = models.ForeignKey(Student, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('groupId', 'sId')
 
 class Generic(models.Model):
     description = models.CharField(max_length=100, blank=False, default='')
     answer = models.IntegerField()
 
-class GenericOptions(models.Model):
+    def __str__(self):
+        return self.description
+
+class GenericOption(models.Model):
     genericId = models.ForeignKey(Generic, on_delete=models.CASCADE)
-    option = models.CharField(max_length=30, blank=False, default='')
+    option = models.CharField(max_length=100, blank=False, default='')
     points = models.IntegerField(default=0)
+    optionNo = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('genericId', 'optionNo')
 
 class Criteria(models.Model):
     rubricId = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     genericId = models.ForeignKey(Generic, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.rubricId.name + " " + self.genericId.description
 
 class Response(models.Model):
     groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
