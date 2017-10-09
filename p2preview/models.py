@@ -95,6 +95,13 @@ class GenericOption(models.Model):
     class Meta:
         unique_together = ('genericId', 'optionNo')
 
+class RegisteredGroupsForActivity(models.Model):
+    groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
+    activityId = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('groupId', 'activityId')
+
 class Criteria(models.Model):
     rubricId = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     genericId = models.ForeignKey(Generic, on_delete=models.CASCADE)

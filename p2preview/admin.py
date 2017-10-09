@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Generic, GenericOption, Criteria, Response, Activity, Rubric
+from .models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Generic, GenericOption, Criteria, Response, Activity, Rubric, RegisteredGroupsForActivity
 
 # Register your models here.
 class PersonAdmin(admin.ModelAdmin):
@@ -44,6 +44,9 @@ class CriteriaAdmin(admin.ModelAdmin):
 class ResponseAdmin(admin.ModelAdmin):
     list_display = ['id', 'groupId', 'activityId', 'response', 'comment']
 
+class RegisteredGroupsForActivityAdmin(admin.ModelAdmin):
+    list_display = ['groupId', 'activityId']
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Instrutor, InstrutorAdmin)
@@ -57,3 +60,4 @@ admin.site.register(Generic, GenericAdmin)
 admin.site.register(GenericOption, GenericOptionAdmin)
 admin.site.register(Criteria, CriteriaAdmin)
 admin.site.register(Response, ResponseAdmin)
+admin.site.register(RegisteredGroupsForActivity, RegisteredGroupsForActivityAdmin)

@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity
 
 import string
 import random
@@ -144,6 +144,58 @@ def get_student_courses(request):
         }
     return JsonResponse(data, safe=True)
 
+def get_recommended_group_for_students(student, course):
+    groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
+    groups = []
+    for group in groupDetails:
+        """Check if all group members are registered to that course or not"""
+        membersGroupDetails = GroupDetail.objects.filter(groupId=group.groupId)
+        memCount = membersGroupDetails.count()
+        for gd in membersGroupDetails:
+            if (RegisteredCourses.objects.filter(courseId=course, sId=gd.sId).count() == 1):
+                memCount = memCount - 1
+        if (memCount == 0):
+            groups.append({
+                'members': get_group_members(group.groupId),
+                'name': group.groupId.name,
+                'id': group.groupId.pk,
+                })
+    return groups
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def register_group_to_activity(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        activityCode = request.POST['activityCode']
+        groupId = request.POST['groupCode']
+        try:
+            activity = Activity.objects.filter(code=activityCode)
+            group = Group.objects.filter(pk=groupId)
+            # TODO check all group members are registered to that course
+            """Register group to activity"""
+            registeredGroupsForActivity = RegisteredGroupsForActivity(activityId=activity[0], groupId=group[0])
+            registeredGroupsForActivity.save()
+            data = {
+                'success': 1,
+                'message': 'Successfully registered',
+                'data': {}
+            }
+        except Exception,e:
+            data = {
+                'success': 0,
+                'message': 'Please try again',
+                'data': {}
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'data': {}
+        }
+    return JsonResponse(data, safe=True)
+
+
 @require_http_methods(["GET"])
 @csrf_exempt
 def get_student_groups(request):
@@ -163,6 +215,53 @@ def get_student_groups(request):
                 'groups': groups
             }
         }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'data': {}
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def get_activity_group_composition(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        """Find course of activity"""
+        activitys = Activity.objects.filter(code=request.POST["code"])
+        if (activitys.count() == 1):
+            """Check if student is registered to that course"""
+            registeredCourses = RegisteredCourses.objects.filter(courseId=activitys[0].courseId, sId=student[0])
+            if (registeredCourses.count() == 1):
+                """Student is registered for the course to which is activity belongs"""
+                """get recommended groups"""
+                recommendedGroups = get_recommended_group_for_students(student[0], activitys[0].courseId)
+                data = {
+                    'success': 1,
+                    'message': 'Activity code is valid',
+                    'data': {
+                        'activity': {
+                            'name': activitys[0].name,
+                            'code': activitys[0].code,
+                            'courseCode': activitys[0].courseId.code,
+                            'groupSize': activitys[0].groupSize,
+                        },
+                        'recommendedGroups': recommendedGroups
+                    }
+                }
+            else:
+                data = {
+                    'success': 0,
+                    'message': 'This activity is not for you. You haven\'t registered to the corresponding course.',
+                    'data': {}
+                }
+        else:
+            data = {
+                'success': 0,
+                'message': 'Invalid activity code.',
+                'data': {}
+            }
     else:
         data = {
             'success': -99,
