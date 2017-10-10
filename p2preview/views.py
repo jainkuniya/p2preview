@@ -162,31 +162,35 @@ def get_recommended_group_for_students(student, course):
                 })
     return groups
 
+def register_group_to_activity_data(group_id, activity_code):
+    try:
+        activity = Activity.objects.filter(code=activity_code)
+        group = Group.objects.filter(pk=group_id)
+        # TODO check all group members are registered to that course
+        """Register group to activity"""
+        registeredGroupsForActivity = RegisteredGroupsForActivity(activityId=activity[0], groupId=group[0])
+        registeredGroupsForActivity.save()
+        return {
+            'success': 1,
+            'message': 'Successfully registered',
+            'data': {}
+        }
+    except Exception,e:
+        print e
+        return {
+            'success': 0,
+            'message': 'Please try again',
+            'data': {}
+        }
+
 @require_http_methods(["POST"])
 @csrf_exempt
 def register_group_to_activity(request):
     student = validateStudent(request.META['HTTP_TOKEN'])
     if (student != -1):
-        activityCode = request.POST['activityCode']
-        groupId = request.POST['groupCode']
-        try:
-            activity = Activity.objects.filter(code=activityCode)
-            group = Group.objects.filter(pk=groupId)
-            # TODO check all group members are registered to that course
-            """Register group to activity"""
-            registeredGroupsForActivity = RegisteredGroupsForActivity(activityId=activity[0], groupId=group[0])
-            registeredGroupsForActivity.save()
-            data = {
-                'success': 1,
-                'message': 'Successfully registered',
-                'data': {}
-            }
-        except Exception,e:
-            data = {
-                'success': 0,
-                'message': 'Please try again',
-                'data': {}
-            }
+        activity_code = request.POST['activityCode']
+        group_id = request.POST['groupCode']
+        return register_group_to_activity_data(group_id, activity_code)
     else:
         data = {
             'success': -99,
@@ -406,6 +410,7 @@ def logout(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def verify_student(request):
+    print request.POST
     person = validatePerson(request.META['HTTP_TOKEN'])
     if (person != -1):
         student = get_student_from_email(request.POST['email'])
@@ -420,13 +425,45 @@ def verify_student(request):
                 'message': "This email ID is not registered with our system."
             }
         else:
-            data = {
-                'success': 1,
-                'message': "Student is valid",
-                'data': {
-                    'student': student
+            """if course_code is received check this student is enrolled to that course or not"""
+            if ('course_code' in request.POST):
+                course_code = request.POST['course_code']
+                """find course"""
+                course = Course.objects.filter(code=course_code)
+                if (course.count() == 1):
+                    """find student in registered course"""
+                    person_object = Person.objects.get(email=request.POST['email'])
+                    student_object = Student.objects.get(sId=person_object)
+                    registered_course = RegisteredCourses.objects.filter(courseId=course[0], sId=student_object)
+                    if (registered_course.count() == 1):
+                        data = {
+                            'success': 1,
+                            'message': "Student is valid",
+                            'data': {
+                                'student': student
+                            }
+                        }
+                    else:
+                        data = {
+                            'success': 0,
+                            'message': person_object.name + " is not registered to course",
+                            'data': {}
+                        }
+                else:
+                    data = {
+                        'success': 0,
+                        'message': "Activity course is not valid",
+                        'data': {}
+                    }
+            else:
+                print "Vishwesh"
+                data = {
+                    'success': 1,
+                    'message': "Student is valid",
+                    'data': {
+                        'student': student
+                    }
                 }
-            }
     else:
         date = {
             'success': -99,
@@ -466,19 +503,24 @@ def create_student_group(request):
                     sId = Student.objects.filter(rollNo=student['rollNo'])
                     groupDetail = GroupDetail(groupId=group, sId=sId[0])
                     groupDetail.save()
+
+            if ('activity_code' in request.POST):
+                """register group to activity"""
+                data = register_group_to_activity_data(group.pk, request.POST['activity_code'])
+            else:
+                data = {
+                    'success': 1,
+                    'message': 'Group successfully created',
+                    'data': {
+                        'groups': [{
+                            'members': get_group_members(group),
+                            'name': group.name,
+                            'id': group.pk
+                        }]
+                    }
+                }
         except:
             data = {}
-        data = {
-            'success': 1,
-            'message': 'Group successfully created',
-            'data': {
-                'groups': [{
-                    'members': get_group_members(group),
-                    'name': group.name,
-                    'id': group.pk
-                }]
-            }
-        }
     else:
         date = {
             'success': -99,
