@@ -109,6 +109,9 @@ class Criteria(models.Model):
     def __str__(self):
         return self.rubricId.name + " " + self.genericId.description
 
+    class Meta:
+        unique_together = ('rubricId', 'genericId')
+
 class Response(models.Model):
     groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     activityId = models.ForeignKey(Activity, on_delete=models.CASCADE)

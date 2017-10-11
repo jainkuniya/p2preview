@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption
 
 import string
 import random
@@ -170,13 +170,36 @@ def register_group_to_activity_data(group_id, activity_code):
         """Register group to activity"""
         registeredGroupsForActivity = RegisteredGroupsForActivity(activityId=activity[0], groupId=group[0])
         registeredGroupsForActivity.save()
-        return {
+        activity_details = Activity.objects.get(code=activity_code)
+        criterias_data = []
+        criterias = Criteria.objects.filter(rubricId=activity_details.rubricId)
+        for criteria in criterias:
+            options_data = []
+            options = GenericOption.objects.filter(genericId=criteria.genericId)
+            for option in options:
+                options_data.append({
+                    'option': option.option,
+                    'option_number': option.optionNo
+                })
+            criterias_data.append({
+                'description': criteria.genericId.description,
+                'options': options_data
+            })
+        data = {
             'success': 1,
             'message': 'Successfully registered',
-            'data': {}
+            'data': {
+                'activity': {
+                    'name': activity_details.name,
+                    'code': activity_details.code,
+                    'fileURL': activity_details.fileURL,
+                    'duration': activity_details.duration,
+                },
+                'criteria': criterias_data
+            }
         }
+        return data
     except Exception,e:
-        print e
         return {
             'success': 0,
             'message': 'Please try again',
@@ -190,7 +213,7 @@ def register_group_to_activity(request):
     if (student != -1):
         activity_code = request.POST['activityCode']
         group_id = request.POST['groupCode']
-        return register_group_to_activity_data(group_id, activity_code)
+        data = register_group_to_activity_data(group_id, activity_code)
     else:
         data = {
             'success': -99,
@@ -410,7 +433,6 @@ def logout(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def verify_student(request):
-    print request.POST
     person = validatePerson(request.META['HTTP_TOKEN'])
     if (person != -1):
         student = get_student_from_email(request.POST['email'])
@@ -456,7 +478,6 @@ def verify_student(request):
                         'data': {}
                     }
             else:
-                print "Vishwesh"
                 data = {
                     'success': 1,
                     'message': "Student is valid",
@@ -507,6 +528,13 @@ def create_student_group(request):
             if ('activity_code' in request.POST):
                 """register group to activity"""
                 data = register_group_to_activity_data(group.pk, request.POST['activity_code'])
+                data['data'].update({
+                    'groups': [{
+                        'members': get_group_members(group),
+                        'name': group.name,
+                        'id': group.pk
+                    }]
+                })
             else:
                 data = {
                     'success': 1,
@@ -519,7 +547,8 @@ def create_student_group(request):
                         }]
                     }
                 }
-        except:
+        except Exception, e:
+            print e
             data = {}
     else:
         date = {
