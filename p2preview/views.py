@@ -7,10 +7,11 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response
 
 import string
 import random
+import ast
 
 @require_http_methods(["GET"])
 @csrf_exempt
@@ -118,6 +119,69 @@ def course(request):
     else:
         redirectToLogin();
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def submit_responses(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        try:
+            """get group"""
+            group = Group.objects.filter(pk=request.POST["group_id"])
+            if(group.count() == 1):
+                """get activity"""
+                activity = Activity.objects.filter(code=request.POST["activity_code"])
+                if(activity.count() == 1):
+                    """get registered group"""
+                    registeredGroup = RegisteredGroupsForActivity.objects.filter(groupId=group[0], activityId=activity[0])
+                    if(registeredGroup.count() == 1):
+                        answers = request.POST['answers']
+                        answers = ast.literal_eval(answers)
+                        for answer in answers:
+                            """get criteria"""
+                            criteria = Criteria.objects.filter(pk=answer.get('criteria_id'))
+                            if (criteria.count() == 1):
+                                response = Response(registeredGroup=registeredGroup[0],
+                                                    criteria=criteria[0],
+                                                    response=answer.get('optionNumber'),
+                                                    comment=answer.get('comment'))
+                                response.save()
+                        data = {
+                            'success': 1,
+                            'message': 'Successfully saved responses!!',
+                            'data': []
+                        }
+                    else:
+                        data = {
+                            'success': 2,
+                            'message': 'No registerted group found!!',
+                            'data': []
+                        }
+                else:
+                    data = {
+                        'success': 2,
+                        'message': 'No activity found!!',
+                        'data': []
+                    }
+            else:
+                data = {
+                    'success': 2,
+                    'message': 'No group found!!',
+                    'data': []
+                }
+        except Exception,e:
+            data = {
+                'success': 3,
+                'message': 'Please try again!!',
+                'data': []
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'data': []
+        }
+    return JsonResponse(data, safe=True)
+
 @require_http_methods(["GET"])
 @csrf_exempt
 def get_student_courses(request):
@@ -182,6 +246,7 @@ def register_group_to_activity_data(group_id, activity_code):
                     'option_number': option.optionNo
                 })
             criterias_data.append({
+                'criteria_id': criteria.pk,
                 'description': criteria.genericId.description,
                 'options': options_data
             })

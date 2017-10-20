@@ -113,7 +113,10 @@ class Criteria(models.Model):
         unique_together = ('rubricId', 'genericId')
 
 class Response(models.Model):
-    groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
-    activityId = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    registeredGroup = models.ForeignKey(RegisteredGroupsForActivity, on_delete=models.CASCADE)
+    criteria = models.ForeignKey(Criteria, on_delete=models.CASCADE)
     response = models.CharField(max_length=1, blank=False, default='')
-    comment = models.CharField(max_length=30, blank=True, default='')
+    comment = models.CharField(max_length=30, blank=True, default='', null=True)
+
+    class Meta:
+        unique_together = ('registeredGroup', 'criteria')

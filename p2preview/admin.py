@@ -42,7 +42,7 @@ class CriteriaAdmin(admin.ModelAdmin):
     list_display = ['id', 'rubricId', 'genericId']
 
 class ResponseAdmin(admin.ModelAdmin):
-    list_display = ['id', 'groupId', 'activityId', 'response', 'comment']
+    list_display = ['id', 'registeredGroup', 'criteria', 'response', 'comment']
 
 class RegisteredGroupsForActivityAdmin(admin.ModelAdmin):
     list_display = ['groupId', 'activityId']
