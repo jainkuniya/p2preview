@@ -206,22 +206,24 @@ def get_student_courses(request):
         }
     return JsonResponse(data, safe=True)
 
-def get_recommended_group_for_students(student, course):
+def get_recommended_group_for_students(student, course, groupSize):
     groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
     groups = []
     for group in groupDetails:
         """Check if all group members are registered to that course or not"""
         membersGroupDetails = GroupDetail.objects.filter(groupId=group.groupId)
         memCount = membersGroupDetails.count()
-        for gd in membersGroupDetails:
-            if (RegisteredCourses.objects.filter(courseId=course, sId=gd.sId).count() == 1):
-                memCount = memCount - 1
-        if (memCount == 0):
-            groups.append({
-                'members': get_group_members(group.groupId),
-                'name': group.groupId.name,
-                'id': group.groupId.pk,
-                })
+        """check if group size is less than activity group size"""
+        if (memCount <= groupSize):
+            for gd in membersGroupDetails:
+                if (RegisteredCourses.objects.filter(courseId=course, sId=gd.sId).count() == 1):
+                    memCount = memCount - 1
+            if (memCount == 0):
+                groups.append({
+                    'members': get_group_members(group.groupId),
+                    'name': group.groupId.name,
+                    'id': group.groupId.pk,
+                    })
     return groups
 
 def register_group_to_activity_data(group_id, activity_code):
@@ -326,7 +328,7 @@ def get_activity_group_composition(request):
             if (registeredCourses.count() == 1):
                 """Student is registered for the course to which is activity belongs"""
                 """get recommended groups"""
-                recommendedGroups = get_recommended_group_for_students(student[0], activitys[0].courseId)
+                recommendedGroups = get_recommended_group_for_students(student[0], activitys[0].courseId, activitys[0].groupSize)
                 data = {
                     'success': 1,
                     'message': 'Activity code is valid',
