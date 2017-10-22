@@ -146,7 +146,7 @@ def submit_responses(request):
                         data = {
                             'success': 1,
                             'message': 'Successfully saved responses!!',
-                            'data': []
+                            'data': get_activity_data_from_registered_group(registeredGroup[0])
                         }
                     else:
                         data = {
@@ -399,6 +399,40 @@ def add_student_course(request):
         }
     return JsonResponse(data, safe=True)
 
+def get_activity_data_from_registered_group(registeredGroupsForActivity):
+    responses = []
+    responsesData = Response.objects.filter(registeredGroup=registeredGroupsForActivity)
+    for response in responsesData:
+        options = []
+        optionsData = GenericOption.objects.filter(genericId=response.criteria.genericId).order_by('optionNo')
+        for option in optionsData:
+            options.append({
+                'option': option.option,
+                'points': option.points,
+                'optionNo': option.optionNo
+            })
+        criteria = {
+            'question': response.criteria.genericId.description,
+            'answer': response.criteria.genericId.answer,
+            'options': options,
+            'id': response.criteria.pk
+        }
+        responses.append({
+            'criteria': criteria,
+            'response': response.response,
+            'comment': response.comment,
+        })
+    return {
+        'activity': {
+            'course': registeredGroupsForActivity.activityId.courseId.name,
+            'name': registeredGroupsForActivity.activityId.name,
+            'code': registeredGroupsForActivity.activityId.code,
+            'duration': registeredGroupsForActivity.activityId.duration
+        },
+        'responses': responses,
+        'groupId': registeredGroupsForActivity.groupId.pk
+    }
+
 @require_http_methods(["GET"])
 @csrf_exempt
 def student_activities(request):
@@ -413,38 +447,8 @@ def student_activities(request):
                 """check if this group is registered to activity or not"""
                 registeredGroupsForActivity = RegisteredGroupsForActivity.objects.filter(groupId=groupObject[0]).order_by('time')
                 if (registeredGroupsForActivity.count() == 1):
-                    responses = []
-                    responsesData = Response.objects.filter(registeredGroup=registeredGroupsForActivity[0])
-                    for response in responsesData:
-                        options = []
-                        optionsData = GenericOption.objects.filter(genericId=response.criteria.genericId).order_by('optionNo')
-                        for option in optionsData:
-                            options.append({
-                                'option': option.option,
-                                'points': option.points,
-                                'optionNo': option.optionNo
-                            })
-                        criteria = {
-                            'question': response.criteria.genericId.description,
-                            'answer': response.criteria.genericId.answer,
-                            'options': options,
-                            'id': response.criteria.pk
-                        }
-                        responses.append({
-                            'criteria': criteria,
-                            'response': response.response,
-                            'comment': response.comment,
-                        })
-                    activity.append({
-                        'activity': {
-                            'course': registeredGroupsForActivity[0].activityId.courseId.name,
-                            'name': registeredGroupsForActivity[0].activityId.name,
-                            'code': registeredGroupsForActivity[0].activityId.code,
-                            'duration': registeredGroupsForActivity[0].activityId.duration
-                        },
-                        'responses': responses,
-                        'groupId': registeredGroupsForActivity[0].groupId.pk
-                    })
+                    activity.append(get_activity_data_from_registered_group(registeredGroupsForActivity[0]))
+
         data = {
             'success': 1,
             'message': '',
