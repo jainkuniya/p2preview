@@ -287,20 +287,23 @@ def register_group_to_activity(request):
         }
     return JsonResponse(data, safe=True)
 
+def get_student_groups_data(student):
+    groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
+    groups = []
+    for group in groupDetails:
+        groups.append({
+            'members': get_group_members(group.groupId),
+            'name': group.groupId.name,
+            'id': group.groupId.pk,
+            })
+    return groups
 
 @require_http_methods(["GET"])
 @csrf_exempt
 def get_student_groups(request):
     student = validateStudent(request.META['HTTP_TOKEN'])
     if (student != -1):
-        groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
-        groups = []
-        for group in groupDetails:
-            groups.append({
-                'members': get_group_members(group.groupId),
-                'name': group.groupId.name,
-                'id': group.groupId.pk,
-                })
+        groups = get_student_groups_data(student)
         data = {
             'success': 1,
             'data': {
@@ -388,6 +391,65 @@ def add_student_course(request):
                 'message': 'Course successfully added',
                 'course': coursesResponse
             }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'course': []
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def student_activities(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        """get all groups of student"""
+        groups = get_student_groups_data(student)
+        activity = []
+        for group in groups:
+            groupObject = Group.objects.filter(pk=group.get("id"))
+            if (groupObject.count() == 1):
+                """check if this group is registered to activity or not"""
+                registeredGroupsForActivity = RegisteredGroupsForActivity.objects.filter(groupId=groupObject[0]).order_by('time')
+                if (registeredGroupsForActivity.count() == 1):
+                    responses = []
+                    responsesData = Response.objects.filter(registeredGroup=registeredGroupsForActivity[0])
+                    for response in responsesData:
+                        options = []
+                        optionsData = GenericOption.objects.filter(genericId=response.criteria.genericId).order_by('optionNo')
+                        for option in optionsData:
+                            options.append({
+                                'option': option.option,
+                                'points': option.points,
+                                'optionNo': option.optionNo
+                            })
+                        criteria = {
+                            'question': response.criteria.genericId.description,
+                            'answer': response.criteria.genericId.answer,
+                            'options': options,
+                            'id': response.criteria.pk
+                        }
+                        responses.append({
+                            'criteria': criteria,
+                            'response': response.response,
+                            'comment': response.comment,
+                        })
+                    activity.append({
+                        'activity': {
+                            'course': registeredGroupsForActivity[0].activityId.courseId.name,
+                            'name': registeredGroupsForActivity[0].activityId.name,
+                            'code': registeredGroupsForActivity[0].activityId.code,
+                            'duration': registeredGroupsForActivity[0].activityId.duration
+                        },
+                        'responses': responses,
+                        'groupId': registeredGroupsForActivity[0].groupId.pk
+                    })
+        data = {
+            'success': 1,
+            'message': '',
+            'activities': activity
+        }
     else:
         data = {
             'success': -99,
