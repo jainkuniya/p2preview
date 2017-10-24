@@ -32,9 +32,8 @@ $('#submitButton').click(function() {
     },
     dataType: 'json',
     success: function(data) {
-      alert(data);
       if (data.success === 1) {
-        //$(location).attr('href', '/course');
+        $(location).attr('href', '/rubricTemplate');
       } else if (data.success === -99) {
         clearLoginCookie();
       } else {
