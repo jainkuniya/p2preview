@@ -4,6 +4,21 @@
 .table{
 	margin-top:10px;
 }
+.option{
+	position:relative;
+}
+.points{
+	position: absolute;
+	right:0px;
+	bottom: 0px;
+	background-color: var(--light-primary-color);
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.correct{
+	background-color: lightgreen;
+}
 .rubric{
 	margin-top: 20px;
 	text-align:center;
