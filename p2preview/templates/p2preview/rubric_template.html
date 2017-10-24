@@ -29,12 +29,12 @@
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td class="option">
-              {{ criteria.criteria.genericId.description }}
+              {{ criteria.generic.description }}
             </td>
             {% for genric_option in criteria.generic_options %}
               <td class="option">
                 {{ genric_option.option }}
-                {% if genric_option.optionNo == criteria.criteria.genericId.answer %}
+                {% if genric_option.optionNo == criteria.generic.answer %}
                   <div class="points correct">
                 {% else %}
                   <div class="points">
@@ -141,30 +141,43 @@
     </div>
   </div>
   <div class="criteriaList">
-    <span class="heading">Rubric #1</span>
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Criteria</th>
-          <th scope="col">Option A</th>
-          <th scope="col">Option B</th>
-          <th scope="col">Option C</th>
-          <th scope="col">Option D</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    {% for rubric in rubrics %}
+      <span class="heading">{{ rubric.rubric.name }}</span>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Criteria</th>
+            <th scope="col">Option A</th>
+            <th scope="col">Option B</th>
+            <th scope="col">Option C</th>
+            <th scope="col">Option D</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for criteria in rubric.criterias %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td class="option">
+                {{ criteria.criteria.genericId.description }}
+              </td>
+              {% for genric_option in criteria.generic_options %}
+                <td class="option">
+                  {{ genric_option.option }}
+                  {% if genric_option.optionNo == criteria.criteria.genericId.answer %}
+                    <div class="points correct">
+                  {% else %}
+                    <div class="points">
+                  {% endif %}
+                  {{ genric_option.points }}</div>
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
+</div>
 
 </body>
 {% endblock %}

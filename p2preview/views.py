@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic
 
 import string
 import random
@@ -521,11 +521,17 @@ def rubric_template(request):
                 'rubric': rubric,
                 'criterias': criterias
             })
+        all_criterias = []
+        generic_data = Generic.objects.filter().order_by('-pk')
+        for generic in generic_data:
+            all_criterias.append({
+                'generic_options': GenericOption.objects.filter(genericId=generic).order_by('-pk'),
+                'generic': generic
+            })
         context = {
-            'criterias': criterias,
+            'criterias': all_criterias,
             'rubrics': rubrics
         }
-        print context
         return HttpResponse(template.render(context, request))
     else:
         return redirectToLogin()
