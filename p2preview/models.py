@@ -46,6 +46,7 @@ class RegisteredCourses(models.Model):
     sId = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 class Rubric(models.Model):
+    iId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, blank=False, default='')
     lastModified = models.DateTimeField(auto_now_add=True)
 

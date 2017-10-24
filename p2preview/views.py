@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric
 
 import string
 import random
@@ -115,7 +115,7 @@ def course(request):
         }
         return render_to_response('p2preview/course.html', context)
     else:
-        redirectToLogin();
+        return redirectToLogin();
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -504,7 +504,31 @@ def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
 def rubric_template(request):
-    return render(request, 'p2preview/rubric_template.html')
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        template = loader.get_template('p2preview/rubric_template.html')
+        rubrics = []
+        rubric_data = Rubric.objects.filter(iId=instrutor).order_by('-pk')
+        for rubric in rubric_data:
+            criterias = []
+            criterias_data = Criteria.objects.filter(rubricId=rubric).order_by('-pk')
+            for criteria in criterias_data:
+                criterias.append({
+                    'generic_options': GenericOption.objects.filter(genericId=criteria.genericId).order_by('-pk'),
+                    'criteria': criteria
+                })
+            rubrics.append({
+                'rubric': rubric,
+                'criterias': criterias
+            })
+        context = {
+            'criterias': criterias,
+            'rubrics': rubrics
+        }
+        print context
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirectToLogin()
 
 def add_activity(request):
     return render(request, 'p2preview/add_activity.html')

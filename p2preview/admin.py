@@ -27,7 +27,7 @@ class GroupDetailAdmin(admin.ModelAdmin):
     list_display = ['id', 'sId', 'groupId']
 
 class RubricAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'lastModified']
+    list_display = ['id', 'name', 'lastModified', 'iId']
 
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ['id', 'courseId', 'rubricId', 'name', 'code', 'fileURL', 'duration', 'isActive', 'groupSize']

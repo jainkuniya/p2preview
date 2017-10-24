@@ -25,53 +25,35 @@
     </thead>
     <tbody>
       <form>
-      <tr>
-        <th scope="row">1</th>
-        <td class="option">
-          aaaaaaa aaaaaa aaaaaaa aaaaaaa
-        </td>
-        <td class="option">
-          aaaaaaa aaaaaa aaaaaaa aaaaaaa
-          <div class="points">4</div>
-        </td>
-        <td class="option">
-          aaaaaaa aaaaaa aaaaaaa aaaaaaa
-          <div class="points correct">8</div>
-        </td>
-        <td class="option">
-          aaaaaaa aaaaaa aaaaaaa aaaaaaa
-          <div class="points">2</div>
-          </td>
-        <td class="option">
-          aaaaaaa aaaaaa aaaaaaa aaaaaaa
-          <div class="points">7</div>
-        </td>
-        <td>
-          <!--<div class="form-check">-->
-            <label class="form-check-label">
-              <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-            </label>
-          <!--</div>-->
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          <!--<div class="form-check">-->
-            <label class="form-check-label">
-              <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-            </label>
-          <!--</div>-->
-        </td>
-      </tr>
+        {% for criteria in criterias %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td class="option">
+              {{ criteria.criteria.genericId.description }}
+            </td>
+            {% for genric_option in criteria.generic_options %}
+              <td class="option">
+                {{ genric_option.option }}
+                {% if genric_option.optionNo == criteria.criteria.genericId.answer %}
+                  <div class="points correct">
+                {% else %}
+                  <div class="points">
+                {% endif %}
+                {{ genric_option.points }}</div>
+              </td>
+            {% endfor %}
+            <td>
+              <!--<div class="form-check">-->
+                <label class="form-check-label">
+                  <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                </label>
+              <!--</div>-->
+            </td>
+          </tr>
+        {% endfor %}
     </tbody>
   </table>
-  
+
   <div class="container-fluid">
     <div class="row">
       <div class="col">
@@ -182,7 +164,7 @@
         </tr>
       </tbody>
     </table>
-  </div>  
+  </div>
 
 </body>
 {% endblock %}
