@@ -41,27 +41,17 @@
         <div class="col-md-auto">
           <a href="/statistics">Statistics</a>
         </div>
-        {% if person_name != NULL %}
         <div class="col" id="logined" ><!--align="right"-->
-          <div class="dropdown show" >
-            <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Hi, {{ person_name }}!</a>
-            <div class="dropdown-menu dropdown-menu-right loggedIn" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="#">Edit Profile</a>
-              <a class="dropdown-item" onclick="logout()" href="#">Logout</a>
-            </div>          
-          </div>
-        </div>
-        {% else %}
-        <div class="col" id="logouted" ><!--align="right"-->
           <div class="dropdown show" >
             <a class="dropdown-toggle " role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Hi!</a>
             <div class="dropdown-menu dropdown-menu-right loggedIn" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="/login">Login</a>
-              <a class="dropdown-item" href="/signUp">Register</a>
+              <a class="dropdown-item" id="editProfile" href="#">Edit Profile</a>
+              <a class="dropdown-item" id="logout" onclick="logout()" href="#">Logout</a>
+              <a class="dropdown-item" id="login" href="/login">Login</a>
+              <a class="dropdown-item" id="signUp" href="/signUp">Register</a>
             </div>          
           </div>
         </div>
-        {% endif %}  
       </div>
     </div>
 
@@ -74,6 +64,7 @@
     bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static 'p2preview/js/commonJs.js' %}" ></script>
     <script type="text/javascript" src="{% static 'p2preview/js/baseJs.js' %}" ></script>
+    <script type="text/javascript"></script>
     {% block extrajavascripts %}
     {% endblock %}
   </body>

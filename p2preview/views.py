@@ -54,9 +54,7 @@ def home(request):
     person = validatePerson(request.COOKIES.get('token'))
     if person != -1:
         template = loader.get_template('p2preview/home.html')
-        context = {
-            'person_name': person[0].name,
-        }
+        context = {}
         return HttpResponse(template.render(context, request))
     else:
         return redirectToLogin()
