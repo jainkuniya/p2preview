@@ -438,6 +438,9 @@ def new_course_page(request):
 def rubric_template(request):
     return render(request, 'p2preview/rubric_template.html')
 
+def add_activity(request):
+    return render(request, 'p2preview/add_activity.html')
+
 def signUp_page(request):
     return render(request, 'p2preview/signup.html')
 
