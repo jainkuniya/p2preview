@@ -503,6 +503,61 @@ def register(request):
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def create_generic(request):
+    print request.POST
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        try:
+            """create generic"""
+            generic = Generic(description=request.POST["description"],
+                              answer=request.POST["answer"])
+            generic.save()
+            """"create generic options"""
+            genericOption1 = GenericOption(genericId=generic,
+                                           option=request.POST["option1"],
+                                           points=request.POST["option1Points"],
+                                           optionNo=1)
+            genericOption1.save()
+
+            genericOption2 = GenericOption(genericId=generic,
+                                           option=request.POST["option2"],
+                                           points=request.POST["option2Points"],
+                                           optionNo=2)
+            genericOption2.save()
+
+            genericOption3 = GenericOption(genericId=generic,
+                                           option=request.POST["option3"],
+                                           points=request.POST["option3Points"],
+                                           optionNo=3)
+            genericOption3.save()
+
+            genericOption4 = GenericOption(genericId=generic,
+                                           option=request.POST["option4"],
+                                           points=request.POST["option4Points"],
+                                           optionNo=4)
+            genericOption4.save()
+
+            data = {
+                'success': 1,
+                'message': 'Successfully created'
+            }
+
+        except Exception, e:
+            print e
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again'
+        }
+
+    return JsonResponse(data, safe=True)
+
 def rubric_template(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
