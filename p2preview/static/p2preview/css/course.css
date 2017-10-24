@@ -1,3 +1,6 @@
+.add{
+	margin-top: 20px;
+}
 .coursesList{
     transition: 0.3s;
     box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
