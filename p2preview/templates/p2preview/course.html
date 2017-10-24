@@ -13,7 +13,7 @@
     <div class="row">
       <div class="col-auto ml-auto">
         <button type="button" class="btn btn-success add" data-toggle="modal" data-target="#exampleModal">
-          Add Generic Criteria
+          Add Course
         </button>
       </div>
     </div>
@@ -23,14 +23,18 @@
       <div class="row">
         <div class="col-md-12">
           <div class="container-fluid ">
-            <div class="row couseName">
-              <div class="col-md-12 col-lg-10 columns">
-                Course Name : <b>{{ courseDetails.course.name }}</b> <br>
+            <div class="row">
+              <div class="col-sm-12 col-lg-9">
+                Course Name : <b>{{ courseDetails.course.name }}</b>
               </div>
-              <div class="small-12 large-2 columns">
+              <div class="col-sm-12 col-lg-3">
                 Course Code : <b>{{ courseDetails.course.code }}</b>
               </div>
-              <hr>
+            </div>
+            <div class="row courseName">
+              <div class="col-sm-12 ">
+                Course Description : <b>{{ courseDetails.course.description }}</b> <br>
+              </div>
             </div>
 
             <div class="table-responsive">
@@ -59,7 +63,7 @@
                   </tbody>
                 </table>
                 {% else %}
-                  <p>No students are registered for this course</p>
+                  <p class="noStudents">No students are registered for this course</p>
                 {% endif %}
             </div>
           </div>
