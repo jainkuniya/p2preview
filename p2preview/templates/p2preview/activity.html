@@ -22,19 +22,19 @@
   </div>
 
   <div class="container">
-    <!--start for loop-->
+    {% for item in activities %}
     <div class="row justify-content-center align-items-center">
       <div class="col-sm-12">
         <div class="activityList">
           <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-4">
-              Course : <span class="text">ABC</span><br>
+              Course : <span class="text">{{ item.activity.courseId.name }}</span><br>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4">
-              Activity Name : <span class="text">ABC</span>                  
+              Activity Name : <span class="text">{{ item.activity.name }}</span>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-              Activity Code :<span class="text">ABC</span>
+              Activity Code :<span class="text">{{ item.activity.code }}</span>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-auto ml-auto">
               <label class="switch">
@@ -45,22 +45,22 @@
           </div>
           <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-4">
-              Rubric Name : <span class="text">ABC</span>    
+              Rubric Name : <span class="text">{{ item.activity.rubricId.name }}</span>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4">
-              Group Size : <span class="text">3</span><br>
+              Group Size : <span class="text">{{ item.activity.groupSize }}</span><br>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4">
-              Students Attempted : <span class="text">40</span>
+              Group Registered : <span class="text">{{ item.groupsRegistered }}</span>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
-    <!--end forloop-->
+    {% endfor %}
   </div>
-  
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

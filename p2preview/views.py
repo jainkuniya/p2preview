@@ -63,9 +63,18 @@ def activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
         template = loader.get_template('p2preview/activity.html')
+        activities_data = Activity.objects.filter(iId=instrutor[0]).order_by('-pk')
+        activities = []
+        for activity in activities_data:
+            activities.append({
+                'activity': activity,
+                'groupsRegistered': RegisteredGroupsForActivity.objects.filter(activityId=activity).count()
+            })
+
         context = {
             'rubrics': Rubric.objects.filter(iId=instrutor[0]),
             'courses': Course.objects.filter(instructorId=instrutor[0]),
+            'activities': activities
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -549,7 +558,8 @@ def create_activity(request):
             if (course.count() == 1):
                 rubric = Rubric.objects.filter(pk=request.POST["rubric_id"])
                 if (rubric.count() == 1):
-                    activity = Activity(courseId=course[0],
+                    activity = Activity(iId=instrutor[0],
+                                        courseId=course[0],
                                         rubricId=rubric[0],
                                         name=request.POST["activity_name"],
                                         code=getRandomString(5),
