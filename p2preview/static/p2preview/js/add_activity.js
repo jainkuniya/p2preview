@@ -39,7 +39,6 @@ $('#new_activity_form').submit(function() {
     },
     dataType: 'json',
     success: function(data) {
-      alert(data);
       if (data.success === 1) {
         $(location).attr('href', '/activity');
       } else if (data.success === -99) {
