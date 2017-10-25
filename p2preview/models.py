@@ -123,3 +123,6 @@ class Response(models.Model):
 
     class Meta:
         unique_together = ('registeredGroup', 'criteria')
+
+class UploadFile(models.Model):
+    file = models.FileField(upload_to='p2preview/static/p2preview/files')
