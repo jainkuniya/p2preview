@@ -1,0 +1,52 @@
+{% extends './base.html' %}
+{% block title %}Add Activity{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/statistics.css' %}"/>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <!--start for loop-->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-sm-12">
+        <div class="activityList">
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              Course : <span class="text">ABC</span><br>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              Activity Name : <span class="text">ABC</span>                  
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+              Activity Code :<span class="text">ABC</span>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-auto ml-auto">
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              Rubric Name : <span class="text">ABC</span>    
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              Group Size : <span class="text">3</span><br>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              Students Attempted : <span class="text">40</span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!--end forloop-->
+  </div>
+{% endblock %}
+{% block extrajavascripts %}
+{% endblock %}
