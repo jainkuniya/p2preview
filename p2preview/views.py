@@ -549,7 +549,7 @@ def create_activity(request):
                     activity = Activity(courseId=course[0],
                                         rubricId=rubric[0],
                                         name=request.POST["activity_name"],
-                                        code=getRandomString(4),
+                                        code=getRandomString(5),
                                         fileURL=request.POST["file_path"],
                                         duration=request.POST["duration"],
                                         groupSize=request.POST["groupSize"])
