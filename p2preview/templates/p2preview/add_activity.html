@@ -4,14 +4,24 @@
 {% load staticfiles%}
 
 {% block extrastyles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/activty.css' %}"/>
+    <script type="text/javascript" src="{% static 'p2preview/dropzone-4.3.0/dist/dropzone.js' %}"/></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/activity.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/dropzone-4.3.0/dist/dropzone.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/dropzone-4.3.0/dist/basic.css' %}"/>
 {% endblock %}
 
 {% block body %}
-<body>
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-sm-12 col-md-10 col-lg-8">
+          
+        <form action="/upload" class="dropzone upload"></form>
+      </div>
+    </div>
+  </div>
   
-</body>
 {% endblock %}
 {% block extrajavascripts %}
-
+  
+  <script type="text/javascript" src="{% static 'p2preview/dropzone-4.3.0/dist/dropzone-amd-module.js' %}"/>
 {% endblock %}
