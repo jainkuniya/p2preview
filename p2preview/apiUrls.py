@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^api/v1/create_rubric/', views.create_rubric),
     url(r'^activity/upload_file', views.upload_file),
     url(r'^api/v1/create_activity', views.create_activity),
+    url(r'^api/v1/toggle_activity_status', views.toggle_activity_status),
 ]

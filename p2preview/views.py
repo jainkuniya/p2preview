@@ -80,6 +80,32 @@ def activity(request):
     else:
         return redirectToLogin()
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def toggle_activity_status(request):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        activity = Activity.objects.filter(pk=request.POST["activity_id"])
+        if (activity.count() == 1):
+            if (request.POST["value"] == 'True'):
+                activity.update(isActive=True)
+            else:
+                activity.update(isActive=False)
+            data = {
+                'success': 1,
+                'message': 'Successfully updated',
+            }
+        data = {
+            'success': 0,
+            'message': 'No activity found',
+        }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+        }
+    return JsonResponse(data, safe=True)
+
 @csrf_exempt
 def login_page(request):
     token = request.COOKIES.get('token')
