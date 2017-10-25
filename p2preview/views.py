@@ -95,10 +95,11 @@ def toggle_activity_status(request):
                 'success': 1,
                 'message': 'Successfully updated',
             }
-        data = {
-            'success': 0,
-            'message': 'No activity found',
-        }
+        else:
+            data = {
+                'success': 0,
+                'message': 'No activity found',
+            }
     else:
         data = {
             'success': -99,
