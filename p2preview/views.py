@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile
 
 import string
 import random
@@ -55,6 +55,18 @@ def home(request):
     if person != -1:
         template = loader.get_template('p2preview/home.html')
         context = {}
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirectToLogin()
+
+def add_activity(request):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        template = loader.get_template('p2preview/add_activity.html')
+        context = {
+            'rubrics': Rubric.objects.filter(iId=instrutor[0]),
+            'courses': Course.objects.filter(instructorId=instrutor[0]),
+        }
         return HttpResponse(template.render(context, request))
     else:
         return redirectToLogin()
@@ -505,6 +517,76 @@ def new_course_page(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def upload_file(request):
+    try:
+        new_file = UploadFile(file = request.FILES['file'])
+        new_file.save()
+        data = {
+            'success': 1,
+            'message': 'Successfully uploaded',
+            'data': {
+                'url': str(new_file.file)
+            }
+        }
+    except Exception, e:
+        print e
+        data = {
+            'success': 0,
+            'message': 'Please try again!!'
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def create_activity(request):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        try:
+            course = Course.objects.filter(pk=request.POST["course_id"])
+            if (course.count() == 1):
+                rubric = Rubric.objects.filter(pk=request.POST["rubric_id"])
+                if (rubric.count() == 1):
+                    activity = Activity(courseId=course[0],
+                                        rubricId=rubric[0],
+                                        name=request.POST["activity_name"],
+                                        code=getRandomString(4),
+                                        fileURL=request.POST["file_path"],
+                                        duration=request.POST["duration"],
+                                        groupSize=request.POST["groupSize"])
+                    activity.save()
+                    data = {
+                        'success': 1,
+                        'message': 'Successfully added',
+                        'data': {
+
+                        }
+                    }
+                else:
+                    data = {
+                        'success': 0,
+                        'message': 'Please select valid rubric'
+                    }
+            else:
+                data = {
+                    'success': 0,
+                    'message': 'Please select valid course'
+                }
+        except Exception, e:
+            print e
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again'
+        }
+
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def create_rubric(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
@@ -627,9 +709,6 @@ def rubric_template(request):
         return HttpResponse(template.render(context, request))
     else:
         return redirectToLogin()
-
-def add_activity(request):
-    return render(request, 'p2preview/add_activity.html')
 
 def signUp_page(request):
     return render(request, 'p2preview/signup.html')

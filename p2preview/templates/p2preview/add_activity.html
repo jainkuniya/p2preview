@@ -14,38 +14,48 @@
   <div class="container">
     <div class="row justify-content-center align-items-center">
       <div class="col-sm-12 col-md-10 col-lg-8">
-          
-        <form action="/upload" class="dropzone upload"></form>
-        <div class="form-group row justify-content-center select" >
-          <select class="form-control form-control-lg col-sm-10" id="selectRubric">
-            <option>Select Rubric</option>
-          </select>
-        </div>
-        <div class="form-group row justify-content-center select" >
-          <select class="form-control form-control-lg col-sm-10" id="selectCourse">
-            <option>Select Course</option>
-          </select>
-        </div>
-        <div class="form-group row">
-          <label for="timeLimit" class="col-sm-6 col-form-label">Time Limit</label>
-          <div class="col-sm-6">
-            <input type="time" class="form-control" id="timeLimit" placeholder="">
+
+        <form id="my-awesome-dropzone" action="upload_file/" class="dropzone upload" method="post"  enctype="multipart/form-data" ></form>
+        <form id="new_activity_form" method="post">
+          <div class="form-group row justify-content-center select" >
+            <select class="form-control form-control-lg col-sm-10" id="rubric_id">
+              <option value="-1">Select Rubric</option>
+              {% for rubric in rubrics %}
+                <option value="{{ rubric.pk }}">{{ rubric.name }}</option>
+              {% endfor %}
+            </select>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="timeSize" class="col-sm-6 col-form-label">Team Size</label>
-          <div class="col-sm-6">
-            <input type="number" class="form-control" id="timeSize" placeholder="">
+          <div class="form-group row justify-content-center select" >
+            <select class="form-control form-control-lg col-sm-10" id="course_id">
+              <option value="-1">Select Course</option>
+              {% for course in courses %}
+                <option value="{{ course.pk }}">{{ course.name }}</option>
+              {% endfor %}
+            </select>
           </div>
-        </div>  
-        <button type="submit" class="btn btn-primary yo vspace">Submit</button>
+          <div class="form-group row">
+            <label for="timeLimit" class="col-sm-6 col-form-label">Time Limit</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="duration" placeholder="">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="timeSize" class="col-sm-6 col-form-label">Team Size</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="groupSize" placeholder="">
+            </div>
+          </div>
+          <input class="form-control" id="activity_name" placeholder="">
+          <span id="id_error"></span>
+          <button type="submit" class="btn btn-primary yo vspace">Submit</button>
+        </form>
 
       </div>
     </div>
   </div>
-  
+
 {% endblock %}
 {% block extrajavascripts %}
-  
+    <script type="text/javascript" src="{% static 'p2preview/js/add_activity.js' %}"></script>
   <script type="text/javascript" src="{% static 'p2preview/dropzone-4.3.0/dist/dropzone-amd-module.js' %}"/>
 {% endblock %}

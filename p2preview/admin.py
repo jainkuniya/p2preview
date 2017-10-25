@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Generic, GenericOption, Criteria, Response, Activity, Rubric, RegisteredGroupsForActivity
+from .models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Generic, GenericOption, Criteria, Response, Activity, Rubric, RegisteredGroupsForActivity, UploadFile
 
 # Register your models here.
 class PersonAdmin(admin.ModelAdmin):
@@ -47,6 +47,9 @@ class ResponseAdmin(admin.ModelAdmin):
 class RegisteredGroupsForActivityAdmin(admin.ModelAdmin):
     list_display = ['groupId', 'activityId']
 
+class UploadFileAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'file']
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Instrutor, InstrutorAdmin)
@@ -61,3 +64,4 @@ admin.site.register(GenericOption, GenericOptionAdmin)
 admin.site.register(Criteria, CriteriaAdmin)
 admin.site.register(Response, ResponseAdmin)
 admin.site.register(RegisteredGroupsForActivity, RegisteredGroupsForActivityAdmin)
+admin.site.register(UploadFile, UploadFileAdmin)
