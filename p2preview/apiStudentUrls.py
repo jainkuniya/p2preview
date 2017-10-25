@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^create_group/', views.create_student_group),
     url(r'^getActivityGroupComposition/', views.get_activity_group_composition),
     url(r'^registerGroupToActivity/', views.register_group_to_activity),
-    url(r'^submitResponses/', views.submit_responses)
+    url(r'^submitResponses/', views.submit_responses),
+    url(r'^activities/', views.student_activities)
 ]

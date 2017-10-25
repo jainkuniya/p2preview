@@ -46,6 +46,7 @@ class RegisteredCourses(models.Model):
     sId = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 class Rubric(models.Model):
+    iId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
     name = models.CharField(max_length=30, blank=False, default='')
     lastModified = models.DateTimeField(auto_now_add=True)
 
@@ -98,6 +99,7 @@ class GenericOption(models.Model):
 class RegisteredGroupsForActivity(models.Model):
     groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     activityId = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('groupId', 'activityId')
@@ -117,6 +119,7 @@ class Response(models.Model):
     criteria = models.ForeignKey(Criteria, on_delete=models.CASCADE)
     response = models.CharField(max_length=1, blank=False, default='')
     comment = models.CharField(max_length=30, blank=True, default='', null=True)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('registeredGroup', 'criteria')

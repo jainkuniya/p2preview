@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic
 
 import string
 import random
@@ -115,7 +115,7 @@ def course(request):
         }
         return render_to_response('p2preview/course.html', context)
     else:
-        redirectToLogin();
+        return redirectToLogin();
 
 @require_http_methods(["POST"])
 @csrf_exempt
@@ -146,7 +146,7 @@ def submit_responses(request):
                         data = {
                             'success': 1,
                             'message': 'Successfully saved responses!!',
-                            'data': []
+                            'data': get_activity_data_from_registered_group(registeredGroup[0])
                         }
                     else:
                         data = {
@@ -206,22 +206,24 @@ def get_student_courses(request):
         }
     return JsonResponse(data, safe=True)
 
-def get_recommended_group_for_students(student, course):
+def get_recommended_group_for_students(student, course, groupSize):
     groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
     groups = []
     for group in groupDetails:
         """Check if all group members are registered to that course or not"""
         membersGroupDetails = GroupDetail.objects.filter(groupId=group.groupId)
         memCount = membersGroupDetails.count()
-        for gd in membersGroupDetails:
-            if (RegisteredCourses.objects.filter(courseId=course, sId=gd.sId).count() == 1):
-                memCount = memCount - 1
-        if (memCount == 0):
-            groups.append({
-                'members': get_group_members(group.groupId),
-                'name': group.groupId.name,
-                'id': group.groupId.pk,
-                })
+        """check if group size is less than activity group size"""
+        if (memCount <= groupSize):
+            for gd in membersGroupDetails:
+                if (RegisteredCourses.objects.filter(courseId=course, sId=gd.sId).count() == 1):
+                    memCount = memCount - 1
+            if (memCount == 0):
+                groups.append({
+                    'members': get_group_members(group.groupId),
+                    'name': group.groupId.name,
+                    'id': group.groupId.pk,
+                    })
     return groups
 
 def register_group_to_activity_data(group_id, activity_code):
@@ -285,20 +287,23 @@ def register_group_to_activity(request):
         }
     return JsonResponse(data, safe=True)
 
+def get_student_groups_data(student):
+    groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
+    groups = []
+    for group in groupDetails:
+        groups.append({
+            'members': get_group_members(group.groupId),
+            'name': group.groupId.name,
+            'id': group.groupId.pk,
+            })
+    return groups
 
 @require_http_methods(["GET"])
 @csrf_exempt
 def get_student_groups(request):
     student = validateStudent(request.META['HTTP_TOKEN'])
     if (student != -1):
-        groupDetails = GroupDetail.objects.filter(sId=student).order_by('-pk')
-        groups = []
-        for group in groupDetails:
-            groups.append({
-                'members': get_group_members(group.groupId),
-                'name': group.groupId.name,
-                'id': group.groupId.pk,
-                })
+        groups = get_student_groups_data(student)
         data = {
             'success': 1,
             'data': {
@@ -326,7 +331,7 @@ def get_activity_group_composition(request):
             if (registeredCourses.count() == 1):
                 """Student is registered for the course to which is activity belongs"""
                 """get recommended groups"""
-                recommendedGroups = get_recommended_group_for_students(student[0], activitys[0].courseId)
+                recommendedGroups = get_recommended_group_for_students(student[0], activitys[0].courseId, activitys[0].groupSize)
                 data = {
                     'success': 1,
                     'message': 'Activity code is valid',
@@ -394,6 +399,69 @@ def add_student_course(request):
         }
     return JsonResponse(data, safe=True)
 
+def get_activity_data_from_registered_group(registeredGroupsForActivity):
+    responses = []
+    responsesData = Response.objects.filter(registeredGroup=registeredGroupsForActivity)
+    for response in responsesData:
+        options = []
+        optionsData = GenericOption.objects.filter(genericId=response.criteria.genericId).order_by('optionNo')
+        for option in optionsData:
+            options.append({
+                'option': option.option,
+                'points': option.points,
+                'optionNo': option.optionNo
+            })
+        criteria = {
+            'question': response.criteria.genericId.description,
+            'answer': response.criteria.genericId.answer,
+            'options': options,
+            'id': response.criteria.pk
+        }
+        responses.append({
+            'criteria': criteria,
+            'response': response.response,
+            'comment': response.comment,
+        })
+    return {
+        'activity': {
+            'course': registeredGroupsForActivity.activityId.courseId.name,
+            'name': registeredGroupsForActivity.activityId.name,
+            'code': registeredGroupsForActivity.activityId.code,
+            'duration': registeredGroupsForActivity.activityId.duration
+        },
+        'responses': responses,
+        'groupId': registeredGroupsForActivity.groupId.pk
+    }
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def student_activities(request):
+    student = validateStudent(request.META['HTTP_TOKEN'])
+    if (student != -1):
+        """get all groups of student"""
+        groups = get_student_groups_data(student)
+        activity = []
+        for group in groups:
+            groupObject = Group.objects.filter(pk=group.get("id"))
+            if (groupObject.count() == 1):
+                """check if this group is registered to activity or not"""
+                registeredGroupsForActivity = RegisteredGroupsForActivity.objects.filter(groupId=groupObject[0]).order_by('time')
+                if (registeredGroupsForActivity.count() == 1):
+                    activity.append(get_activity_data_from_registered_group(registeredGroupsForActivity[0]))
+
+        data = {
+            'success': 1,
+            'message': '',
+            'activities': activity
+        }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+            'course': []
+        }
+    return JsonResponse(data, safe=True)
+
 @require_http_methods(["POST"])
 @csrf_exempt
 def register(request):
@@ -435,8 +503,130 @@ def register(request):
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def create_rubric(request):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        try:
+            """create rubric"""
+            rubric = Rubric(iId=instrutor[0],
+                            name=request.POST["rubric_name"])
+            rubric.save()
+
+            """create criteria"""
+            criterias = ast.literal_eval(request.POST["criterias"])
+            for criteria in criterias:
+                generic = Generic.objects.filter(pk=criteria)
+                if (generic.count() == 1):
+                    criteria_object = Criteria(rubricId=rubric,
+                                               genericId=generic[0])
+                    criteria_object.save()
+            data = {
+                'success': 1,
+                'message': 'Successfully created'
+            }
+
+        except Exception, e:
+            print e
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again'
+        }
+
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def create_generic(request):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        try:
+            """create generic"""
+            generic = Generic(description=request.POST["description"],
+                              answer=request.POST["answer"])
+            generic.save()
+            """"create generic options"""
+            genericOption1 = GenericOption(genericId=generic,
+                                           option=request.POST["option1"],
+                                           points=request.POST["option1Points"],
+                                           optionNo=1)
+            genericOption1.save()
+
+            genericOption2 = GenericOption(genericId=generic,
+                                           option=request.POST["option2"],
+                                           points=request.POST["option2Points"],
+                                           optionNo=2)
+            genericOption2.save()
+
+            genericOption3 = GenericOption(genericId=generic,
+                                           option=request.POST["option3"],
+                                           points=request.POST["option3Points"],
+                                           optionNo=3)
+            genericOption3.save()
+
+            genericOption4 = GenericOption(genericId=generic,
+                                           option=request.POST["option4"],
+                                           points=request.POST["option4Points"],
+                                           optionNo=4)
+            genericOption4.save()
+
+            data = {
+                'success': 1,
+                'message': 'Successfully created'
+            }
+
+        except Exception, e:
+            print e
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again'
+        }
+
+    return JsonResponse(data, safe=True)
+
 def rubric_template(request):
-    return render(request, 'p2preview/rubric_template.html')
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        template = loader.get_template('p2preview/rubric_template.html')
+        rubrics = []
+        rubric_data = Rubric.objects.filter(iId=instrutor).order_by('-pk')
+        for rubric in rubric_data:
+            criterias = []
+            criterias_data = Criteria.objects.filter(rubricId=rubric).order_by('-pk')
+            for criteria in criterias_data:
+                criterias.append({
+                    'generic_options': GenericOption.objects.filter(genericId=criteria.genericId).order_by('-pk'),
+                    'criteria': criteria
+                })
+            rubrics.append({
+                'rubric': rubric,
+                'criterias': criterias
+            })
+        all_criterias = []
+        generic_data = Generic.objects.filter().order_by('-pk')
+        for generic in generic_data:
+            all_criterias.append({
+                'generic_options': GenericOption.objects.filter(genericId=generic).order_by('-pk'),
+                'generic': generic
+            })
+        context = {
+            'criterias': all_criterias,
+            'rubrics': rubrics
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirectToLogin()
 
 def add_activity(request):
     return render(request, 'p2preview/add_activity.html')
