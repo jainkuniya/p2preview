@@ -59,10 +59,10 @@ def home(request):
     else:
         return redirectToLogin()
 
-def add_activity(request):
+def activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
-        template = loader.get_template('p2preview/add_activity.html')
+        template = loader.get_template('p2preview/activity.html')
         context = {
             'rubrics': Rubric.objects.filter(iId=instrutor[0]),
             'courses': Course.objects.filter(instructorId=instrutor[0]),

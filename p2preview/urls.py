@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^course/new/$', views.new_course_page),
     url(r'^rubricTemplate/$', views.rubric_template),
     url(r'^statistics/$', views.statistics_page),
-    url(r'^activity/$', views.add_activity),
+    url(r'^activity/$', views.activity),
 ]
