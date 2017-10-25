@@ -63,3 +63,28 @@ Dropzone.options.myAwesomeDropzone = {
     });
   },
 };
+
+function toggleCheckbox(value, activity_id) {
+  $.ajax({
+    type: 'post',
+    beforeSend: function(request) {
+      request.setRequestHeader('TOKEN', getCookie('token'));
+    },
+    url: '/api/v1/toggle_activity_status/',
+    data: {
+      activity_id: activity_id,
+      value: value,
+    },
+    dataType: 'json',
+    success: function(data) {
+      if (data.success === 1) {
+        //$(location).attr('href', '/activity');
+      } else if (data.success === -99) {
+        clearLoginCookie();
+      } else {
+        alert('Please try again');
+        $(location).attr('href', '/activity');
+      }
+    },
+  });
+}

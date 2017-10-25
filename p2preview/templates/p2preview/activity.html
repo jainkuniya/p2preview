@@ -39,7 +39,11 @@
                     </div>
                     <div class="col-sm-auto ml-auto" style="margin-bottom: -8px;">
                       <label class="switch">
-                        <input type="checkbox">
+                        {% if item.activity.isActive %}
+                          <input value="true" onchange="toggleCheckbox('{{ False }}', '{{ item.activity.pk }}')" type="checkbox" id="checkbox" checked>
+                        {% else %}
+                          <input value="true" onchange="toggleCheckbox('{{ True }}', '{{ item.activity.pk }}')" type="checkbox" id="checkbox">
+                        {% endif %}
                         <span class="slider round"></span>
                       </label>
                     </div>
@@ -92,7 +96,7 @@
     </div>
     {% endfor %}
   </div>
-          
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
