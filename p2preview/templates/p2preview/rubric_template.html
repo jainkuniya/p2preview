@@ -45,7 +45,7 @@
             <td>
               <!--<div class="form-check">-->
                 <label class="form-check-label">
-                  <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                  <input class="form-check-input position-static" type="checkbox"  name="{{ criteria.generic.pk }}" id="{{ criteria.generic.pk }}" value="{{ criteria.generic.pk }}" aria-label="...">
                 </label>
               <!--</div>-->
             </td>
@@ -62,10 +62,10 @@
         </button>
       </div>
       <div class="col-auto ml-auto">
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Rubric Name">
+        <input class="form-control" id="id_rubric_name"  placeholder="Rubric Name">
       </div>
       <div class="col-auto">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button id="id_button_rubric" class="btn btn-primary">Submit</button>
         </form>
       </div>
     </div>
@@ -185,6 +185,7 @@
 {% endblock %}
 {% block extrajavascripts %}
   <script type="text/javascript" src="{% static 'p2preview/js/rubric_template.js' %}"></script>
+
 {% endblock %}
 <!--          <div class="table-responsive">
             <table class="table table-hover table-bordered">

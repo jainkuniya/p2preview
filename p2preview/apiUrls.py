@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^api/v1/verify_student/', views.verify_student),
     url(r'^api/v1/fetch_self/', views.fetch_self),
     url(r'^api/v1/create_generic/', views.create_generic),
+    url(r'^api/v1/create_rubric/', views.create_rubric),
 ]

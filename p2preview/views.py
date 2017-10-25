@@ -505,8 +505,45 @@ def new_course_page(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def create_rubric(request):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        try:
+            """create rubric"""
+            rubric = Rubric(iId=instrutor[0],
+                            name=request.POST["rubric_name"])
+            rubric.save()
+
+            """create criteria"""
+            criterias = ast.literal_eval(request.POST["criterias"])
+            for criteria in criterias:
+                generic = Generic.objects.filter(pk=criteria)
+                if (generic.count() == 1):
+                    criteria_object = Criteria(rubricId=rubric,
+                                               genericId=generic[0])
+                    criteria_object.save()
+            data = {
+                'success': 1,
+                'message': 'Successfully created'
+            }
+
+        except Exception, e:
+            print e
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again'
+        }
+
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def create_generic(request):
-    print request.POST
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
         try:
