@@ -372,7 +372,7 @@ def get_activity_group_composition(request):
     student = validateStudent(request.META['HTTP_TOKEN'])
     if (student != -1):
         """Find course of activity"""
-        activitys = Activity.objects.filter(code=request.POST["code"])
+        activitys = Activity.objects.filter(code=request.POST["code"], isActive=True)
         if (activitys.count() == 1):
             """Check if student is registered to that course"""
             registeredCourses = RegisteredCourses.objects.filter(courseId=activitys[0].courseId, sId=student[0])
