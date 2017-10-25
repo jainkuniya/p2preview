@@ -15,6 +15,7 @@
 	padding: 20px;
 	margin-top : 20px;
 	margin-bottom: 20px;
+
 }
 .activityList:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -83,4 +84,8 @@ input:checked + .slider:before {
 }
 img{
 	width: 100%;
+}
+.items{
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
