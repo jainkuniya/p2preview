@@ -1,3 +1,16 @@
 .upload{
 	margin-top: 50px;
 }
+.select{
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+.yo{	
+    margin: -20px -50px; 
+    position:relative;
+    top:50%; 
+    left:50%;
+}
+.vspace{
+	margin-top:25px;
+}

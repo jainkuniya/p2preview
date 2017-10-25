@@ -1,5 +1,5 @@
 {% extends './base.html' %}
-{% block title %}Course{% endblock %}
+{% block title %}Add Activity{% endblock %}
 
 {% load staticfiles%}
 
@@ -16,6 +16,30 @@
       <div class="col-sm-12 col-md-10 col-lg-8">
           
         <form action="/upload" class="dropzone upload"></form>
+        <div class="form-group row justify-content-center select" >
+          <select class="form-control form-control-lg col-sm-10" id="selectRubric">
+            <option>Select Rubric</option>
+          </select>
+        </div>
+        <div class="form-group row justify-content-center select" >
+          <select class="form-control form-control-lg col-sm-10" id="selectCourse">
+            <option>Select Course</option>
+          </select>
+        </div>
+        <div class="form-group row">
+          <label for="timeLimit" class="col-sm-6 col-form-label">Time Limit</label>
+          <div class="col-sm-6">
+            <input type="time" class="form-control" id="timeLimit" placeholder="">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="timeSize" class="col-sm-6 col-form-label">Team Size</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" id="timeSize" placeholder="">
+          </div>
+        </div>  
+        <button type="submit" class="btn btn-primary yo vspace">Submit</button>
+
       </div>
     </div>
   </div>
