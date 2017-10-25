@@ -4,44 +4,24 @@
 {% load staticfiles%}
 
 {% block extrastyles %}
+    <script type="text/javascript" src="{% static 'p2preview/js/highcharts.js' %}" ></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/statistics.css' %}"/>
 {% endblock %}
 
 {% block body %}
   <div class="container">
-    <!--start for loop-->
+
     <div class="row justify-content-center align-items-center">
       <div class="col-sm-12">
         <div class="activityList">
-          <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-4">
-              Course : <span class="text">ABC</span><br>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div id="container" style="min-width: 310px;  margin: 0 auto"></div>
+              </div>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4">
-              Activity Name : <span class="text">ABC</span>                  
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3">
-              Activity Code :<span class="text">ABC</span>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-auto ml-auto">
-              <label class="switch">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-4">
-              Rubric Name : <span class="text">ABC</span>    
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-4">
-              Group Size : <span class="text">3</span><br>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-4">
-              Students Attempted : <span class="text">40</span>
-            </div>
-          </div>
-          
         </div>
       </div>
     </div>
@@ -49,4 +29,44 @@
   </div>
 {% endblock %}
 {% block extrajavascripts %}
+<script>
+  Highcharts.chart('container', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Response Summary for Activity XYZ'
+    },
+    xAxis: {
+        categories: ['Criteria 1', 'Criteria 2', 'Criteria 3', 'Criteria 4', 'Criteria 5']
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '% Selection for each option'
+        }
+    },
+    legend: {
+        reversed: true
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
+        }
+    },
+    series: [{
+        name: 'Option A',
+        data: [25, 30, 43, 7, 20]
+    }, {
+        name: 'Option B',
+        data: [25, 20, 30, 20, 37]
+    }, {
+        name: 'Option C',
+        data: [25, 10, 22, 29, 23]    
+    }, {
+        name: 'Option D',
+        data: [25, 40, 5, 44, 20]
+    }]
+});
+</script>
 {% endblock %}
