@@ -595,7 +595,7 @@ def upload_file(request):
                 'url': '/' + str(new_file.file)
             }
         }
-    except Exception, e:
+    except:
         data = {
             'success': 0,
             'message': 'Please try again!!'
