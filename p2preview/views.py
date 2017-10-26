@@ -242,7 +242,7 @@ def submit_responses(request):
                     'message': 'No group found!!',
                     'data': []
                 }
-        except Exception,e:
+        except:
             data = {
                 'success': 3,
                 'message': 'Please try again!!',
@@ -340,7 +340,7 @@ def register_group_to_activity_data(group_id, activity_code):
             }
         }
         return data
-    except Exception,e:
+    except:
         return {
             'success': 0,
             'message': 'Please try again',
