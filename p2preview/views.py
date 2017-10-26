@@ -77,7 +77,6 @@ def activity_details(request, pk):
             context = {
                 'criterias': criterias
             }
-            print criterias
             return HttpResponse(template.render(context, request))
         else:
             """redirect to /activity"""
@@ -597,7 +596,6 @@ def upload_file(request):
             }
         }
     except Exception, e:
-        print e
         data = {
             'success': 0,
             'message': 'Please try again!!'
@@ -641,7 +639,6 @@ def create_activity(request):
                     'message': 'Please select valid course'
                 }
         except Exception, e:
-            print e
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -679,7 +676,6 @@ def create_rubric(request):
             }
 
         except Exception, e:
-            print e
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -733,7 +729,6 @@ def create_generic(request):
             }
 
         except Exception, e:
-            print e
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -952,7 +947,6 @@ def create_student_group(request):
                     }
                 }
         except Exception, e:
-            print e
             data = {}
     else:
         date = {
