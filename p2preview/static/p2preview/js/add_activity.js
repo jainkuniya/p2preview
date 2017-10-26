@@ -82,7 +82,7 @@ function toggleCheckbox(value, activity_id) {
       } else if (data.success === -99) {
         clearLoginCookie();
       } else {
-        alert('Please try again');
+        alert(data.message);
         $(location).attr('href', '/activity');
       }
     },

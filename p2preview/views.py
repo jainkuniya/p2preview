@@ -59,6 +59,34 @@ def home(request):
     else:
         return redirectToLogin()
 
+@csrf_exempt
+def activity_details(request, pk):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        activity = Activity.objects.filter(pk=pk, iId=instrutor[0])
+        if (activity.count() == 1):
+            """get criterias of the activity"""
+            criterias = []
+            criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
+            for criteria in criterias_data:
+                criterias.append(str(criteria.genericId.description))
+            #registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
+
+            #responses = Response.objects.filter()
+            template = loader.get_template('p2preview/statistics.html')
+            context = {
+                'criterias': criterias
+            }
+            return HttpResponse(template.render(context, request))
+        else:
+            """redirect to /activity"""
+            response = HttpResponseRedirect('/activity')
+            response.delete_cookie('token')
+            return response
+
+    else:
+        return redirectToLogin()
+
 def activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
@@ -95,10 +123,11 @@ def toggle_activity_status(request):
                 'success': 1,
                 'message': 'Successfully updated',
             }
-        data = {
-            'success': 0,
-            'message': 'No activity found',
-        }
+        else:
+            data = {
+                'success': 0,
+                'message': 'No activity found',
+            }
     else:
         data = {
             'success': -99,
@@ -213,7 +242,7 @@ def submit_responses(request):
                     'message': 'No group found!!',
                     'data': []
                 }
-        except Exception,e:
+        except:
             data = {
                 'success': 3,
                 'message': 'Please try again!!',
@@ -311,7 +340,7 @@ def register_group_to_activity_data(group_id, activity_code):
             }
         }
         return data
-    except Exception,e:
+    except:
         return {
             'success': 0,
             'message': 'Please try again',
@@ -371,7 +400,7 @@ def get_activity_group_composition(request):
     student = validateStudent(request.META['HTTP_TOKEN'])
     if (student != -1):
         """Find course of activity"""
-        activitys = Activity.objects.filter(code=request.POST["code"])
+        activitys = Activity.objects.filter(code=request.POST["code"], isActive=True)
         if (activitys.count() == 1):
             """Check if student is registered to that course"""
             registeredCourses = RegisteredCourses.objects.filter(courseId=activitys[0].courseId, sId=student[0])
@@ -566,8 +595,7 @@ def upload_file(request):
                 'url': '/' + str(new_file.file)
             }
         }
-    except Exception, e:
-        print e
+    except:
         data = {
             'success': 0,
             'message': 'Please try again!!'
@@ -610,8 +638,7 @@ def create_activity(request):
                     'success': 0,
                     'message': 'Please select valid course'
                 }
-        except Exception, e:
-            print e
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -648,8 +675,7 @@ def create_rubric(request):
                 'message': 'Successfully created'
             }
 
-        except Exception, e:
-            print e
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -702,8 +728,7 @@ def create_generic(request):
                 'message': 'Successfully created'
             }
 
-        except Exception, e:
-            print e
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -921,8 +946,7 @@ def create_student_group(request):
                         }]
                     }
                 }
-        except Exception, e:
-            print e
+        except:
             data = {}
     else:
         date = {
