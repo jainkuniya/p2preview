@@ -59,6 +59,35 @@ def home(request):
     else:
         return redirectToLogin()
 
+@csrf_exempt
+def activity_details(request, pk):
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        activity = Activity.objects.filter(pk=pk, iId=instrutor[0])
+        if (activity.count() == 1):
+            """get criterias of the activity"""
+            criterias = []
+            criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
+            for criteria in criterias_data:
+                criterias.append(str(criteria.genericId.description))
+            #registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
+
+            #responses = Response.objects.filter()
+            template = loader.get_template('p2preview/statistics.html')
+            context = {
+                'criterias': criterias
+            }
+            print criterias
+            return HttpResponse(template.render(context, request))
+        else:
+            """redirect to /activity"""
+            response = HttpResponseRedirect('/activity')
+            response.delete_cookie('token')
+            return response
+
+    else:
+        return redirectToLogin()
+
 def activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:

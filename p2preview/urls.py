@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^rubricTemplate/$', views.rubric_template),
     url(r'^statistics/$', views.statistics_page),
     url(r'^activity/$', views.activity),
+    url(r'^activity/(?P<pk>[0-9]+)/$', views.activity_details),
 ]

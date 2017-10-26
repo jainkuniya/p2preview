@@ -38,7 +38,7 @@
         text: 'Response Summary for Activity XYZ'
     },
     xAxis: {
-        categories: ['Criteria 1', 'Criteria 2', 'Criteria 3', 'Criteria 4', 'Criteria 5']
+        categories: {{ criterias|safe }}
     },
     yAxis: {
         min: 0,
@@ -62,7 +62,7 @@
         data: [25, 20, 30, 20, 37]
     }, {
         name: 'Option C',
-        data: [25, 10, 22, 29, 23]    
+        data: [25, 10, 22, 29, 23]
     }, {
         name: 'Option D',
         data: [25, 40, 5, 44, 20]
