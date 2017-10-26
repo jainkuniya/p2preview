@@ -638,7 +638,7 @@ def create_activity(request):
                     'success': 0,
                     'message': 'Please select valid course'
                 }
-        except Exception, e:
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -675,7 +675,7 @@ def create_rubric(request):
                 'message': 'Successfully created'
             }
 
-        except Exception, e:
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -728,7 +728,7 @@ def create_generic(request):
                 'message': 'Successfully created'
             }
 
-        except Exception, e:
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -946,7 +946,7 @@ def create_student_group(request):
                         }]
                     }
                 }
-        except Exception, e:
+        except:
             data = {}
     else:
         date = {
