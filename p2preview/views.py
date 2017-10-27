@@ -478,6 +478,7 @@ def add_student_course(request):
 def get_activity_data_from_registered_group(registeredGroupsForActivity):
     responses = []
     responsesData = Response.objects.filter(registeredGroup=registeredGroupsForActivity)
+    lateSub = 0
     for response in responsesData:
         options = []
         optionsData = GenericOption.objects.filter(genericId=response.criteria.genericId).order_by('optionNo')
@@ -493,6 +494,8 @@ def get_activity_data_from_registered_group(registeredGroupsForActivity):
             'options': options,
             'id': response.criteria.pk
         }
+        if (lateSub == 0 and (response.time - registeredGroupsForActivity.time).total_seconds() > registeredGroupsForActivity.activityId.duration):
+            lateSub = 1
         responses.append({
             'criteria': criteria,
             'response': response.response,
@@ -506,7 +509,8 @@ def get_activity_data_from_registered_group(registeredGroupsForActivity):
             'duration': registeredGroupsForActivity.activityId.duration
         },
         'responses': responses,
-        'groupId': registeredGroupsForActivity.groupId.pk
+        'groupId': registeredGroupsForActivity.groupId.pk,
+        'lateSub': lateSub
     }
 
 @require_http_methods(["GET"])
