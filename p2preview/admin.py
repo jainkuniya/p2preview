@@ -51,7 +51,7 @@ class UploadFileAdmin(admin.ModelAdmin):
     list_display = ['pk', 'file', 'activity']
 
 class ActivityAssigmentAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'text', 'activity']
+    list_display = ['pk', 'text', 'activity', 'groupId']
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Student, StudentAdmin)

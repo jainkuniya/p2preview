@@ -132,3 +132,4 @@ class UploadFile(models.Model):
 class ActivityAssigment(models.Model):
     text = models.CharField(max_length=5000, blank=False, default='')
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    groupId = models.CharField(max_length=30, blank=True, default='', null=True)

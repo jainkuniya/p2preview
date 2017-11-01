@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile, ActivityAssigment
 
 import string
 import random
@@ -634,15 +634,33 @@ def create_activity(request):
             if (course.count() == 1):
                 rubric = Rubric.objects.filter(pk=request.POST["rubric_id"])
                 if (rubric.count() == 1):
+                    textOrImage = True
+                    if (request.POST["textOrImage"] == 'True'):
+                        textOrImage = True
+                    else:
+                        textOrImage = False
                     activity = Activity(iId=instrutor[0],
                                         courseId=course[0],
                                         rubricId=rubric[0],
                                         name=request.POST["activity_name"],
                                         code=getRandomString(5),
-                                        fileURL=request.POST["file_path"],
                                         duration=request.POST["duration"],
-                                        groupSize=request.POST["groupSize"])
+                                        groupSize=request.POST["groupSize"],
+                                        textOrImage=textOrImage)
                     activity.save()
+
+                    """save assigments"""
+                    if (textOrImage):
+                        """save in ActivityAssigment"""
+                        texts = ast.literal_eval(request.POST["texts"])
+                        for t in texts:
+                            activityAssigment = ActivityAssigment(activity=activity,
+                                                                  text=t["text"],
+                                                                  groupId=t["groupId"])
+                            activityAssigment.save()
+
+                    # TODO: for images
+
                     data = {
                         'success': 1,
                         'message': 'Successfully added',
@@ -660,7 +678,8 @@ def create_activity(request):
                     'success': 0,
                     'message': 'Please select valid course'
                 }
-        except:
+        except Exception, e:
+            print e
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -670,7 +689,6 @@ def create_activity(request):
             'success': -99,
             'message': 'Please login again'
         }
-
     return JsonResponse(data, safe=True)
 
 @require_http_methods(["POST"])

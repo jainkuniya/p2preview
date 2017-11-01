@@ -184,7 +184,11 @@ var optionNumber = 0;
 $('.optionAdd').click(function() {
   optionNumber++;
   var newEntity =
-    '<div class="col-sm-12 row"> <div class="col-sm-6"> <textarea class="form-control" id="text0" placeholder="text"> </textarea> </div> <div class="col-sm-6"> <input type="text" class="form-control" id="groupId0" placeholder="Group Id"/> </div> </div>';
+    '<div class="col-sm-12 row"> <div class="col-sm-6"> <textarea class="form-control" id="text' +
+    optionNumber +
+    '" placeholder="text"> </textarea> </div> <div class="col-sm-6"> <input type="text" class="form-control" id="groupId' +
+    optionNumber +
+    '" placeholder="Group Id"/> </div> </div>';
   $('.textDIV').append(newEntity);
 });
 </script>
