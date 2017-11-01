@@ -139,10 +139,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Criteria</th>
-            <th scope="col">Option A</th>
-            <th scope="col">Option B</th>
-            <th scope="col">Option C</th>
-            <th scope="col">Option D</th>
+            <th scope="col">Options Count</th>
           </tr>
         </thead>
         <tbody>
@@ -152,17 +149,9 @@
               <td class="option">
                 {{ criteria.criteria.genericId.description }}
               </td>
-              {% for genric_option in criteria.generic_options %}
-                <td class="option">
-                  {{ genric_option.option }}
-                  {% if genric_option.optionNo == criteria.criteria.genericId.answer %}
-                    <div class="points correct">
-                  {% else %}
-                    <div class="points">
-                  {% endif %}
-                  {{ genric_option.points }}</div>
-                </td>
-              {% endfor %}
+              <td class="option">
+                {{ criteria.generic_options|length }}
+              </td>
             </tr>
           {% endfor %}
         </tbody>
