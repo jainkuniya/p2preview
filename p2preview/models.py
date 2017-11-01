@@ -83,7 +83,7 @@ class GroupDetail(models.Model):
 
 class Generic(models.Model):
     description = models.CharField(max_length=100, blank=False, default='')
-    answer = models.IntegerField()
+    answer = models.IntegerField(blank=True)
 
     def __str__(self):
         return self.description

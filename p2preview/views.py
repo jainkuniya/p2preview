@@ -721,38 +721,24 @@ def create_generic(request):
                               answer=request.POST["answer"])
             generic.save()
 
+            points = ast.literal_eval(request.POST["points"])
+            options = ast.literal_eval(request.POST["options"])
+
             """"create generic options"""
-
-            genericOption1 = GenericOption(genericId=generic,
-                                           option=request.POST["option1"],
-                                           points=request.POST["option1Points"],
-                                           optionNo=1)
-            genericOption1.save()
-
-            genericOption2 = GenericOption(genericId=generic,
-                                           option=request.POST["option2"],
-                                           points=request.POST["option2Points"],
-                                           optionNo=2)
-            genericOption2.save()
-
-            genericOption3 = GenericOption(genericId=generic,
-                                           option=request.POST["option3"],
-                                           points=request.POST["option3Points"],
-                                           optionNo=3)
-            genericOption3.save()
-
-            genericOption4 = GenericOption(genericId=generic,
-                                           option=request.POST["option4"],
-                                           points=request.POST["option4Points"],
-                                           optionNo=4)
-            genericOption4.save()
+            for i, option in enumerate(options):
+                genericOption = GenericOption(genericId=generic,
+                                               option=str(options[i]),
+                                               points=points[i],
+                                               optionNo=i)
+                genericOption.save()
 
             data = {
                 'success': 1,
                 'message': 'Successfully created'
             }
 
-        except:
+        except Exception, e:
+            print e
             data = {
                 'success': 0,
                 'message': 'Please try again'
