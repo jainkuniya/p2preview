@@ -584,7 +584,22 @@ def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
 def criteria_page(request):
-    return render(request, 'p2preview/criteria.html')
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
+        template = loader.get_template('p2preview/criteria.html')
+        all_criterias = []
+        generic_data = Generic.objects.filter().order_by('-pk')
+        for generic in generic_data:
+            all_criterias.append({
+                'generic_options': GenericOption.objects.filter(genericId=generic).order_by('-pk'),
+                'generic': generic
+            })
+        context = {
+            'criterias': all_criterias,
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        return redirectToLogin()
 
 def statistics_page(request):
     return render(request, 'p2preview/statistics.html')
@@ -707,7 +722,7 @@ def create_generic(request):
             generic.save()
 
             """"create generic options"""
-            
+
             genericOption1 = GenericOption(genericId=generic,
                                            option=request.POST["option1"],
                                            points=request.POST["option1Points"],
