@@ -583,6 +583,9 @@ def register(request):
 def new_course_page(request):
     return render(request, 'p2preview/course_new.html')
 
+def criteria_page(request):
+    return render(request, 'p2preview/criteria.html')
+
 def statistics_page(request):
     return render(request, 'p2preview/statistics.html')
 

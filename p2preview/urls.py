@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^signUp/$', views.signUp_page),
     url(r'^course/$', views.course),
     url(r'^course/new/$', views.new_course_page),
+    url(r'^criteria/$', views.criteria_page),
     url(r'^rubricTemplate/$', views.rubric_template),
     url(r'^statistics/$', views.statistics_page),
     url(r'^activity/$', views.activity),

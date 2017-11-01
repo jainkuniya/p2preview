@@ -1,0 +1,220 @@
+{% extends './base.html' %}
+{% block title %}Rubric Template{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/criteria.css' %}"/>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-auto ml-auto">
+      <button type="button" class="btn btn-success add" data-toggle="modal" data-target="#exampleModal">
+        Add Criteria
+      </button>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="criteriaList">
+        <div class="row criteria">
+          <div class="col-sm-12">
+            Criteria #1 : <span class="heading">Question here {{ criteria.generic.description }}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            Option 1 here : 5 points
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            Option 2 here : 3 points
+          </div>
+        </div>
+      </div>   
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Generic Criteria</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="#newCriteriaForm" method="post" action="/api/v1/create_generic/">
+                <div class="form-group row">
+                  <label for="Criteria" class="col-sm-2 col-form-label">Criteria</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id_description" placeholder="Criteria">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-auto ml-auto">
+                  <button type="button" class="optionAdd btn btn-success">Add Option</button>
+                  </div>
+                </div>
+                <!--<div class="form-group row">
+                  <label for="option2" class="col-sm-2 col-form-label">Option B</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="option2" placeholder="Option B">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" class="form-control" id="option2Points" placeholder="1-10">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="option3" class="col-sm-2 col-form-label">Option C</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="option3" placeholder="Option C">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" class="form-control" id="option3Points" placeholder="1-10">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="option4" class="col-sm-2 col-form-label">Option D</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="option4" placeholder="Option D">
+                  </div>
+                  <div class="col-sm-2">
+                    <input type="number" class="form-control" id="option4Points" placeholder="1-10">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="answer" class="col-sm-auto ml-auto col-form-label">Correct Answer</label>
+                  <div class="col-sm-2">
+                    <input type="number" class="form-control" id="answer" placeholder="1-4">
+                  </div>
+                </div>-->
+                <!--<div class="form-group row">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>-->
+            </div>
+            <span id="id_error"></span>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="submitButton" type="submit" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
+{% block extrajavascripts %}
+  <script type="text/javascript" src="{% static 'p2preview/js/rubric_template.js' %}"></script>
+  <script type="text/javascript">
+    var optionNumber=0;
+    $(".optionAdd").click(function(){
+     // alert("The paragraph was clicked.");
+      //$(".modal-body").append('<div>Yo</div>'+optionNumber+'he')
+      optionNumber++;
+      var newEntity = '<div class="form-group row"><label for="option'+optionNumber+'" class="col-sm-2 col-form-label">Option '+optionNumber+'</label><div class="col-sm-8"><input type="text" class="form-control" id="optionInput'+optionNumber+'" placeholder="Option '+optionNumber+'"></div><div class="col-sm-2"><input type="number" class="form-control" id="optionPoints'+optionNumber+'" placeholder="1-10"></div></div>';
+      $(".modal-body").append(newEntity);
+    });
+  </script>
+
+{% endblock %}
+<!--          <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+            <caption>Registered Students</caption>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email Id</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Vishal Sanghai</td>
+                  <td>vcoolsanghai@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Vishwesh Jainkuniya</td>
+                  <td>vishwesh03071997@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Vishal Sanghai</td>
+                  <td>vcoolsanghai@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>Vishwesh Jainkuniya</td>
+                  <td>vishwesh03071997@gmail.com</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="container rubric">
+    <div class="row head">
+      <div class="col-md-2">
+        #
+      </div>
+      <div class="col-md-2">
+        A
+      </div>
+      <div class="col-md-2">
+        B
+      </div>
+      <div class="col-md-2">
+        C
+      </div>
+      <div class="col-md-2">
+        D
+      </div>
+      <div class="col-md-2">
+        Best Answer
+      </div>
+    </div>
+    <form>
+    <div class="row">
+      <div class="col-md-2">
+        Criteria 1
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionA" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionB" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionC" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionD" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+      <div class="form-group">
+        <select class="form-control" id="Criteria1CorrectAnswer">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+        </select>
+      </div>
+      </div>
+    </div>
+    </form>
+  </div>-->
