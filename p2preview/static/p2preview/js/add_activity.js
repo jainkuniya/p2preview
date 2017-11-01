@@ -1,4 +1,5 @@
-var filePath = '';
+var filePath = [];
+var textOrImage = 'True';
 
 $('#new_activity_form').submit(function() {
   var frm = $('#new_activity_form');
@@ -8,10 +9,10 @@ $('#new_activity_form').submit(function() {
   var duration = $('#duration').val();
   var groupSize = $('#groupSize').val();
 
-  if (filePath === '') {
+  /*if (filePath === '') {
     $('#id_error').text('Please upload image');
     return false;
-  }
+  }*/
 
   if (rubric_id === '-1') {
     $('#id_error').text('Please select Rubric');
@@ -23,6 +24,12 @@ $('#new_activity_form').submit(function() {
     return false;
   }
 
+  var texts = [];
+  var i = 0;
+  for (i = 0; i < optionNumber; i++) {
+    texts = [...texts, { text: $('#text' + i).val(), groupId: $('#groupId' + i).val() }];
+  }
+
   $.ajax({
     type: 'post',
     beforeSend: function(request) {
@@ -31,21 +38,26 @@ $('#new_activity_form').submit(function() {
     url: '/api/v1/create_activity/',
     data: {
       activity_name: activity_name,
-      file_path: filePath,
+      file_path: JSON.stringify(filePath),
+      texts: JSON.stringify(texts),
       rubric_id: rubric_id,
       course_id: course_id,
       duration: duration,
       groupSize: groupSize,
+      textOrImage: textOrImage,
     },
     dataType: 'json',
     success: function(data) {
       if (data.success === 1) {
-        $(location).attr('href', '/activity');
+        // $(location).attr('href', '/activity');
       } else if (data.success === -99) {
         clearLoginCookie();
       } else {
         $('#id_error').text(data.message);
       }
+    },
+    error: function(jqXHR, exception) {
+      $('#id_error').text('Error');
     },
   });
   return false;
@@ -55,7 +67,7 @@ Dropzone.options.myAwesomeDropzone = {
   init: function() {
     this.on('success', function(file, response) {
       if (response.success === 1) {
-        filePath = response.data.url;
+        filePath = [...filePath, response.data.url];
       }
     });
     this.on('removedfile', function(file, response) {
@@ -95,10 +107,12 @@ $(document).ready(function() {
       // hide images form
       hide('my-awesome-dropzone');
       show('text-div');
+      textOrImage = 'True';
     } else if (this.value == 'False') {
       // hide text inputs
       show('my-awesome-dropzone');
       hide('text-div');
+      textOrImage = 'False';
     }
   });
 });

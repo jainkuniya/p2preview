@@ -107,22 +107,25 @@
    <div class="row justify-content-center align-items-center">
       <div class="col-sm-12 col-md-10 col-lg-8">
          <form id="my-awesome-dropzone" action="upload_file/" class="dropzone upload" method="post"  enctype="multipart/form-data" ></form>
-         <form id="new_activity_form" method="post">
-            <div class="form-group row justify-content-center select" >
-               <select class="form-control form-control-lg col-sm-10" id="rubric_id">
-                  <option value="-1">Select Rubric</option>
-                  {% for rubric in rubrics %}
-                  <option value="{{ rubric.pk }}">{{ rubric.name }}</option>
-                  {% endfor %}
-               </select>
-            </div>
+         <form id="new_activity_form">
+           <div>
+              <span id="id_error"></span>
+           </div>
             <div class="col-sm-12 col-md-10 col-lg-8 row">
                <pre>Assigment : -   </pre>
-               <input type="radio" name="textOrImage" value="True">
+               <input id="textInput" type="radio" name="textOrImage" value="True">
                <pre> Text </pre>
-               <input type="radio" name="textOrImage" value="False" checked="">
+               <input id="imageInput" type="radio" name="textOrImage" value="False" checked="">
                <pre> Images</pre>
                <div>
+                 <div class="form-group row justify-content-center select" >
+                    <select class="form-control form-control-lg col-sm-10" id="rubric_id">
+                       <option value="-1">Select Rubric</option>
+                       {% for rubric in rubrics %}
+                       <option value="{{ rubric.pk }}">{{ rubric.name }}</option>
+                       {% endfor %}
+                    </select>
+                 </div>
                   <div class="form-group row justify-content-center select" >
                      <select class="form-control form-control-lg col-sm-10" id="course_id">
                         <option value="-1">Select Course</option>
@@ -162,9 +165,6 @@
                              <input type="text" class="form-control" id="groupId0" placeholder="Group Id"/>
                           </div>
                        </div>
-                     </div>
-                     <div>
-                        <span id="id_error"></span>
                      </div>
                   </div>
                </div>
