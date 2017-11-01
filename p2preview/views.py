@@ -705,7 +705,9 @@ def create_generic(request):
             generic = Generic(description=request.POST["description"],
                               answer=request.POST["answer"])
             generic.save()
+
             """"create generic options"""
+            
             genericOption1 = GenericOption(genericId=generic,
                                            option=request.POST["option1"],
                                            points=request.POST["option1Points"],

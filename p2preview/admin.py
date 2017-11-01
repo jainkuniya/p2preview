@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Generic, GenericOption, Criteria, Response, Activity, Rubric, RegisteredGroupsForActivity, UploadFile
+from .models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Generic, GenericOption, Criteria, Response, Activity, Rubric, RegisteredGroupsForActivity, UploadFile, ActivityAssigment
 
 # Register your models here.
 class PersonAdmin(admin.ModelAdmin):
@@ -30,7 +30,7 @@ class RubricAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'lastModified', 'iId']
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ['id', 'courseId', 'rubricId', 'name', 'code', 'fileURL', 'duration', 'isActive', 'groupSize']
+    list_display = ['id', 'courseId', 'rubricId', 'name', 'code', 'duration', 'isActive', 'groupSize', 'textOrImage']
 
 class GenericAdmin(admin.ModelAdmin):
     list_display = ['id', 'description', 'answer']
@@ -48,7 +48,10 @@ class RegisteredGroupsForActivityAdmin(admin.ModelAdmin):
     list_display = ['groupId', 'activityId']
 
 class UploadFileAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'file']
+    list_display = ['pk', 'file', 'activity']
+
+class ActivityAssigmentAdmin(admin.ModelAdmin):
+    list_display = ['pk', 'text', 'activity']
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Student, StudentAdmin)
@@ -65,3 +68,4 @@ admin.site.register(Criteria, CriteriaAdmin)
 admin.site.register(Response, ResponseAdmin)
 admin.site.register(RegisteredGroupsForActivity, RegisteredGroupsForActivityAdmin)
 admin.site.register(UploadFile, UploadFileAdmin)
+admin.site.register(ActivityAssigment, ActivityAssigmentAdmin)

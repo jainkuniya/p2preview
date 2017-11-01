@@ -59,10 +59,10 @@ class Activity(models.Model):
     rubricId = models.ForeignKey(Rubric, on_delete=models.CASCADE)
     name = models.CharField(max_length=15, blank=False, default='')
     code = models.CharField(max_length=5, blank=False, default='')
-    fileURL = models.CharField(max_length=100, blank=False, default='')
     duration = models.IntegerField(blank=False)
     isActive = models.BooleanField(blank=False, default=False)
     groupSize = models.IntegerField(default=1)
+    textOrImage = models.BooleanField(blank=False)
 
     def __str__(self):
         return self.name
@@ -127,3 +127,8 @@ class Response(models.Model):
 
 class UploadFile(models.Model):
     file = models.FileField(upload_to='p2preview/static/p2preview/files')
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+class ActivityAssigment(models.Model):
+    text = models.CharField(max_length=5000, blank=False, default='')
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
