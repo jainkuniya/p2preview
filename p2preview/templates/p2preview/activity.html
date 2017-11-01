@@ -95,29 +95,34 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document">
-<div class="modal-content">
-<div class="modal-header">
-   <h5 class="modal-title" id="exampleModalLabel">Add Generic Criteria</h5>
-   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-   <span aria-hidden="true">&times;</span>
-   </button>
-</div>
-<div class="modal-body">
-<div class="container">
-   <div class="row justify-content-center align-items-center">
-      <div class="col-sm-12 col-md-10 col-lg-8">
-         <form id="my-awesome-dropzone" action="upload_file/" class="dropzone upload" method="post"  enctype="multipart/form-data" ></form>
-         <form id="new_activity_form">
-           <div>
-              <span id="id_error"></span>
-           </div>
-            <div class="col-sm-12 col-md-10 col-lg-8 row">
-               <pre>Assigment : -   </pre>
-               <input id="textInput" type="radio" name="textOrImage" value="True">
-               <pre> Text </pre>
-               <input id="imageInput" type="radio" name="textOrImage" value="False" checked="">
-               <pre> Images</pre>
-               <div>
+  <div class="modal-content">
+  <div class="modal-header">
+     <h5 class="modal-title" id="exampleModalLabel">Add Activity</h5>
+     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+     </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-10">
+          <form id="my-awesome-dropzone" action="upload_file/" class="dropzone upload" method="post"  enctype="multipart/form-data" ></form>
+          <form id="new_activity_form">
+          <div>
+            <span id="id_error"></span>
+          </div>
+                 <div class="form-group row justify-content-center select" >
+                    <div class="form-check form-check-inline">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="textOrImage" id="textInput" value="True"> Text
+                      </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="textOrImage" id="imageInput" value="False" checked=""> Images
+                      </label>
+                    </div>
+                 </div>
                  <div class="form-group row justify-content-center select" >
                     <select class="form-control form-control-lg col-sm-10" id="rubric_id">
                        <option value="-1">Select Rubric</option>
@@ -152,20 +157,22 @@
                         <input type="text" class="form-control" id="activity_name" placeholder="Activity Name">
                      </div>
                   </div>
-                  <div id="text-div" style="display:none; height:0">
-                     <div class="col-auto ml-auto">
-                        <button type="button" class="optionAdd btn btn-success">Add another</button>
-                     </div>
-                     <div class="textDIV">
-                       <div class="col-sm-12 row">
-                          <div class="col-sm-6">
-                             <textarea class="form-control" id="text0" placeholder="text"> </textarea>
-                          </div>
-                          <div class="col-sm-6">
-                             <input type="text" class="form-control" id="groupId0" placeholder="Group Id"/>
-                          </div>
-                       </div>
-                     </div>
+                  <div id="text-div" style="display:none;">
+                  <div class="form-group row">                    
+                    <div class="col-auto ml-auto">
+                      <button type="button" class="optionAdd btn btn-success">Add another</button>
+                    </div>
+                  </div>
+                  <div class="textDIV">
+                    <div class="row">
+                      <div class="col-sm-9">
+                        <textarea class="form-control" id="text0" placeholder="Enter links and other relevant info"></textarea>
+                      </div>
+                      <div class="col-sm-3">
+                        <input type="text" class="form-control" id="groupId0" placeholder="Group Id"/>
+                      </div>
+                    </div>
+                  </div>
                   </div>
                </div>
             </div>
@@ -184,11 +191,7 @@ var optionNumber = 0;
 $('.optionAdd').click(function() {
   optionNumber++;
   var newEntity =
-    '<div class="col-sm-12 row"> <div class="col-sm-6"> <textarea class="form-control" id="text' +
-    optionNumber +
-    '" placeholder="text"> </textarea> </div> <div class="col-sm-6"> <input type="text" class="form-control" id="groupId' +
-    optionNumber +
-    '" placeholder="Group Id"/> </div> </div>';
+    '<div class="row"><div class="col-sm-9"><textarea class="form-control" id="text' + optionNumber + '" placeholder="Enter links and other relevant info"></textarea></div><div class="col-sm-3"><input type="text" class="form-control" id="groupId' + optionNumber +'0" placeholder="Group Id"/></div></div>'
   $('.textDIV').append(newEntity);
 });
 </script>
