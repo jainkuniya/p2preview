@@ -49,7 +49,7 @@ $('#new_activity_form').submit(function() {
     dataType: 'json',
     success: function(data) {
       if (data.success === 1) {
-        // $(location).attr('href', '/activity');
+        $(location).attr('href', '/activity');
       } else if (data.success === -99) {
         clearLoginCookie();
       } else {

@@ -941,7 +941,7 @@ def get_student_from_email(email):
 def create_student_group(request):
     person = validatePerson(request.META['HTTP_TOKEN'])
     if (person != -1):
-        group = Group(name="")
+        group = Group(name=request.POST["groupName"])
         try:
             group.save()
             emails = request.POST['emails'].split(',')
