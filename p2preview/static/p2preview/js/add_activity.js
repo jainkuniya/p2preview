@@ -88,3 +88,29 @@ function toggleCheckbox(value, activity_id) {
     },
   });
 }
+
+$(document).ready(function() {
+  $('input[type=radio][name=textOrImage]').change(function() {
+    if (this.value == 'True') {
+      // hide images form
+      hide('my-awesome-dropzone');
+      show('text-div');
+    } else if (this.value == 'False') {
+      // hide text inputs
+      show('my-awesome-dropzone');
+      hide('text-div');
+    }
+  });
+});
+
+function hide(id) {
+  var element = document.getElementById(id);
+  element.style.display = 'none';
+  element.style.height = 0;
+}
+
+function show(id) {
+  var element = document.getElementById(id);
+  element.style.display = 'block';
+  element.style.height = 'auto';
+}
