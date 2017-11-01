@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.db.models import Min
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -326,21 +327,40 @@ def register_group_to_activity_data(group_id, activity_code):
                 'description': criteria.genericId.description,
                 'options': options_data
             })
-        data = {
-            'success': 1,
-            'message': 'Successfully registered',
-            'data': {
-                'activity': {
-                    'name': activity_details.name,
-                    'code': activity_details.code,
-                    'fileURL': activity_details.fileURL,
-                    'duration': activity_details.duration,
-                },
-                'criteria': criterias_data
-            }
-        }
-        return data
-    except:
+
+        """allocate assigment randomly"""
+        assigment = ""
+        if (activity_details.textOrImage):
+            """get assigment with minimum count and which is not of own"""
+            activityAssigment = ActivityAssigment.objects.filter(activity=activity_details).exclude(groupId=group[0].name).order_by('count')
+            if (activityAssigment.count() > 0):
+                """update count"""
+                activityAssigment_data = ActivityAssigment.objects.get(pk=activityAssigment[0].pk)
+                activityAssigment_data.count = 1 + activityAssigment_data.count
+                activityAssigment_data.save()
+                data = {
+                    'success': 1,
+                    'message': 'Successfully registered',
+                    'data': {
+                        'activity': {
+                            'name': activity_details.name,
+                            'code': activity_details.code,
+                            'assigment': activityAssigment_data.text,
+                            'duration': activity_details.duration,
+                            'textOrImage': activity_details.textOrImage,
+                        },
+                        'criteria': criterias_data
+                    }
+                }
+                return data
+            else:
+                return {
+                    'success': 0,
+                    'message': 'Can\'t find activity details for you!!',
+                    'data': {}
+                }
+    except Exception, e:
+        print e
         return {
             'success': 0,
             'message': 'Please try again',

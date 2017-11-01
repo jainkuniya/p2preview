@@ -26,7 +26,7 @@ $('#new_activity_form').submit(function() {
 
   var texts = [];
   var i = 0;
-  for (i = 0; i < optionNumber; i++) {
+  for (i = 0; i <= optionNumber; i++) {
     texts = [...texts, { text: $('#text' + i).val(), groupId: $('#groupId' + i).val() }];
   }
 
