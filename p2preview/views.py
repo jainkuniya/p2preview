@@ -101,10 +101,13 @@ def activity(request):
             else:
                 """fetch all text data"""
                 assigments = ActivityImageAssigment.objects.filter(activity=activity)
+            count = 0
+            for assigment in assigments:
+                count = count + RegisteredGroupsForActivity.objects.filter(assigmentPk=assigment.pk).count()
             activities.append({
                 'activity': activity,
                 'assigments': assigments,
-                'groupsRegistered': RegisteredGroupsForActivity.objects.filter(activityId=activity).count()
+                'groupsRegistered': count
             })
 
         context = {
@@ -315,9 +318,6 @@ def register_group_to_activity_data(group_id, activity_code):
         activity = Activity.objects.filter(code=activity_code)
         group = Group.objects.filter(pk=group_id)
         # TODO check all group members are registered to that course
-        """Register group to activity"""
-        registeredGroupsForActivity = RegisteredGroupsForActivity(activityId=activity[0], groupId=group[0])
-        registeredGroupsForActivity.save()
         activity_details = Activity.objects.get(code=activity_code)
         criterias_data = []
         criterias = Criteria.objects.filter(rubricId=activity_details.rubricId)
@@ -345,6 +345,11 @@ def register_group_to_activity_data(group_id, activity_code):
                 activityAssigment_data = ActivityAssigment.objects.get(pk=activityAssigment[0].pk)
                 activityAssigment_data.count = 1 + activityAssigment_data.count
                 activityAssigment_data.save()
+
+                """Register group to activity"""
+                registeredGroupsForActivity = RegisteredGroupsForActivity(assigmentPk=activityAssigment_data.pk, groupId=group[0])
+                registeredGroupsForActivity.save()
+
                 data = {
                     'success': 1,
                     'message': 'Successfully registered',
@@ -374,6 +379,11 @@ def register_group_to_activity_data(group_id, activity_code):
                 activityImageAssigment_data = ActivityImageAssigment.objects.get(pk=activityImageAssigment[0].pk)
                 activityImageAssigment_data.count = 1 + activityImageAssigment_data.count
                 activityImageAssigment_data.save()
+
+                """Register group to activity"""
+                registeredGroupsForActivity = RegisteredGroupsForActivity(assigmentPk=activityImageAssigment_data.pk, groupId=group[0])
+                registeredGroupsForActivity.save()
+
                 data = {
                     'success': 1,
                     'message': 'Successfully registered',
