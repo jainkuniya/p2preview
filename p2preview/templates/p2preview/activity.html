@@ -24,20 +24,24 @@
          <div class="activityList">
             <div class="container-fluid">
                <div class="row">
+                  <div class="col-sm-12 col-md-2">
                   {% if item.activity.textOrImage %}
                   {% for assigment in item.assigments %}
-                  <div class="col-sm-12 col-md-2">
-                     <p>{{ assigment.text }}</p>
-                     <p>{{ assigment.groupId }}</p>
-                  </div>
+                     <div class="row">
+                        <div class="col-sm-auto">
+                           {{ assigment.groupId }}
+                        </div>
+                        <div class="col-sm-10">
+                           {{ assigment.text }}
+                        </div>
+                     </div>
                   {% endfor %}
                   {% else %}
                   {% for assigment in item.assigments %}
-                  <div class="col-sm-12 col-md-2">
                      <img src="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}{{ assigment.fileURL }}">
-                  </div>
                   {% endfor %}
                   {% endif %}
+                  </div>
                   <div class="col-sm-12 col-md-10">
                      <div class="container-fluid">
                         <div class="row items">
