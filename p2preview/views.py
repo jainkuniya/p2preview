@@ -74,7 +74,7 @@ def activity_details(request, pk):
 
             """for individual"""
             individual = []
-            registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
+            registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0]).order_by('-pk')
             for rg in registeredGroup:
                 responses = Response.objects.filter(registeredGroup=rg)
                 criterias_data = []
