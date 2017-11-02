@@ -71,14 +71,41 @@ def activity_details(request, pk):
             criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
             for criteria in criterias_data:
                 criterias.append(str(criteria.genericId.description))
-            #registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
 
-            #responses = Response.objects.filter()
+            """for individual"""
+            individual = []
+            registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
+            for rg in registeredGroup:
+                responses = Response.objects.filter(registeredGroup=rg)
+                criterias_data = []
+                responses_data = []
+                for res in responses:
+                    criterias_data.append(res.criteria)
+                    responses_data.append({
+                        'response': res.response,
+                        'comment': res.comment,
+                    })
 
-            """for indi"""
+                if activity[0].textOrImage:
+                    assigment = ActivityAssigment.objects.get(pk=rg.assigmentPk)
+                else:
+                    assigment = ActivityImageAssigment.objects.get(pk=rg.assigmentPk)
+                individual.append({
+                    'reviewOf': assigment,
+                    'reviewBy': {
+                        'groupId': rg.groupId.pk,
+                        'groupName': rg.groupId.name,
+                        'groupMembers': get_group_members(rg.groupId),
+                    },
+                    'criterias': criterias_data,
+                    'responses': responses_data,
+                })
+
             template = loader.get_template('p2preview/statistics.html')
             context = {
-                'criterias': criterias
+                'criterias': criterias,
+                'individual': individual,
+                'activity': activity[0],
             }
             return HttpResponse(template.render(context, request))
         else:
