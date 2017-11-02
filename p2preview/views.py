@@ -8,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile, ActivityAssigment
+from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile, ActivityAssigment, ActivityImageAssigment
 
 import string
 import random
@@ -359,8 +359,7 @@ def register_group_to_activity_data(group_id, activity_code):
                     'message': 'Can\'t find activity details for you!!',
                     'data': {}
                 }
-    except Exception, e:
-        print e
+    except:
         return {
             'success': 0,
             'message': 'Please try again',
@@ -678,8 +677,13 @@ def create_activity(request):
                                                                   text=t["text"],
                                                                   groupId=t["groupId"])
                             activityAssigment.save()
-
-                    # TODO: for images
+                    else:
+                        """save in ActivityImageAssigment"""
+                        texts = ast.literal_eval(request.POST["file_path"])
+                        for t in texts:
+                            activityImageAssigment = ActivityImageAssigment(activity=activity,
+                                                                  fileURL=t)
+                            activityImageAssigment.save()
 
                     data = {
                         'success': 1,

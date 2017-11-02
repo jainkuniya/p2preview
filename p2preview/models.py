@@ -126,8 +126,12 @@ class Response(models.Model):
         unique_together = ('registeredGroup', 'criteria')
 
 class UploadFile(models.Model):
-    file = models.FileField(upload_to='p2preview/static/p2preview/files')
+    file = models.ImageField(upload_to='p2preview/static/p2preview/files')
+
+class ActivityImageAssigment(models.Model):
+    fileURL = models.CharField(max_length=5000, blank=False, default='')
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0, blank=True)
 
 class ActivityAssigment(models.Model):
     text = models.CharField(max_length=5000, blank=False, default='')

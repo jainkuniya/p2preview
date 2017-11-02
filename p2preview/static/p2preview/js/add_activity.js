@@ -1,5 +1,5 @@
 var filePath = [];
-var textOrImage = 'True';
+var textOrImage = 'False';
 
 $('#new_activity_form').submit(function() {
   var frm = $('#new_activity_form');
