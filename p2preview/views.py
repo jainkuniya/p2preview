@@ -442,8 +442,7 @@ def register_group_to_activity_data(group_id, activity_code):
                     'message': 'Can\'t find activity details for you!!',
                     'data': {}
                 }
-    except Exception, e:
-        print e
+    except:
         return {
             'success': 0,
             'message': 'Please try again',
@@ -756,11 +755,9 @@ def create_activity(request):
                     activity.save()
 
                     """save assigments"""
-                    print textOrImage
                     if (textOrImage):
                         """save in ActivityAssigment"""
                         texts = ast.literal_eval(request.POST["texts"])
-                        print texts
                         for t in texts:
                             activityAssigment = ActivityAssigment(activity=activity,
                                                                   text=t["text"],
@@ -791,8 +788,7 @@ def create_activity(request):
                     'success': 0,
                     'message': 'Please select valid course'
                 }
-        except Exception, e:
-            print e
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
@@ -868,8 +864,7 @@ def create_generic(request):
                 'message': 'Successfully created'
             }
 
-        except Exception, e:
-            print e
+        except:
             data = {
                 'success': 0,
                 'message': 'Please try again'
