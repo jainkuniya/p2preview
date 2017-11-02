@@ -45,7 +45,7 @@ class ResponseAdmin(admin.ModelAdmin):
     list_display = ['id', 'registeredGroup', 'criteria', 'response', 'comment']
 
 class RegisteredGroupsForActivityAdmin(admin.ModelAdmin):
-    list_display = ['groupId', 'activityId']
+    list_display = ['groupId', 'assigmentPk', 'activityId']
 
 class UploadFileAdmin(admin.ModelAdmin):
     list_display = ['pk', 'file']

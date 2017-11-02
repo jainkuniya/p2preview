@@ -71,12 +71,41 @@ def activity_details(request, pk):
             criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
             for criteria in criterias_data:
                 criterias.append(str(criteria.genericId.description))
-            #registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
 
-            #responses = Response.objects.filter()
+            """for individual"""
+            individual = []
+            registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
+            for rg in registeredGroup:
+                responses = Response.objects.filter(registeredGroup=rg)
+                criterias_data = []
+                responses_data = []
+                for res in responses:
+                    criterias_data.append(res.criteria)
+                    responses_data.append({
+                        'response': res.response,
+                        'comment': res.comment,
+                    })
+
+                if activity[0].textOrImage:
+                    assigment = ActivityAssigment.objects.get(pk=rg.assigmentPk)
+                else:
+                    assigment = ActivityImageAssigment.objects.get(pk=rg.assigmentPk)
+                individual.append({
+                    'reviewOf': assigment,
+                    'reviewBy': {
+                        'groupId': rg.groupId.pk,
+                        'groupName': rg.groupId.name,
+                        'groupMembers': get_group_members(rg.groupId),
+                    },
+                    'criterias': criterias_data,
+                    'responses': responses_data,
+                })
+
             template = loader.get_template('p2preview/statistics.html')
             context = {
-                'criterias': criterias
+                'criterias': criterias,
+                'individual': individual,
+                'activity': activity[0],
             }
             return HttpResponse(template.render(context, request))
         else:
@@ -101,10 +130,13 @@ def activity(request):
             else:
                 """fetch all text data"""
                 assigments = ActivityImageAssigment.objects.filter(activity=activity)
+            count = 0
+            for assigment in assigments:
+                count = count + RegisteredGroupsForActivity.objects.filter(assigmentPk=assigment.pk).count()
             activities.append({
                 'activity': activity,
                 'assigments': assigments,
-                'groupsRegistered': RegisteredGroupsForActivity.objects.filter(activityId=activity).count()
+                'groupsRegistered': count
             })
 
         context = {
@@ -214,7 +246,7 @@ def submit_responses(request):
                 activity = Activity.objects.filter(code=request.POST["activity_code"])
                 if(activity.count() == 1):
                     """get registered group"""
-                    registeredGroup = RegisteredGroupsForActivity.objects.filter(groupId=group[0], activityId=activity[0])
+                    registeredGroup = RegisteredGroupsForActivity.objects.filter(pk=request.POST["registeredGroupPK"])
                     if(registeredGroup.count() == 1):
                         answers = request.POST['answers']
                         answers = ast.literal_eval(answers)
@@ -315,9 +347,6 @@ def register_group_to_activity_data(group_id, activity_code):
         activity = Activity.objects.filter(code=activity_code)
         group = Group.objects.filter(pk=group_id)
         # TODO check all group members are registered to that course
-        """Register group to activity"""
-        registeredGroupsForActivity = RegisteredGroupsForActivity(activityId=activity[0], groupId=group[0])
-        registeredGroupsForActivity.save()
         activity_details = Activity.objects.get(code=activity_code)
         criterias_data = []
         criterias = Criteria.objects.filter(rubricId=activity_details.rubricId)
@@ -345,6 +374,14 @@ def register_group_to_activity_data(group_id, activity_code):
                 activityAssigment_data = ActivityAssigment.objects.get(pk=activityAssigment[0].pk)
                 activityAssigment_data.count = 1 + activityAssigment_data.count
                 activityAssigment_data.save()
+
+                """Register group to activity"""
+                registeredGroupsForActivity = RegisteredGroupsForActivity(
+                    assigmentPk=activityAssigment_data.pk,
+                    groupId=group[0],
+                    activityId=activity[0])
+                registeredGroupsForActivity.save()
+
                 data = {
                     'success': 1,
                     'message': 'Successfully registered',
@@ -356,7 +393,8 @@ def register_group_to_activity_data(group_id, activity_code):
                             'duration': activity_details.duration,
                             'textOrImage': activity_details.textOrImage,
                         },
-                        'criteria': criterias_data
+                        'criteria': criterias_data,
+                        'registeredGroupPK': registeredGroupsForActivity.pk,
                     }
                 }
                 return data
@@ -374,6 +412,14 @@ def register_group_to_activity_data(group_id, activity_code):
                 activityImageAssigment_data = ActivityImageAssigment.objects.get(pk=activityImageAssigment[0].pk)
                 activityImageAssigment_data.count = 1 + activityImageAssigment_data.count
                 activityImageAssigment_data.save()
+
+                """Register group to activity"""
+                registeredGroupsForActivity = RegisteredGroupsForActivity(
+                    assigmentPk=activityImageAssigment_data.pk,
+                    groupId=group[0],
+                    activityId=activity[0])
+                registeredGroupsForActivity.save()
+
                 data = {
                     'success': 1,
                     'message': 'Successfully registered',
@@ -385,7 +431,8 @@ def register_group_to_activity_data(group_id, activity_code):
                             'duration': activity_details.duration,
                             'textOrImage': activity_details.textOrImage,
                         },
-                        'criteria': criterias_data
+                        'criteria': criterias_data,
+                        'registeredGroupPK': registeredGroupsForActivity.pk,
                     }
                 }
                 return data
@@ -709,9 +756,11 @@ def create_activity(request):
                     activity.save()
 
                     """save assigments"""
+                    print textOrImage
                     if (textOrImage):
                         """save in ActivityAssigment"""
                         texts = ast.literal_eval(request.POST["texts"])
+                        print texts
                         for t in texts:
                             activityAssigment = ActivityAssigment(activity=activity,
                                                                   text=t["text"],

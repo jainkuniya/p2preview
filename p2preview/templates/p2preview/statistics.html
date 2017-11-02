@@ -12,7 +12,6 @@
 
 {% block body %}
   <div class="container">
-
     <div class="row justify-content-center align-items-center">
       <div class="col-sm-12">
         <div class="activityList">
@@ -40,13 +39,38 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for indi in individual %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td>{{ student.sId.sId.name }}</td>
-                                <td>{{ student.sId.rollNo }}</td>
-                                <td>{{ student.sId.sId.email }}</td>
-                                <td>{{ student.sId.branch }}</td>
-                              </tr>
+                                {% if activity.textOrImage %}
+                                  <td>Text:- {{ indi.reviewOf.text }}<br>Group Name:- {{ indi.reviewOf.groupId }}</td>
+                                {% else %}
+                                  <td>{{ indi.reviewOf.fileURL }}</td>
+                                {% endif %}
+
+                                <td>
+                                  Group Id:- {{ indi.reviewBy.groupId }} <br>
+                                  Group Name:- {{ indi.reviewBy.groupName }} <br>
+                                  Group members:- <br>
+                                  {% for mem in indi.reviewBy.groupMembers %}
+                                     {{ forloop.counter }} Name:- {{ mem.name }} <br>
+                                     Roll No:- {{ mem.rollNo }} <br>
+                                     Email:- {{ mem.email }} <br>
+                                  {% endfor %}
+                                </td>
+                                <td>
+                                  {% for criteria in indi.criterias %}
+                                     {{ forloop.counter }} Description:- {{ criteria.genericId.description }} <hr>
+                                  {% endfor %}
+                                </td>
+                                <td>
+                                  {% for response in indi.responses %}
+                                     {{ forloop.counter }} Response:- {{ response.response }} <br>
+                                     Comment:- {{ response.comment }} <hr>
+                                  {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                   </div>
