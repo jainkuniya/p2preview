@@ -74,6 +74,8 @@ def activity_details(request, pk):
             #registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0])
 
             #responses = Response.objects.filter()
+
+            """for indi"""
             template = loader.get_template('p2preview/statistics.html')
             context = {
                 'criterias': criterias
@@ -727,9 +729,11 @@ def create_activity(request):
                     activity.save()
 
                     """save assigments"""
+                    print textOrImage
                     if (textOrImage):
                         """save in ActivityAssigment"""
                         texts = ast.literal_eval(request.POST["texts"])
+                        print texts
                         for t in texts:
                             activityAssigment = ActivityAssigment(activity=activity,
                                                                   text=t["text"],
