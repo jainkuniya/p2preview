@@ -359,7 +359,37 @@ def register_group_to_activity_data(group_id, activity_code):
                     'message': 'Can\'t find activity details for you!!',
                     'data': {}
                 }
-    except:
+        else:
+            """get assigment with minimum count and which is not of own"""
+            activityImageAssigment = ActivityImageAssigment.objects.filter(activity=activity_details).order_by('count')
+            if (activityImageAssigment.count() > 0):
+                """update count"""
+                activityImageAssigment_data = ActivityImageAssigment.objects.get(pk=activityImageAssigment[0].pk)
+                activityImageAssigment_data.count = 1 + activityImageAssigment_data.count
+                activityImageAssigment_data.save()
+                data = {
+                    'success': 1,
+                    'message': 'Successfully registered',
+                    'data': {
+                        'activity': {
+                            'name': activity_details.name,
+                            'code': activity_details.code,
+                            'assigment': activityImageAssigment_data.fileURL,
+                            'duration': activity_details.duration,
+                            'textOrImage': activity_details.textOrImage,
+                        },
+                        'criteria': criterias_data
+                    }
+                }
+                return data
+            else:
+                return {
+                    'success': 0,
+                    'message': 'Can\'t find activity details for you!!',
+                    'data': {}
+                }
+    except Exception, e:
+        print e
         return {
             'success': 0,
             'message': 'Please try again',
@@ -629,11 +659,14 @@ def upload_file(request):
     try:
         new_file = UploadFile(file = request.FILES['file'])
         new_file.save()
+        url = str(new_file.file).split('/')
+        del url[0]
+        relativeUrl = '/' + ('/').join(url)
         data = {
             'success': 1,
             'message': 'Successfully uploaded',
             'data': {
-                'url': '/' + str(new_file.file)
+                'url': relativeUrl
             }
         }
     except:
