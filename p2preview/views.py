@@ -95,8 +95,15 @@ def activity(request):
         activities_data = Activity.objects.filter(iId=instrutor[0]).order_by('-pk')
         activities = []
         for activity in activities_data:
+            if (activity.textOrImage):
+                """fetch all text data"""
+                assigments = ActivityAssigment.objects.filter(activity=activity)
+            else:
+                """fetch all text data"""
+                assigments = ActivityImageAssigment.objects.filter(activity=activity)
             activities.append({
                 'activity': activity,
+                'assigments': assigments,
                 'groupsRegistered': RegisteredGroupsForActivity.objects.filter(activityId=activity).count()
             })
 
