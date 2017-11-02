@@ -29,16 +29,18 @@
                   {% for assigment in item.assigments %}
                      <div class="row">
                         <div class="col-sm-auto">
-                           {{ assigment.groupId }}
+                           Group Name:- {{ assigment.groupId }}
                         </div>
                         <div class="col-sm-10">
-                           {{ assigment.text }}
+                           Text:- {{ assigment.text }}
                         </div>
                      </div>
+                     <br>
                   {% endfor %}
                   {% else %}
                   {% for assigment in item.assigments %}
                      <img src="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}{{ assigment.fileURL }}">
+                    <br>
                   {% endfor %}
                   {% endif %}
                   </div>
