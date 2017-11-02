@@ -217,7 +217,7 @@ def submit_responses(request):
                 activity = Activity.objects.filter(code=request.POST["activity_code"])
                 if(activity.count() == 1):
                     """get registered group"""
-                    registeredGroup = RegisteredGroupsForActivity.objects.filter(groupId=group[0], activityId=activity[0])
+                    registeredGroup = RegisteredGroupsForActivity.objects.filter(pk=request.POST["registeredGroupPK"])
                     if(registeredGroup.count() == 1):
                         answers = request.POST['answers']
                         answers = ast.literal_eval(answers)
@@ -347,7 +347,10 @@ def register_group_to_activity_data(group_id, activity_code):
                 activityAssigment_data.save()
 
                 """Register group to activity"""
-                registeredGroupsForActivity = RegisteredGroupsForActivity(assigmentPk=activityAssigment_data.pk, groupId=group[0])
+                registeredGroupsForActivity = RegisteredGroupsForActivity(
+                    assigmentPk=activityAssigment_data.pk,
+                    groupId=group[0],
+                    activityId=activity[0])
                 registeredGroupsForActivity.save()
 
                 data = {
@@ -361,7 +364,8 @@ def register_group_to_activity_data(group_id, activity_code):
                             'duration': activity_details.duration,
                             'textOrImage': activity_details.textOrImage,
                         },
-                        'criteria': criterias_data
+                        'criteria': criterias_data,
+                        'registeredGroupPK': registeredGroupsForActivity.pk,
                     }
                 }
                 return data
@@ -381,7 +385,10 @@ def register_group_to_activity_data(group_id, activity_code):
                 activityImageAssigment_data.save()
 
                 """Register group to activity"""
-                registeredGroupsForActivity = RegisteredGroupsForActivity(assigmentPk=activityImageAssigment_data.pk, groupId=group[0])
+                registeredGroupsForActivity = RegisteredGroupsForActivity(
+                    assigmentPk=activityImageAssigment_data.pk,
+                    groupId=group[0],
+                    activityId=activity[0])
                 registeredGroupsForActivity.save()
 
                 data = {
@@ -395,7 +402,8 @@ def register_group_to_activity_data(group_id, activity_code):
                             'duration': activity_details.duration,
                             'textOrImage': activity_details.textOrImage,
                         },
-                        'criteria': criterias_data
+                        'criteria': criterias_data,
+                        'registeredGroupPK': registeredGroupsForActivity.pk,
                     }
                 }
                 return data

@@ -100,6 +100,7 @@ class GenericOption(models.Model):
 class RegisteredGroupsForActivity(models.Model):
     groupId = models.ForeignKey(Group, on_delete=models.CASCADE)
     assigmentPk = models.IntegerField()
+    activityId = models.ForeignKey(Activity, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
