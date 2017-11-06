@@ -761,7 +761,7 @@ def create_activity(request):
                         for t in texts:
                             activityAssigment = ActivityAssigment(activity=activity,
                                                                   text=t["text"],
-                                                                  groupId=t["groupId"])
+                                                                  groupId=(str(t["groupId"])).upper())
                             activityAssigment.save()
                     else:
                         """save in ActivityImageAssigment"""
@@ -1049,7 +1049,7 @@ def get_student_from_email(email):
 def create_student_group(request):
     person = validatePerson(request.META['HTTP_TOKEN'])
     if (person != -1):
-        group = Group(name=request.POST["groupName"])
+        group = Group(name=(str(request.POST["groupName"])).upper())
         try:
             group.save()
             emails = request.POST['emails'].split(',')
