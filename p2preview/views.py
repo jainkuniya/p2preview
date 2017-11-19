@@ -653,21 +653,30 @@ def register(request):
                     personType=request.POST['personType'])
     try:
         person.save()
-        if request.POST['personType'] == 1:
+        if request.POST['personType'] == '1':
             instrutor = Instrutor(iId=person,
                                   department=request.POST['department'],
                                   office=request.POST['office'],
                                   visitingHours=request.POST['visitingHours'])
             instrutor.save()
-        elif request.POST['personType'] == 2:
+            data = {
+                'success': 1,
+                'message': 'Successfully registered',
+            }
+        elif request.POST['personType'] == '2':
             student = Student(sId=person,
                               rollNo=request.POST['rollNo'],
                               branch=request.POST['branch'])
             student.save()
-        data = {
-            'success': 1,
-            'message': 'Successfully registered',
-        }
+            data = {
+                'success': 1,
+                'message': 'Successfully registered',
+            }
+        else:
+            data = {
+                'success': 0,
+                'message': 'Unknown type',
+            }
     except:
         """Check if email already registered"""
         persons = Person.objects.filter(email=request.POST['email'])
