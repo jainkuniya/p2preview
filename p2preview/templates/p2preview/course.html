@@ -53,7 +53,7 @@
                   <tbody>
                     {% for student in courseDetails.students %}
                       <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
+                        <th scope="row">{{loop.index}}</th>
                         <td>{{ student.sId.sId.name }}</td>
                         <td>{{ student.sId.rollNo }}</td>
                         <td>{{ student.sId.sId.email }}</td>
