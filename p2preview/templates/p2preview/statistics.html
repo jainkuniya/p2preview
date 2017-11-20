@@ -139,5 +139,30 @@ chart_{{ cri.criteria_id }}_{{ ga.assigId }}.redraw();
   </div>
 {% endblock %}
 {% block extrajavascripts %}
+<script>
+$(document).ready(function() {
+  fetchActivitySummary();
+});
 
+function fetchSelf() {
+  var token = getCookie('token');
+  if (token !== '') {
+    $.ajax({
+      url: '/api/v1/get_activity_summary/', //the page containing php script
+      type: 'POST', //request type
+      beforeSend: function(request) {
+        request.setRequestHeader('TOKEN', token);
+      },
+      success: function(result) {
+        alert(JSON.stringify(result));
+        if (result.success === 1) {
+        } else {
+          clearLoginCookie();
+        }
+      },
+    });
+  } else {
+  }
+}
+</script>
 {% endblock %}

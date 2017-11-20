@@ -49,6 +49,105 @@ def fetch_self(request):
     return JsonResponse(data, safe=True)
 
 
+@require_http_methods(["POST"])
+@csrf_exempt
+def get_activity_summary(request):
+    instrutor = validateInstructor(request.META['HTTP_TOKEN'])
+    if instrutor != -1:
+        activity = Activity.objects.filter(pk=1, iId=instrutor[0])
+        if (activity.count() == 1):
+            """get all assigment"""
+            if activity[0].textOrImage:
+                assigment = ActivityAssigment.objects.filter(activity=activity[0])
+            else:
+                assigment = ActivityImageAssigment.objects.filter(pk=activity[0])
+
+
+            criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
+            graphActivies = []
+            for assig in assigment:
+                """get criterias of the activity"""
+                criterias = []
+                series = []
+                registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0], assigmentPk=assig.pk).order_by('-pk')
+                for criteria in criterias_data:
+                    genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
+                    for gen in genericOptions:
+                        count = 0
+                        totalCount = 0
+                        for rg in registeredGroup:
+                            count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
+                            totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
+                        if totalCount != 0:
+                            series.append({
+                                str('name'): str(gen.option),
+                                str('data'): (count*100)/totalCount,
+                            })
+
+                    criterias.append({
+                        str('criteria'): str(criteria.genericId.description),
+                        str('criteria_id'): str(criteria.pk),
+                        str('series'): list(series),
+                        })
+
+                graphActivies.append({
+                    str('criterias'): criterias,
+                    str('groupId'): str('Submitted by Group ID:- ' + assig.groupId),
+                    str('assigId'): assig.pk,
+                })
+
+
+
+            """for individual"""
+            individual = []
+            registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0]).order_by('-pk')
+            for rg in registeredGroup:
+                responses = Response.objects.filter(registeredGroup=rg)
+                criterias_data = []
+                responses_data = []
+                for res in responses:
+                    criterias_data.append(res.criteria)
+                    responses_data.append({
+                        'response': res.response,
+                        'comment': res.comment,
+                    })
+
+                if activity[0].textOrImage:
+                    assigment = ActivityAssigment.objects.get(pk=rg.assigmentPk)
+                else:
+                    assigment = ActivityImageAssigment.objects.get(pk=rg.assigmentPk)
+                individual.append({
+                    'reviewOf': assigment,
+                    'reviewBy': {
+                        'groupId': rg.groupId.pk,
+                        'groupName': rg.groupId.name,
+                        'groupMembers': get_group_members(rg.groupId),
+                    },
+                    'criterias': criterias_data,
+                    'responses': responses_data,
+                })
+
+            data = {
+                'success': 1,
+                'message': 'Please login again',
+                'assigments': graphActivies,
+                'activity': activity[0].name,
+            }
+        else:
+            """redirect to /activity"""
+            data = {
+                'success': -99,
+                'message': 'Please login again',
+            }
+
+    else:
+        data = {
+            'success': -99,
+            'message': 'Please login again',
+        }
+    return JsonResponse(data, safe=True)
+
+
 # Create your views here.
 @csrf_exempt
 def home(request):
