@@ -5,13 +5,14 @@
 
 {% block extrastyles %}
     <script type="text/javascript" src="{% static 'p2preview/js/highcharts.js' %}" ></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/statistics.css' %}"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
 {% endblock %}
 
 {% block body %}
   <div class="container">
+    {{ graphActivies }}
     <div class="row justify-content-center align-items-center">
       <div class="col-sm-12">
         <div class="activityList">
@@ -74,9 +75,60 @@
                         </tbody>
                     </table>
                   </div>
+
                   <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
-                    <div id="container" style="min-width: 310px;  margin: 0 auto"></div>
+                    {% for ga in assigments %}
+                    Response Summary for Activity: {{ activity.name }} {{ ga.groupId }}
+                    {% for cri in ga.criterias %}
+                    <div id="container_{{ cri.criteria_id }}_{{ ga.assigId }}" style="min-width: 310px;  margin: 0 auto"></div>
+                    <script>
+                    var chart_{{ cri.criteria_id }}_{{ ga.assigId }} = new Highcharts.Chart({
+  chart: {
+    type: 'bar',
+    renderTo: 'container_{{ cri.criteria_id }}_{{ ga.assigId }}'
+  },
+  xAxis: {
+    categories: ['{{ cri.criteria }}'],
+  },
+  title: {
+      text: null
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '% Selection for each option',
+    },
+  },
+  legend: {
+    reversed: true,
+  },
+  plotOptions: {
+    series: {
+      stacking: 'normal',
+    },
+  },
+  series: [],
+});
+
+$(chart_{{ cri.criteria_id }}_{{ ga.assigId }}).ready(function() {
+var se = [];
+// var chart = $('container_{{ forloop.counter }}');
+{% for ge in cri.series %}
+// alert("vishwesh " + '{{ ge }}');
+se = [...se, { 'data': '{{ ge.data }}', 'name': '{{ ge.name }}'}];
+chart_{{ cri.criteria_id }}_{{ ga.assigId }}.addSeries({
+                name: '{{ ge.name }}',
+                data: [{{ ge.data }}]
+            }, true);
+//alert(se);
+{% endfor %}
+chart_{{ cri.criteria_id }}_{{ ga.assigId }}.redraw();
+});
+</script>
+                      {% endfor %}
+                    {% endfor %}
                   </div>
+
                 </div>
               </div>
             </div>
@@ -87,44 +139,5 @@
   </div>
 {% endblock %}
 {% block extrajavascripts %}
-<script>
-  Highcharts.chart('container', {
-    chart: {
-        type: 'bar'
-    },
-    title: {
-        text: 'Response Summary for Activity XYZ'
-    },
-    xAxis: {
-        categories: {{ criterias|safe }}
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: '% Selection for each option'
-        }
-    },
-    legend: {
-        reversed: true
-    },
-    plotOptions: {
-        series: {
-            stacking: 'normal'
-        }
-    },
-    series: [{
-        name: 'Option A',
-        data: [25, 30, 43, 7, 20]
-    }, {
-        name: 'Option B',
-        data: [25, 20, 30, 20, 37]
-    }, {
-        name: 'Option C',
-        data: [25, 10, 22, 29, 23]
-    }, {
-        name: 'Option D',
-        data: [25, 40, 5, 44, 20]
-    }]
-});
-</script>
+
 {% endblock %}

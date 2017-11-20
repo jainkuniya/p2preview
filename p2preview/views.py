@@ -66,11 +66,52 @@ def activity_details(request, pk):
     if instrutor != -1:
         activity = Activity.objects.filter(pk=pk, iId=instrutor[0])
         if (activity.count() == 1):
-            """get criterias of the activity"""
-            criterias = []
+            """get all assigment"""
+            if activity[0].textOrImage:
+                assigment = ActivityAssigment.objects.filter(activity=activity[0])
+            else:
+                assigment = ActivityImageAssigment.objects.filter(pk=activity[0])
+
+
             criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
-            for criteria in criterias_data:
-                criterias.append(str(criteria.genericId.description))
+            graphActivies = []
+            for assig in assigment:
+                """get criterias of the activity"""
+                criterias = []
+                series = []
+                registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0], assigmentPk=assig.pk).order_by('-pk')
+                for criteria in criterias_data:
+                    genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
+                    for gen in genericOptions:
+                        count = 0
+                        totalCount = 0
+                        for rg in registeredGroup:
+                            count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
+                            totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
+                        if totalCount != 0:
+                            series.append({
+                                str('name'): str(gen.option),
+                                str('data'): (count*100)/totalCount,
+                            })
+
+                    criterias.append({
+                        str('criteria'): str(criteria.genericId.description),
+                        str('criteria_id'): str(criteria.pk),
+                        str('series'): list(series),
+                        })
+
+                graphActivies.append({
+                    str('criterias'): criterias,
+                    str('groupId'): str('Submitted by Group ID:- ' + assig.groupId),
+                    str('assigId'): assig.pk,
+                })
+
+
+
+            print graphActivies
+
+
+
 
             """for individual"""
             individual = []
@@ -103,7 +144,7 @@ def activity_details(request, pk):
 
             template = loader.get_template('p2preview/statistics.html')
             context = {
-                'criterias': criterias,
+                'assigments': graphActivies,
                 'individual': individual,
                 'activity': activity[0],
             }

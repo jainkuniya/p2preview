@@ -57,7 +57,7 @@ class Activity(models.Model):
     iId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
     courseId = models.ForeignKey(Course, on_delete=models.CASCADE)
     rubricId = models.ForeignKey(Rubric, on_delete=models.CASCADE)
-    name = models.CharField(max_length=15, blank=False, default='')
+    name = models.CharField(max_length=30, blank=False, default='')
     code = models.CharField(max_length=5, blank=False, default='')
     duration = models.IntegerField(blank=False)
     isActive = models.BooleanField(blank=False, default=False)
