@@ -108,11 +108,6 @@ def activity_details(request, pk):
 
 
 
-            print graphActivies
-
-
-
-
             """for individual"""
             individual = []
             registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0]).order_by('-pk')
