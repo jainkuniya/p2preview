@@ -83,11 +83,11 @@ $('.optionAdd').click(function() {
     '<div class="form-group row"><label for="option' +
     optionNumber +
     '" class="col-sm-2 col-form-label">Option ' +
-    optionNumber +
+    (optionNumber + 1) +
     '</label><div class="col-sm-8"><input required type="text" class="form-control" id="optionInput' +
     optionNumber +
     '" placeholder="Option ' +
-    optionNumber +
+    (optionNumber + 1) +
     '"></div><div class="col-sm-2"><input type="number" class="form-control" id="optionPoints' +
     optionNumber +
     '" placeholder="1-10"></div></div>';
@@ -106,13 +106,23 @@ $('#submitButton').click(function() {
 
   var i = 0;
 
-  if (description === '') {
+  if (description.length === 0) {
     alert('Please enter description');
+    return false;
   }
 
   for (i = 0; i < optionNumber; i++) {
-    options = [...options, $('#optionInput' + i).val()];
-    points = [...points, $('#optionPoints' + i).val() || 0];
+    var text = $('#optionInput' + i).val();
+    if(text.length !== 0) {
+      options = [...options, text];
+      points = [...points, $('#optionPoints' + i).val() || 0];
+    }
+  }
+
+  if(options.length === 0)
+  {
+    alert("Please enter at least one option");
+    return false;
   }
 
   $.ajax({
