@@ -9,15 +9,6 @@
 
 {% block body %}
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-auto ml-auto">
-      <button type="button" class="btn btn-success add" data-toggle="modal" data-target="#exampleModal">
-        Add Rubric
-      </button>
-    </div>
-  </div>
-</div>
-<div class="container-fluid">
   <div class="criteriaList">
     <span class="heading">Select criterias for new rubric</span>
     <table class="table table-bordered table-hover">
@@ -31,6 +22,7 @@
       </thead>
       <tbody>
         <form id="allCriteriaList">
+          {% if criterias|length > 0 %}
           {% for criteria in criterias %}
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
@@ -49,6 +41,11 @@
             </td>
           </tr>
           {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="4">No criterias added yet, please <a href="/criteria/">add one</a>!</td>
+            </tr>
+          {% endif %}
         </tbody>
       </table>
 
@@ -64,82 +61,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Generic Criteria</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="#newCriteriaForm" method="post" action="/api/v1/create_generic/">
-            <div class="form-group row">
-              <label for="Criteria" class="col-sm-2 col-form-label">Criteria</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="id_description" placeholder="Criteria">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="option1" class="col-sm-2 col-form-label">Option A</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="option1" placeholder="Option A">
-              </div>
-              <div class="col-sm-2">
-                <input type="number" class="form-control" id="option1Points" placeholder="1-10">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="option2" class="col-sm-2 col-form-label">Option B</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="option2" placeholder="Option B">
-              </div>
-              <div class="col-sm-2">
-                <input type="number" class="form-control" id="option2Points" placeholder="1-10">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="option3" class="col-sm-2 col-form-label">Option C</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="option3" placeholder="Option C">
-              </div>
-              <div class="col-sm-2">
-                <input type="number" class="form-control" id="option3Points" placeholder="1-10">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="option4" class="col-sm-2 col-form-label">Option D</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="option4" placeholder="Option D">
-              </div>
-              <div class="col-sm-2">
-                <input type="number" class="form-control" id="option4Points" placeholder="1-10">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="answer" class="col-sm-auto ml-auto col-form-label">Correct Answer</label>
-              <div class="col-sm-2">
-                <input type="number" class="form-control" id="answer" placeholder="1-4">
-              </div>
-            </div>
-            <!--<div class="form-group row">
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </div>-->
-          </div>
-          <span id="id_error"></span>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="submitButton" type="submit" class="btn btn-primary">Save changes</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% if rubrics|length > 0 %}
   {% for rubric in rubrics %}
   <div class="criteriaList">
     Rubric Name : <span class="heading">{{ rubric.rubric.name }}</span>
@@ -167,6 +89,11 @@
     </table>
   </div>
   {% endfor %}
+  {% else %}
+    <div class="criteriaList">
+    No rubrics added yet, please add one!
+    </div>
+  {% endif %}
 
 </div>
 {% endblock %}
