@@ -21,7 +21,7 @@
 	padding: 10px;
 }
 .btn-primary{
-  background-color: var(--dark-primary-color) !important;
+	background-color: var(--dark-primary-color) !important;
 }
 #id_success{
 	color: green;

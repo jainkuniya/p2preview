@@ -12,7 +12,7 @@
    <div class="row">
       <div class="col-auto ml-auto">
          <button type="button" class="btn btn-success add" data-toggle="modal" data-target="#exampleModal">
-         Add Activity
+            Add Activity
          </button>
       </div>
    </div>
@@ -26,8 +26,8 @@
             <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 col-md-2">
-                  {% if item.activity.textOrImage %}
-                  {% for assigment in item.assigments %}
+                     {% if item.activity.textOrImage %}
+                     {% for assigment in item.assigments %}
                      <div class="row">
                         <div class="col-sm-auto">
                            Group Name:- {{ assigment.groupId }}
@@ -37,13 +37,13 @@
                         </div>
                      </div>
                      <br>
-                  {% endfor %}
-                  {% else %}
-                  {% for assigment in item.assigments %}
+                     {% endfor %}
+                     {% else %}
+                     {% for assigment in item.assigments %}
                      <img src="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}{{ assigment.fileURL }}">
-                    <br>
-                  {% endfor %}
-                  {% endif %}
+                     <br>
+                     {% endfor %}
+                     {% endif %}
                   </div>
                   <div class="col-sm-12 col-md-10">
                      <div class="container-fluid">
@@ -53,12 +53,12 @@
                            </div>
                            <div class="col-sm-auto ml-auto" style="margin-bottom: -8px;">
                               <label class="switch">
-                              {% if item.activity.isActive %}
-                              <input value="true" onchange="toggleCheckbox('{{ False }}', '{{ item.activity.pk }}')" type="checkbox" id="checkbox" checked>
-                              {% else %}
-                              <input value="true" onchange="toggleCheckbox('{{ True }}', '{{ item.activity.pk }}')" type="checkbox" id="checkbox">
-                              {% endif %}
-                              <span class="slider round"></span>
+                                 {% if item.activity.isActive %}
+                                 <input value="true" onchange="toggleCheckbox('{{ False }}', '{{ item.activity.pk }}')" type="checkbox" id="checkbox" checked>
+                                 {% else %}
+                                 <input value="true" onchange="toggleCheckbox('{{ True }}', '{{ item.activity.pk }}')" type="checkbox" id="checkbox">
+                                 {% endif %}
+                                 <span class="slider round"></span>
                               </label>
                            </div>
                         </div>
@@ -100,9 +100,9 @@
                         <div class="row">
                            <div class="col-sm-auto items">
                               <a href="/activity/{{ item.activity.pk }}">
-                              <button type="button" class="btn btn-primary">
-                              View Statistics
-                              </button>
+                                 <button type="button" class="btn btn-primary">
+                                    View Statistics
+                                 </button>
                               </a>
                            </div>
                         </div>
@@ -132,111 +132,111 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-<div class="modal-content">
-   <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Add Activity</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-      </button>
-   </div>
-   <div class="modal-body">
-      <div class="container">
-         <div class="row justify-content-center align-items-center">
-            <div class="col-sm-12 col-md-10">
-               <form id="my-awesome-dropzone" action="upload_file/" class="dropzone upload" method="post"  enctype="multipart/form-data" ></form>
-               <form id="new_activity_form">
-                  <div>
-                     <span id="id_error"></span>
-                  </div>
-                  <div class="form-group row justify-content-center select" >
-                     <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="textOrImage" id="textInput" value="True"> Text
-                        </label>
-                     </div>
-                     <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="textOrImage" id="imageInput" value="False" checked=""> Images
-                        </label>
-                     </div>
-                  </div>
-                  <div class="form-group row justify-content-center select" >
-                     <select class="form-control form-control-lg col-sm-10" id="rubric_id">
-                        <option value="-1">Select Rubric</option>
-                        {% for rubric in rubrics %}
-                        <option value="{{ rubric.pk }}">{{ rubric.name }}</option>
-                        {% endfor %}
-                     </select>
-                  </div>
-                  <div class="form-group row justify-content-center select" >
-                     <select class="form-control form-control-lg col-sm-10" id="course_id">
-                        <option value="-1">Select Course</option>
-                        {% for course in courses %}
-                        <option value="{{ course.pk }}">{{ course.name }}</option>
-                        {% endfor %}
-                     </select>
-                  </div>
-                  <div class="form-group row">
-                     <label for="timeLimit" class="col-sm-6 col-form-label">Time Limit</label>
-                     <div class="col-sm-6">
-                        <input type="number" class="form-control" id="duration" placeholder="in seconds">
-                     </div>
-                  </div>
-                  <div class="form-group row">
-                     <label for="timeSize" class="col-sm-6 col-form-label">Team Size</label>
-                     <div class="col-sm-6">
-                        <input type="number" class="form-control" id="groupSize" placeholder="1-4">
-                     </div>
-                  </div>
-                  <div class="form-group row">
-                     <label for="timeSize" class="col-sm-6 col-form-label">Activity Name</label>
-                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="activity_name" placeholder="Activity Name">
-                     </div>
-                  </div>
-                  <div id="text-div" style="display:none;">
-                     <div class="form-group row">
-                        <div class="col-auto ml-auto">
-                           <button type="button" class="optionAdd btn btn-success">Add another</button>
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Activity</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="container">
+               <div class="row justify-content-center align-items-center">
+                  <div class="col-sm-12 col-md-10">
+                     <form id="my-awesome-dropzone" action="upload_file/" class="dropzone upload" method="post"  enctype="multipart/form-data" ></form>
+                     <form id="new_activity_form">
+                        <div>
+                           <span id="id_error"></span>
                         </div>
-                     </div>
-                     <div class="textDIV">
-                        <div class="row">
-                           <div class="col-sm-9">
-                              <textarea class="form-control" id="text0" placeholder="Enter links and other relevant info"></textarea>
+                        <div class="form-group row justify-content-center select" >
+                           <div class="form-check form-check-inline">
+                              <label class="form-check-label">
+                                 <input class="form-check-input" type="radio" name="textOrImage" id="textInput" value="True"> Text
+                              </label>
                            </div>
-                           <div class="col-sm-3">
-                              <input type="text" class="form-control" id="groupId0" placeholder="Group Id"/>
+                           <div class="form-check form-check-inline">
+                              <label class="form-check-label">
+                                 <input class="form-check-input" type="radio" name="textOrImage" id="imageInput" value="False" checked=""> Images
+                              </label>
                            </div>
                         </div>
+                        <div class="form-group row justify-content-center select" >
+                           <select class="form-control form-control-lg col-sm-10" id="rubric_id">
+                              <option value="-1">Select Rubric</option>
+                              {% for rubric in rubrics %}
+                              <option value="{{ rubric.pk }}">{{ rubric.name }}</option>
+                              {% endfor %}
+                           </select>
+                        </div>
+                        <div class="form-group row justify-content-center select" >
+                           <select class="form-control form-control-lg col-sm-10" id="course_id">
+                              <option value="-1">Select Course</option>
+                              {% for course in courses %}
+                              <option value="{{ course.pk }}">{{ course.name }}</option>
+                              {% endfor %}
+                           </select>
+                        </div>
+                        <div class="form-group row">
+                           <label for="timeLimit" class="col-sm-6 col-form-label">Time Limit</label>
+                           <div class="col-sm-6">
+                              <input type="number" class="form-control" id="duration" placeholder="in seconds">
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <label for="timeSize" class="col-sm-6 col-form-label">Team Size</label>
+                           <div class="col-sm-6">
+                              <input type="number" class="form-control" id="groupSize" placeholder="1-4">
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <label for="timeSize" class="col-sm-6 col-form-label">Activity Name</label>
+                           <div class="col-sm-6">
+                              <input type="text" class="form-control" id="activity_name" placeholder="Activity Name">
+                           </div>
+                        </div>
+                        <div id="text-div" style="display:none;">
+                           <div class="form-group row">
+                              <div class="col-auto ml-auto">
+                                 <button type="button" class="optionAdd btn btn-success">Add another</button>
+                              </div>
+                           </div>
+                           <div class="textDIV">
+                              <div class="row">
+                                 <div class="col-sm-9">
+                                    <textarea class="form-control" id="text0" placeholder="Enter links and other relevant info"></textarea>
+                                 </div>
+                                 <div class="col-sm-3">
+                                    <input type="text" class="form-control" id="groupId0" placeholder="Group Id"/>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                      </div>
                   </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     <button type="submit" class="btn btn-primary ">Submit</button>
+                  </form>
+               </div>
             </div>
          </div>
-         <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-         <button type="submit" class="btn btn-primary ">Submit</button>
-         </form>
-         </div>
       </div>
-   </div>
-</div>
-{% endblock %}
-{% block extrajavascripts %}
-<script type="text/javascript">
-var optionNumber = 0;
-$('.optionAdd').click(function() {
-  optionNumber++;
-  var newEntity =
-    '<div class="row"><div class="col-sm-9"><textarea class="form-control" id="text' +
-    optionNumber +
-    '" placeholder="Enter links and other relevant info"></textarea></div><div class="col-sm-3"><input type="text" class="form-control" id="groupId' +
-    optionNumber +
-    '" placeholder="Group Id"/></div></div>';
-  $('.textDIV').append(newEntity);
-});
-</script>
-<script type="text/javascript" src="{% static 'p2preview/js/add_activity.js' %}"></script>
-<script type="text/javascript" src="{% static 'p2preview/dropzone-4.3.0/dist/dropzone-amd-module.js' %}"/>
-{% endblock %}
+      {% endblock %}
+      {% block extrajavascripts %}
+      <script type="text/javascript">
+         var optionNumber = 0;
+         $('.optionAdd').click(function() {
+          optionNumber++;
+          var newEntity =
+          '<div class="row"><div class="col-sm-9"><textarea class="form-control" id="text' +
+          optionNumber +
+          '" placeholder="Enter links and other relevant info"></textarea></div><div class="col-sm-3"><input type="text" class="form-control" id="groupId' +
+          optionNumber +
+          '" placeholder="Group Id"/></div></div>';
+          $('.textDIV').append(newEntity);
+       });
+    </script>
+    <script type="text/javascript" src="{% static 'p2preview/js/add_activity.js' %}"></script>
+    <script type="text/javascript" src="{% static 'p2preview/dropzone-4.3.0/dist/dropzone-amd-module.js' %}"/>
+    {% endblock %}

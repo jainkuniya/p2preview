@@ -4,7 +4,7 @@
 {% load staticfiles%}
 
 {% block extrastyles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/rubric.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/rubric.css' %}"/>
 {% endblock %}
 
 {% block body %}
@@ -19,19 +19,19 @@
 </div>
 <div class="container-fluid">
   <div class="criteriaList">
-  <span class="heading">Select criterias for new rubric</span>
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Criteria</th>
-        <th scope="col">Option Count</th>
-        <th scope="col">Select</th>
-      </tr>
-    </thead>
-    <tbody>
-      <form id="allCriteriaList">
-        {% for criteria in criterias %}
+    <span class="heading">Select criterias for new rubric</span>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Option Count</th>
+          <th scope="col">Select</th>
+        </tr>
+      </thead>
+      <tbody>
+        <form id="allCriteriaList">
+          {% for criteria in criterias %}
           <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td class="option">
@@ -42,27 +42,27 @@
             </td>
             <td>
               <!--<div class="form-check">-->
-                <label class="form-check-label">
-                  <input class="form-check-input position-static" type="checkbox"  name="{{ criteria.generic.pk }}" id="{{ criteria.generic.pk }}" value="{{ criteria.generic.pk }}" aria-label="...">
-                </label>
+              <label class="form-check-label">
+                <input class="form-check-input position-static" type="checkbox"  name="{{ criteria.generic.pk }}" id="{{ criteria.generic.pk }}" value="{{ criteria.generic.pk }}" aria-label="...">
+              </label>
               <!--</div>-->
             </td>
           </tr>
-        {% endfor %}
-    </tbody>
-  </table>
+          {% endfor %}
+        </tbody>
+      </table>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-auto ml-auto">
-        <input class="form-control" id="id_rubric_name"  placeholder="Rubric Name">
-      </div>
-      <div class="col-auto">
-        <button id="id_button_rubric" class="btn btn-primary">Submit</button>
-        </form>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-auto ml-auto">
+            <input class="form-control" id="id_rubric_name"  placeholder="Rubric Name">
+          </div>
+          <div class="col-auto">
+            <button id="id_button_rubric" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 
   <!-- Modal -->
@@ -130,48 +130,48 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
             </div>-->
-        </div>
-        <span id="id_error"></span>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button id="submitButton" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+          <span id="id_error"></span>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="submitButton" type="submit" class="btn btn-primary">Save changes</button>
           </form>
         </div>
       </div>
     </div>
   </div>
   {% for rubric in rubrics %}
-    <div class="criteriaList">
-      Rubric Name : <span class="heading">{{ rubric.rubric.name }}</span>
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Criteria</th>
-            <th scope="col">Options Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for criteria in rubric.criterias %}
-            <tr>
-              <th scope="row">{{ forloop.counter }}</th>
-              <td class="option">
-                {{ criteria.criteria.genericId.description }}
-              </td>
-              <td class="option">
-                {{ criteria.generic_options|length }}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+  <div class="criteriaList">
+    Rubric Name : <span class="heading">{{ rubric.rubric.name }}</span>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Options Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for criteria in rubric.criterias %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td class="option">
+            {{ criteria.criteria.genericId.description }}
+          </td>
+          <td class="option">
+            {{ criteria.generic_options|length }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   {% endfor %}
 
 </div>
 {% endblock %}
 {% block extrajavascripts %}
-  <script type="text/javascript" src="{% static 'p2preview/js/rubric_template.js' %}"></script>
+<script type="text/javascript" src="{% static 'p2preview/js/rubric_template.js' %}"></script>
 
 {% endblock %}
 <!--          <div class="table-responsive">

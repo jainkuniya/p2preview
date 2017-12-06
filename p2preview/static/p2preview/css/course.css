@@ -3,8 +3,8 @@
 	margin-right: 30px;
 }
 .coursesList{
-    transition: 0.3s;
-    box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
+	transition: 0.3s;
+	box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
 	background-color: white;
 	padding: 20px;
 	margin: 20px;
@@ -12,7 +12,7 @@
 	margin-bottom: 40px;
 }
 .coursesList:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 #courseBio{
 	padding-bottom: 10px;
