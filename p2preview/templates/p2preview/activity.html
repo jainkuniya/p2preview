@@ -18,6 +18,7 @@
    </div>
 </div>
 <div class="container">
+   {% if activities|length > 0 %}
    {% for item in activities %}
    <div class="row justify-content-center align-items-center">
       <div class="col-sm-12">
@@ -113,6 +114,21 @@
       </div>
    </div>
    {% endfor %}
+   {% else %}
+   <div class="row justify-content-center align-items-center">
+      <div class="col-sm-12">
+         <div class="activityList">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-sm-12">
+                     No activity yet, please add one now!
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>    
+   {% endif %}
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
