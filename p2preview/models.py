@@ -84,6 +84,7 @@ class GroupDetail(models.Model):
 class Generic(models.Model):
     description = models.CharField(max_length=100, blank=False, default='')
     answer = models.IntegerField(blank=True)
+    iId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.description

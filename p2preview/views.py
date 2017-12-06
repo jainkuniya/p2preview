@@ -52,10 +52,15 @@ def fetch_self(request):
 # Create your views here.
 @csrf_exempt
 def home(request):
-    person = validatePerson(request.COOKIES.get('token'))
-    if person != -1:
+    instrutor = validateInstructor(request.COOKIES.get('token'))
+    if instrutor != -1:
         template = loader.get_template('p2preview/home.html')
-        context = {}
+        context = {
+            'course_count': Course.objects.filter(instructorId=instrutor).count(),
+            'activity_count': Activity.objects.filter(iId=instrutor).count(),
+            'rubric_count': Rubric.objects.filter(iId=instrutor).count(),
+            'criteria_count' : Generic.objects.filter(iId=instrutor).count(),        
+        }
         return HttpResponse(template.render(context, request))
     else:
         return redirectToLogin()
@@ -890,7 +895,8 @@ def create_generic(request):
         try:
             """create generic"""
             generic = Generic(description=request.POST["description"],
-                              answer=request.POST["answer"])
+                              answer=request.POST["answer"],
+                              iId=instrutor)
             generic.save()
 
             points = ast.literal_eval(request.POST["points"])
