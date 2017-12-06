@@ -59,7 +59,7 @@ def home(request):
             'course_count': Course.objects.filter(instructorId=instrutor).count(),
             'activity_count': Activity.objects.filter(iId=instrutor).count(),
             'rubric_count': Rubric.objects.filter(iId=instrutor).count(),
-            'criteria_count' : Generic.objects.filter(iId=instrutor).count(),        
+            'criteria_count' : Generic.objects.filter(iId=instrutor).count(),
         }
         return HttpResponse(template.render(context, request))
     else:
@@ -88,11 +88,11 @@ def activity_details(request, pk):
                 for criteria in criterias_data:
                     genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
                     for gen in genericOptions:
-                        count = 0
-                        totalCount = 0
-                        for rg in registeredGroup:
-                            count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
-                            totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
+                        count = registeredGroup.filter(criteria=criteria, response=gen.optionNo).count()
+                        totalCount = registeredGroup.count()
+                        # for rg in registeredGroup:
+                        #     count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
+                        #     totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
                         if totalCount != 0:
                             series.append({
                                 str('name'): str(gen.option),
