@@ -24,6 +24,7 @@ $("#signUpForm").submit(function () {
     dataType: 'json',
     success: function (data) {
       if (data.success === 1) {
+        $('#id_success').text("Succesfully Registered");
         $(location).attr('href', '/')
       }else {
         $('#id_error').text(data.message);

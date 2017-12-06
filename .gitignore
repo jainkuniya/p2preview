@@ -123,3 +123,4 @@ venv.bak/
 db.sqlite3
 p2preview/migrations
 
+aws/

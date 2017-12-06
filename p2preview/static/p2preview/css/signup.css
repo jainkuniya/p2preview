@@ -23,3 +23,8 @@
 .btn-primary{
   background-color: var(--dark-primary-color) !important;
 }
+#id_success{
+	color: green;
+	font-weight: bolder;
+	padding-bottom: 2px;
+}
