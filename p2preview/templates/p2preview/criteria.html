@@ -20,6 +20,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
+      {% if criterias|length > 0 %}
       {% for criteria in criterias %}
       <div class="criteriaList">
         <div class="row criteria">
@@ -39,6 +40,15 @@
         {% endfor %}
       </div>
       {% endfor %}
+      {% else %}
+      <div class="criteriaList">
+        <div class="row criteria">
+          <div class="col-sm-12">
+            No criterias added yet, please add one!
+          </div>
+        </div>
+      </div>
+      {% endif %}
 
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -114,8 +124,8 @@ $('#submitButton').click(function() {
   for (i = 0; i < optionNumber; i++) {
     var text = $('#optionInput' + i).val();
     if(text.length !== 0) {
-      options = [...options, text];
-      points = [...points, $('#optionPoints' + i).val() || 0];
+      options = [text, ...options];
+      points = [ $('#optionPoints' + i).val() || 0, ...points];
     }
   }
 
