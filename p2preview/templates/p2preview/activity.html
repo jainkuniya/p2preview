@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'p2preview/dropzone-4.3.0/dist/basic.css' %}"/>
 {% endblock %}
 {% block body %}
-<div class="container">
+<div class="container-fluid">
    <div class="row">
       <div class="col-auto ml-auto">
          <button type="button" class="btn btn-success add" data-toggle="modal" data-target="#exampleModal">
@@ -17,7 +17,7 @@
       </div>
    </div>
 </div>
-<div class="container">
+<div class="container-fluid">
    {% if activities|length > 0 %}
    {% for item in activities %}
    <div class="row justify-content-center align-items-center">

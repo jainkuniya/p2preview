@@ -1,3 +1,7 @@
+.add{
+	margin-top: 20px;
+	margin-right: 30px;
+}
 .heading{
 	font-weight: bold;
 }
@@ -31,8 +35,8 @@
 	margin-bottom: 10px;
 }
 .criteriaList, .rubricList{
-    transition: 0.3s;
-    box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
+  transition: 0.3s;
+  box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
 	background-color: white;
 	padding: 20px;
 	margin: 20px;
