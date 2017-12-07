@@ -75,7 +75,7 @@ def activity_details(request, pk):
             if activity[0].textOrImage:
                 assigment = ActivityAssigment.objects.filter(activity=activity[0])
             else:
-                assigment = ActivityImageAssigment.objects.filter(pk=activity[0])
+                assigment = ActivityImageAssigment.objects.filter(activity=activity[0])
 
 
             criterias_data = Criteria.objects.filter(rubricId=activity[0].rubricId)
@@ -107,7 +107,7 @@ def activity_details(request, pk):
 
                 graphActivies.append({
                     str('criterias'): criterias,
-                    str('groupId'): str('Submitted by Group ID:- ' + assig.groupId),
+                    str('groupId'): str('Submitted by Group ID:- '), #TODO
                     str('assigId'): assig.pk,
                 })
 
@@ -896,7 +896,7 @@ def create_generic(request):
             """create generic"""
             generic = Generic(description=request.POST["description"],
                               answer=request.POST["answer"],
-                              iId=instrutor)
+                              iId=instrutor[0])
             generic.save()
 
             points = ast.literal_eval(request.POST["points"])
