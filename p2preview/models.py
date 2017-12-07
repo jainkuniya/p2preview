@@ -133,6 +133,7 @@ class UploadFile(models.Model):
 class ActivityImageAssigment(models.Model):
     fileURL = models.CharField(max_length=5000, blank=False, default='')
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    groupId = models.CharField(max_length=30, blank=True, default='', null=True)
     count = models.IntegerField(default=0, blank=True)
 
 class ActivityAssigment(models.Model):

@@ -107,7 +107,7 @@ def activity_details(request, pk):
 
                 graphActivies.append({
                     str('criterias'): criterias,
-                    str('groupId'): str('Submitted by Group ID:- '), #TODO
+                    str('groupId'): str('Submitted by Group ID:- ' + assig.groupId), #TODO
                     str('assigId'): assig.pk,
                 })
 
@@ -817,8 +817,9 @@ def create_activity(request):
                         """save in ActivityImageAssigment"""
                         texts = ast.literal_eval(request.POST["file_path"])
                         for t in texts:
+                            fileName = t.split('/')
                             activityImageAssigment = ActivityImageAssigment(activity=activity,
-                                                                  fileURL=t)
+                                                                  fileURL=t, groupId=fileName[-1])
                             activityImageAssigment.save()
 
                     data = {
