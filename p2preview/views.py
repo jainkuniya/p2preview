@@ -84,32 +84,32 @@ def activity_details(request, pk):
                 """get criterias of the activity"""
                 criterias = []
                 registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0], assigmentPk=assig.pk).order_by('-pk')
-                totalCount = registeredGroup.count()
-                if totalCount != 0:
-                    for criteria in criterias_data:
-                        series = []
-                        genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
-                        totalAttempter = 0
-                        for gen in genericOptions:
-                            count = 0
-                            for rg in registeredGroup:
-                                count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
-                                # totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
-                                series.append({
-                                    str('name'): str(gen.option),
-                                    str('data'): (count*100)/totalCount,
-                                })
-                                totalAttempter = totalAttempter + count
+                for criteria in criterias_data:
+                    series = []
+                    genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
+                    totalAttempt = 0
+                    for gen in genericOptions:
+                        count = 0
+                        totalCount = registeredGroup.count()
+                        for rg in registeredGroup:
+                            count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
+                            # totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
+                        if totalCount != 0:
+                            totalAttempt += count
                             series.append({
-                                str('name'): str('Unattempted'),
-                                str('data'): ((totalAttempter-count)*100)/totalCount,
+                                str('name'): str(gen.option),
+                                str('data'): (count*100)/totalCount,
                             })
+                    series.append({
+                        str('name'): str('Unattempted'),
+                        str('data'): ((totalCount-totalAttempt)*100)/totalCount,
+                    })
 
-                        criterias.append({
-                            str('criteria'): str(criteria.genericId.description),
-                            str('criteria_id'): str(criteria.pk),
-                            str('series'): list(series),
-                            })
+                    criterias.append({
+                        str('criteria'): str(criteria.genericId.description),
+                        str('criteria_id'): str(criteria.pk),
+                        str('series'): list(series),
+                        })
 
                 graphActivies.append({
                     str('criterias'): criterias,
@@ -391,7 +391,7 @@ def get_recommended_group_for_students(student, course, groupSize):
 
 def register_group_to_activity_data(group_id, activity_code):
     try:
-        activity = Activity.objects.filter(code=activity_code)
+        #activity = Activity.objects.filter(code=activity_code)
         group = Group.objects.filter(pk=group_id)
         # TODO check all group members are registered to that course
         activity_details = Activity.objects.get(code=activity_code)
