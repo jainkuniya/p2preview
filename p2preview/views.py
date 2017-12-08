@@ -83,9 +83,9 @@ def activity_details(request, pk):
             for assig in assigment:
                 """get criterias of the activity"""
                 criterias = []
-                series = []
                 registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0], assigmentPk=assig.pk).order_by('-pk')
                 for criteria in criterias_data:
+                    series = []
                     genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
                     for gen in genericOptions:
                         count = 0
