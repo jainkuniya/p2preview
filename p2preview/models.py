@@ -33,8 +33,8 @@ class Instrutor(models.Model):
         return self.iId.name
 
 class Course(models.Model):
-    name = models.CharField(max_length=50, blank=False, default='')
-    description = models.CharField(max_length=200, blank='True', default='')
+    name = models.TextField(blank=False, default='')
+    description = models.TextField(max_length=200, blank='True', default='')
     instructorId = models.ForeignKey(Instrutor, on_delete=models.CASCADE)
     code = models.CharField(max_length=20, blank=False, default='', unique=True)
 
