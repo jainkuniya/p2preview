@@ -84,26 +84,32 @@ def activity_details(request, pk):
                 """get criterias of the activity"""
                 criterias = []
                 registeredGroup = RegisteredGroupsForActivity.objects.filter(activityId=activity[0], assigmentPk=assig.pk).order_by('-pk')
-                for criteria in criterias_data:
-                    series = []
-                    genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
-                    for gen in genericOptions:
-                        count = 0
-                        totalCount = registeredGroup.count()
-                        for rg in registeredGroup:
-                            count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
-                            # totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
-                        if totalCount != 0:
+                totalCount = registeredGroup.count()
+                if totalCount != 0:
+                    for criteria in criterias_data:
+                        series = []
+                        genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
+                        totalAttempter = 0
+                        for gen in genericOptions:
+                            count = 0
+                            for rg in registeredGroup:
+                                count = count + Response.objects.filter(registeredGroup=rg, criteria=criteria, response=gen.optionNo).count()
+                                # totalCount = totalCount + Response.objects.filter(registeredGroup=rg, criteria=criteria).count()
+                                series.append({
+                                    str('name'): str(gen.option),
+                                    str('data'): (count*100)/totalCount,
+                                })
+                                totalAttempter = totalAttempter + count
                             series.append({
-                                str('name'): str(gen.option),
-                                str('data'): (count*100)/totalCount,
+                                str('name'): str('Unattempted'),
+                                str('data'): ((totalAttempter-count)*100)/totalCount,
                             })
 
-                    criterias.append({
-                        str('criteria'): str(criteria.genericId.description),
-                        str('criteria_id'): str(criteria.pk),
-                        str('series'): list(series),
-                        })
+                        criterias.append({
+                            str('criteria'): str(criteria.genericId.description),
+                            str('criteria_id'): str(criteria.pk),
+                            str('series'): list(series),
+                            })
 
                 graphActivies.append({
                     str('criterias'): criterias,

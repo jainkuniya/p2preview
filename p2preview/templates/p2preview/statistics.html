@@ -79,7 +79,6 @@
                   <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                     {% if assigments|length == 1%}
                     {% for ga in assigments %}
-                    {{ ga }}
                     Response Summary for Activity: {{ activity.name }} {{ ga.groupId }}
                     {% for cri in ga.criterias %}
                     <div id="container_{{ cri.criteria_id }}_{{ ga.assigId }}" style="min-width: 310px;  margin: 0 auto"></div>
