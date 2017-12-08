@@ -825,7 +825,7 @@ def create_activity(request):
                         for t in texts:
                             fileName = t.split('/')
                             activityImageAssigment = ActivityImageAssigment(activity=activity,
-                                                                  fileURL=t, groupId=fileName[-1])
+                                                                  fileURL=t, groupId=''.join(fileName[-1:]))
                             activityImageAssigment.save()
 
                     data = {
