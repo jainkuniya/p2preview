@@ -77,6 +77,7 @@
                   </div>
 
                   <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                    {% if assigments|length == 1%}
                     {% for ga in assigments %}
                     Response Summary for Activity: {{ activity.name }} {{ ga.groupId }}
                     {% for cri in ga.criterias %}
@@ -127,6 +128,9 @@ chart_{{ cri.criteria_id }}_{{ ga.assigId }}.redraw();
 </script>
                       {% endfor %}
                     {% endfor %}
+                    {% else %}
+                        <p>Graphs Stats are only available if assigment is one. (due to limited resources in free trial of heroku)</p>
+                    {% endif %}
                   </div>
 
                 </div>

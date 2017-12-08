@@ -393,7 +393,7 @@ def register_group_to_activity_data(group_id, activity_code):
         criterias = Criteria.objects.filter(rubricId=activity_details.rubricId)
         for criteria in criterias:
             options_data = []
-            options = GenericOption.objects.filter(genericId=criteria.genericId).order_by('optionNo')
+            options = GenericOption.objects.filter(genericId=criteria.genericId).order_by('-optionNo')
             for option in options:
                 options_data.append({
                     'option': option.option,
@@ -646,7 +646,7 @@ def get_activity_data_from_registered_group(registeredGroupsForActivity):
         })
     return {
         'activity': {
-            'course': registeredGroupsForActivity.activityId.courseId.name,
+            'course': registeredGroupsForActivity.activityId.courseId.code,
             'name': registeredGroupsForActivity.activityId.name,
             'code': registeredGroupsForActivity.activityId.code,
             'duration': registeredGroupsForActivity.activityId.duration
