@@ -124,8 +124,8 @@ $('#submitButton').click(function() {
   for (i = 0; i < optionNumber; i++) {
     var text = $('#optionInput' + i).val();
     if(text.length !== 0) {
-      options = [text, ...options];
-      points = [ $('#optionPoints' + i).val() || 0, ...points];
+      options = [...options, text];
+      points = [...points, $('#optionPoints' + i).val() || 0];
     }
   }
 

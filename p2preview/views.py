@@ -393,7 +393,7 @@ def register_group_to_activity_data(group_id, activity_code):
         criterias = Criteria.objects.filter(rubricId=activity_details.rubricId)
         for criteria in criterias:
             options_data = []
-            options = GenericOption.objects.filter(genericId=criteria.genericId).order_by('-optionNo')
+            options = GenericOption.objects.filter(genericId=criteria.genericId).order_by('optionNo')
             for option in options:
                 options_data.append({
                     'option': option.option,
@@ -743,7 +743,7 @@ def criteria_page(request):
         generic_data = Generic.objects.filter(iId=instrutor[0]).order_by('-pk')
         for generic in generic_data:
             all_criterias.append({
-                'generic_options': GenericOption.objects.filter(genericId=generic).order_by('-pk'),
+                'generic_options': GenericOption.objects.filter(genericId=generic).order_by('pk'),
                 'generic': generic
             })
         context = {
@@ -908,7 +908,7 @@ def create_generic(request):
                 genericOption = GenericOption(genericId=generic,
                                                option=str(options[i]),
                                                points=points[i],
-                                               optionNo=i)
+                                               optionNo=(i+1))
                 genericOption.save()
 
             data = {
@@ -940,7 +940,7 @@ def rubric_template(request):
             criterias_data = Criteria.objects.filter(rubricId=rubric).order_by('-pk')
             for criteria in criterias_data:
                 criterias.append({
-                    'generic_options': GenericOption.objects.filter(genericId=criteria.genericId).order_by('-pk'),
+                    'generic_options': GenericOption.objects.filter(genericId=criteria.genericId).order_by('pk'),
                     'criteria': criteria
                 })
             rubrics.append({
