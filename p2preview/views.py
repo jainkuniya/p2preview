@@ -934,7 +934,7 @@ def rubric_template(request):
     if instrutor != -1:
         template = loader.get_template('p2preview/rubric_template.html')
         rubrics = []
-        rubric_data = Rubric.objects.filter(iId=instrutor).order_by('-pk')
+        rubric_data = Rubric.objects.filter(iId=instrutor[0]).order_by('-pk')
         for rubric in rubric_data:
             criterias = []
             criterias_data = Criteria.objects.filter(rubricId=rubric).order_by('-pk')
@@ -948,7 +948,7 @@ def rubric_template(request):
                 'criterias': criterias
             })
         all_criterias = []
-        generic_data = Generic.objects.filter().order_by('-pk')
+        generic_data = Generic.objects.filter(iId=instrutor[0]).order_by('-pk')
         for generic in generic_data:
             all_criterias.append({
                 'generic_options': GenericOption.objects.filter(genericId=generic).order_by('-pk'),
