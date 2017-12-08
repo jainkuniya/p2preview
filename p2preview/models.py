@@ -6,7 +6,7 @@ from django.db import models
 # Create your models here.
 class Person(models.Model):
     name = models.CharField(max_length=45, blank=False, default='')
-    email = models.EmailField(max_length=50, blank=False, default='', unique=True)
+    email = models.EmailField(blank=False, default='', unique=True)
     password = models.CharField(max_length=20, blank=False, default='')
     personType = models.IntegerField(blank=False)
     lastLogined = models.DateTimeField(auto_now_add=True)
