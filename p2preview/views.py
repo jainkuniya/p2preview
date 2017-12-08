@@ -790,7 +790,7 @@ def upload_file(request):
 def create_activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
-        try:
+        # try:
             course = Course.objects.filter(pk=request.POST["course_id"])
             if (course.count() == 1):
                 rubric = Rubric.objects.filter(pk=request.POST["rubric_id"])
@@ -845,11 +845,11 @@ def create_activity(request):
                     'success': 0,
                     'message': 'Please select valid course'
                 }
-        except:
-            data = {
-                'success': 0,
-                'message': 'Please try again'
-            }
+        # except:
+        #     data = {
+        #         'success': 0,
+        #         'message': 'Please try again'
+        #     }
     else:
         data = {
             'success': -99,
