@@ -740,7 +740,7 @@ def criteria_page(request):
     if instrutor != -1:
         template = loader.get_template('p2preview/criteria.html')
         all_criterias = []
-        generic_data = Generic.objects.filter().order_by('-pk')
+        generic_data = Generic.objects.filter(iId=instrutor[0]).order_by('-pk')
         for generic in generic_data:
             all_criterias.append({
                 'generic_options': GenericOption.objects.filter(genericId=generic).order_by('-pk'),
