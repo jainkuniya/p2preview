@@ -54,7 +54,7 @@ class ActivityAssigmentAdmin(admin.ModelAdmin):
     list_display = ['pk', 'text', 'activity', 'groupId', 'count']
 
 class ActivityImageAssigmentAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'fileURL', 'activity', 'count']
+    list_display = ['pk', 'fileURL', 'activity', 'groupId', 'count']
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Student, StudentAdmin)
