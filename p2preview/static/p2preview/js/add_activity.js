@@ -9,11 +9,6 @@ $('#new_activity_form').submit(function() {
   var duration = $('#duration').val();
   var groupSize = $('#groupSize').val();
 
-  /*if (filePath === '') {
-    $('#id_error').text('Please upload image');
-    return false;
-  }*/
-
   if (rubric_id === '-1') {
     $('#id_error').text('Please select Rubric');
     return false;
@@ -27,7 +22,15 @@ $('#new_activity_form').submit(function() {
   var texts = [];
   var i = 0;
   for (i = 0; i <= optionNumber; i++) {
-    texts = [...texts, { text: $('#text' + i).val(), groupId: $('#groupId' + i).val() }];
+    var = $('#text' + i).val();
+    if (text.length > 0) {
+      texts = [...texts, { text: text, groupId: $('#groupId' + i).val() }];
+    }
+  }
+
+  if (filePath.length === 0 || texts.length === 0) {
+    $('#id_error').text('Please add image/text assigments');
+    return false;
   }
 
   $.ajax({
