@@ -10,26 +10,41 @@ $('#new_activity_form').submit(function() {
   var groupSize = $('#groupSize').val();
 
   if (rubric_id === '-1') {
-    $('#id_error').text('Please select Rubric');
+    alert('Please select Rubric');
     return false;
   }
 
   if (course_id === '-1') {
-    $('#id_error').text('Please select Course');
+    alert('Please select Course');
+    return false;
+  }
+
+  if (activity_name.length === 0) {
+    alert('Please enter activity name');
+    return false;
+  }
+
+  if (duration.length === 0) {
+    alert('Please enter activity duration');
+    return false;
+  }
+
+  if (groupSize.length === 0) {
+    alert('Please enter group size');
     return false;
   }
 
   var texts = [];
   var i = 0;
   for (i = 0; i <= optionNumber; i++) {
-    var = $('#text' + i).val();
+    var text = $('#text' + i).val();
     if (text.length > 0) {
       texts = [...texts, { text: text, groupId: $('#groupId' + i).val() }];
     }
   }
 
-  if (filePath.length === 0 || texts.length === 0) {
-    $('#id_error').text('Please add image/text assigments');
+  if (filePath.length === 0 && texts.length === 0) {
+    alert('Please add image/text assigments');
     return false;
   }
 
