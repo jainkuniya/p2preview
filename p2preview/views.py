@@ -917,7 +917,6 @@ def create_generic(request):
             }
 
         except Exception as e:
-            print e
             data = {
                 'success': 0,
                 'message': 'Please try again'
