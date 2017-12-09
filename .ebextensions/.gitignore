@@ -1,11 +1,3 @@
-venv
-*.pyc
-staticfiles
-.env
-db.sqlite3
-
-aws/
-p2preview/static/p2preview/files/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
