@@ -426,7 +426,7 @@ def register_group_to_activity_data(group_id, activity_code):
                 registeredGroupsForActivity = RegisteredGroupsForActivity(
                     assigmentPk=activityAssigment_data.pk,
                     groupId=group[0],
-                    activityId=activity[0])
+                    activityId=activity_details)
                 registeredGroupsForActivity.save()
 
                 data = {
@@ -464,7 +464,7 @@ def register_group_to_activity_data(group_id, activity_code):
                 registeredGroupsForActivity = RegisteredGroupsForActivity(
                     assigmentPk=activityImageAssigment_data.pk,
                     groupId=group[0],
-                    activityId=activity[0])
+                    activityId=activity_details)
                 registeredGroupsForActivity.save()
 
                 data = {
