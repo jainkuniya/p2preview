@@ -1,0 +1,52 @@
+.add{
+	margin-top: 20px;
+	margin-right: 30px;
+}
+.heading{
+	font-weight: bold;
+}
+.table{
+	margin-top:10px;
+}
+.option{
+	position:relative;
+}
+.points{
+	position: absolute;
+	right:0px;
+	bottom: 0px;
+	background-color: var(--light-primary-color);
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.correct{
+	background-color: lightgreen;
+}
+.rubric{
+	margin-top: 20px;
+	text-align:center;
+	vertical-align: middle;
+}
+.head{
+	background-color: var(--light-primary-color);
+	padding: 10px;
+	
+	margin-bottom: 10px;
+}
+.criteriaList, .rubricList{
+	transition: 0.3s;
+	box-shadow: 1px 2px 3px 0 rgba(0,0,0,.10);
+	background-color: white;
+	padding: 20px;
+	margin: 20px;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+.criteriaList:hover, .rubricList:hover  {
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.criteria{
+	padding-bottom: 10px;
+}

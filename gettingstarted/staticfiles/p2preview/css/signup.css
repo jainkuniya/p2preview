@@ -1,0 +1,30 @@
+.form-signup {
+	max-width: 720px;
+	padding: 15px 35px 45px;
+	margin: 0 auto;
+	margin-top: 50px;
+	background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.form-signin-heading{
+	margin-bottom: 20px;
+}
+
+.checkbox {
+	font-weight: normal;
+}
+
+.form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+}
+.btn-primary{
+	background-color: var(--dark-primary-color) !important;
+}
+#id_success{
+	color: green;
+	font-weight: bolder;
+	padding-bottom: 2px;
+}

@@ -4,4 +4,3 @@ gunicorn==19.6.0
 whitenoise==3.0
 djangorestframework==3.6.3
 Pillow==4.3.0
-MySQL-python==1.2.3
