@@ -1,0 +1,43 @@
+{% extends './base.html' %}
+{% block title %}Login{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/signin.css' %}"/>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container-fluid">
+
+    <form id="signInForm" class="form-signin" action="/api/v1/login/" method="post">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input name="email" type="email" id="id_email" class="form-control" placeholder="Email address" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input name="password" type="password" id="id_password" class="form-control" placeholder="Password" required>
+      <span id="id_error"></span>
+      <!--<div class="checkbox">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>-->
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      <div class="signup">
+        <a href="/signUp">Not Registered yet, Click to Signup!</a>
+      </div>
+    </form>
+
+
+
+  </div>
+  
+</body>
+{% endblock %}
+{% block extrajavascripts %}
+  <script type="text/javascript" src="{% static 'p2preview/js/signin.js' %}"/>
+  <script>
+
+  </script>
+{% endblock %}

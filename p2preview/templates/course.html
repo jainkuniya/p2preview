@@ -1,0 +1,129 @@
+{% extends './base.html' %}
+{% block title %}Course{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/course.css' %}"/>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-auto ml-auto">
+        <button type="button" class="btn btn-success add" data-toggle="modal" data-target="#exampleModal">
+          Add Course
+        </button>
+      </div>
+    </div>
+  </div>
+  {% if courses|length > 0 %}
+  {% for courseDetails in courses %}
+    <div class="container-fluid">
+      <div class="coursesList">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="container-fluid ">
+            <div class="row" id="courseBio">
+              <div class="col-sm-12 col-lg-9">
+                <b>Course Name</b> : {{ courseDetails.course.name }}
+              </div>
+              <div class="col-sm-12 col-lg-3">
+                <b>Course Code</b> : {{ courseDetails.course.code }}
+              </div>
+            </div>
+            <div class="row courseName">
+              <div class="col-sm-12 ">
+                <b>Course Description</b> : {{ courseDetails.course.description }}<br>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              {% if courseDetails.students|length > 0 %}
+                <table class="table table-hover table-bordered">
+                <!--<caption>Registered Students</caption>-->
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Roll No</th>
+                      <th>Email Id</th>
+                      <th>Branch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for student in courseDetails.students %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.sId.sId.name }}</td>
+                        <td>{{ student.sId.rollNo }}</td>
+                        <td>{{ student.sId.sId.email }}</td>
+                        <td>{{ student.sId.branch }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% else %}
+                  <p class="noStudents">No students are registered for this course</p>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  {% endfor %}
+  {% else %}
+    <div class="container-fluid">
+      <div class="coursesList">
+      <div class="row">
+        <div class="col-md-12">
+          No courses yet, please add one!
+        </div>
+      </div>
+      </div>
+    </div>
+  {% endif %}
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         <form id="newCourseForm" class="form-horizontal" action="/api/v1/create_course/" method="POST">
+          <div class="row form-group">
+            <label for="courseName" class="col-sm-2 control-label">Course Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" required autofocus id="id_course_name" placeholder="Software Engineering">
+            </div>
+          </div>
+          <div class="row form-group">
+            <label for="courseDescription" class="col-sm-2 control-label">Course Description</label>
+            <div class="col-sm-10">
+              <textarea type="text" class="form-control" id="id_course_description" rows="3" placeholder="Description"></textarea>
+            </div>
+          </div>
+          <span id="id_error"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+{% block extrajavascripts %}
+  <script type="text/javascript" src="{% static 'p2preview/js/course_new.js' %}"/>
+  <script>
+
+  </script>
+{% endblock %}

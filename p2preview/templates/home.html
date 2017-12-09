@@ -1,0 +1,54 @@
+{% extends './base.html' %}
+{% block title %}Home{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/home.css' %}"/>
+{% endblock %}
+
+{% block body %}
+  <br>
+  <br>
+  <center><h1>Welcome to P2P Review System.</h1></center>
+	<div class="stats">
+	<div class="container">
+	  <div class="row">
+	    <div class="col col-sm-12 col-md-6 col-lg-3">
+	      <div class="card">
+	      	<div class="circle" id="c1">
+	      		<span class="count">{{ course_count }}</span>
+	      	</div>
+	      	<span class="label">Courses</span>
+	      </div>
+	    </div>
+	    <div class="col col-sm-12 col-md-6 col-lg-3">
+	      <div class="card">
+	      	<div class="circle" id="c2">
+	      		<span class="count">{{ activity_count }}</span>
+	      	</div>
+	      	<span class="label">Actvities</span>
+	      </div>
+	    </div>
+	    <div class="col col-sm-12 col-md-6 col-lg-3">
+	      <div class="card">
+	      	<div class="circle" id="c1">
+	      		<span class="count">{{ rubric_count }}</span>
+	      	</div>
+	      	<span class="label">Rubrics</span>
+	      </div>
+	    </div>
+	    <div class="col col-sm-12 col-md-6 col-lg-3">
+	      <div class="card">
+	      	<div class="circle" id="c2">
+	      		<span class="count">{{ criteria_count }}</span>
+	      	</div>
+	      	<span class="label">Criterias</span>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	</div>
+  <!--<a href="/course/new">New</a>
+  <a href="/course/">View</a>-->
+{% endblock %}

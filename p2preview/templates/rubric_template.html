@@ -1,0 +1,196 @@
+{% extends './base.html' %}
+{% block title %}Rubric Template{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+<link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/rubric.css' %}"/>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="criteriaList">
+    <span class="heading">Select criterias for new rubric</span>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Option Count</th>
+          <th scope="col">Select</th>
+        </tr>
+      </thead>
+      <tbody>
+        <form id="allCriteriaList">
+          {% if criterias|length > 0 %}
+          {% for criteria in criterias %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td class="option">
+              {{ criteria.generic.description }}
+            </td>
+            <td class="option">
+              {{ criteria.generic_options|length }}
+            </td>
+            <td>
+              <!--<div class="form-check">-->
+              <label class="form-check-label">
+                <input class="form-check-input position-static" type="checkbox"  name="{{ criteria.generic.pk }}" id="{{ criteria.generic.pk }}" value="{{ criteria.generic.pk }}" aria-label="...">
+              </label>
+              <!--</div>-->
+            </td>
+          </tr>
+          {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="4">No criterias added yet, please <a href="/criteria/">add one</a>!</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-auto ml-auto">
+            <input class="form-control" id="id_rubric_name"  placeholder="Rubric Name">
+          </div>
+          <div class="col-auto">
+            <button id="id_button_rubric" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if rubrics|length > 0 %}
+  {% for rubric in rubrics %}
+  <div class="criteriaList">
+    Rubric Name : <span class="heading">{{ rubric.rubric.name }}</span>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Options Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for criteria in rubric.criterias %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td class="option">
+            {{ criteria.criteria.genericId.description }}
+          </td>
+          <td class="option">
+            {{ criteria.generic_options|length }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
+  {% else %}
+    <div class="criteriaList">
+    No rubrics added yet, please add one!
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+{% block extrajavascripts %}
+<script type="text/javascript" src="{% static 'p2preview/js/rubric_template.js' %}"></script>
+
+{% endblock %}
+<!--          <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+            <caption>Registered Students</caption>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email Id</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Vishal Sanghai</td>
+                  <td>vcoolsanghai@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Vishwesh Jainkuniya</td>
+                  <td>vishwesh03071997@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Vishal Sanghai</td>
+                  <td>vcoolsanghai@gmail.com</td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>Vishwesh Jainkuniya</td>
+                  <td>vishwesh03071997@gmail.com</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="container rubric">
+    <div class="row head">
+      <div class="col-md-2">
+        #
+      </div>
+      <div class="col-md-2">
+        A
+      </div>
+      <div class="col-md-2">
+        B
+      </div>
+      <div class="col-md-2">
+        C
+      </div>
+      <div class="col-md-2">
+        D
+      </div>
+      <div class="col-md-2">
+        Best Answer
+      </div>
+    </div>
+    <form>
+    <div class="row">
+      <div class="col-md-2">
+        Criteria 1
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionA" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionB" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionC" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+            <textarea class="form-control" id="Criteria1OptionD" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="col-md-2">
+      <div class="form-group">
+        <select class="form-control" id="Criteria1CorrectAnswer">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+        </select>
+      </div>
+      </div>
+    </div>
+    </form>
+  </div>-->

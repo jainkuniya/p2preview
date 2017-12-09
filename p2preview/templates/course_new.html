@@ -1,0 +1,42 @@
+{% extends './base.html' %}
+{% block title %}New Course{% endblock %}
+
+{% load staticfiles%}
+
+{% block body %}
+<body>
+  <br>
+  <br>
+  <div class="container">
+
+    <form id="newCourseForm" class="form-horizontal" action="/api/v1/create_course/" method="POST">
+      <div class="row form-group">
+        <label for="courseName" class="col-sm-2 control-label">Course Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" required autofocus id="id_course_name" placeholder="Software Engineering">
+        </div>
+      </div>
+      <div class="row form-group">
+        <label for="courseDescription" class="col-sm-2 control-label">Course Description</label>
+        <div class="col-sm-10">
+          <textarea type="text" class="form-control" id="id_course_description" rows="3" placeholder="Description"></textarea>
+        </div>
+      </div>
+      <span id="id_error"></span>
+      <div class="row form-group">
+        <div class="col-md-offset-4 col-sm-10">
+          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</body>
+{% endblock %}
+{% block extrajavascripts %}
+  <script type="text/javascript" src="{% static 'p2preview/js/course_new.js' %}"/>
+  <script>
+
+  </script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends './base.html' %}
+{% block title %}Sign up{% endblock %}
+
+{% load staticfiles%}
+
+{% block extrastyles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'p2preview/css/signup.css' %}"/>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container">
+
+    <form class="form-horizontal form-signup" id="signUpForm" role="form"
+      action="signup" method="post" autocomplete="off">
+      <h2 class="form-signin-heading">Please register</h2>
+      <div class="form-group row">
+        <label for="firstName" class="col-sm-3 col-form-label">
+          Name
+        </label>
+        <div class="col-sm-9">
+          <input id="id_name" type="text" name="firstName" placeholder="Name"
+            class="form-control" maxlength="45" autofocus required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="username" class="col-sm-3 col-form-label">
+          Email
+        </label>
+        <div class="col-sm-9">
+          <input id="id_email" type="text" name="email" placeholder="Email"
+            class="form-control" maxlength="50" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password" class="col-sm-3 col-form-label">
+          Password
+        </label>
+        <div class="col-sm-9">
+          <input id="id_password" type="password" name="password" placeholder="Password"
+            class="form-control" maxlength="20" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="department" class="col-sm-3 col-form-label">
+          Department
+        </label>
+        <div class="col-sm-9">
+          <select id="id_department" name="department" class="form-control">
+            <option value="" selected disabled>Choose Department</option>
+            <option value="CSE">Computer Science and Engineering</option>
+            <option value="ECE">Electronics and Communication Engineering</option>
+            <option value="MME">Mechanical and Mechatronics Engineering</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="HSS">Humanities and Social Sciences</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="officeNo" class="col-sm-3 col-form-label">
+          Office No
+        </label>
+        <div class="col-sm-9">
+          <input id="id_office" type="string" name="officeNo" placeholder="Office No"
+            class="form-control" maxlength="10" autofocus required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="visitingHours" class="col-sm-3 col-form-label">
+          Visiting Hours
+        </label>
+        <div class="col-sm-9">
+          <input id="id_visitingHours" type="string" name="visitingHours" placeholder="Visiting Hours"
+            class="form-control" maxlength="20" autofocus required>
+        </div>
+      </div>
+      <span id="id_error"></span>
+      <span id="id_success"></span>
+      <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+    <!-- /form -->
+  </div>
+
+</body>
+{% endblock %}
+{% block extrajavascripts %}
+  <script type="text/javascript" src="{% static 'p2preview/js/signup.js' %}"/>
+  <script>
+
+  </script>
+{% endblock %}
