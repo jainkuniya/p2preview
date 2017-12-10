@@ -137,12 +137,14 @@ def activity_details(request, pk):
                             responses_data.append({
                                 'response': generic[0].option,
                                 'comment': res.comment,
+                                'criteria': res.criteria,
                             })
                     except:
                         points = points + 0
                         responses_data.append({
-                            'response': '-',
-                            'comment': '',
+                            'response': 'Unattempted',
+                            'comment': res.comment,
+                            'criteria': res.criteria,
                         })
 
                 if activity[0].textOrImage:

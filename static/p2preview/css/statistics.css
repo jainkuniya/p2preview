@@ -71,3 +71,24 @@ input:checked + .slider:before {
 .slider.round:before {
 	border-radius: 50%;
 }
+.response{
+	margin: 0px;
+	padding: 10px;	
+
+}
+.response:hover{
+	background-color: lightgrey;
+	border-radius: 10px;
+}
+.red{
+	color:red;
+}
+.green{
+	color:green;
+}
+.label{
+	padding-top: 20px;
+}
+.center{
+	text-align: center;
+}
