@@ -114,7 +114,7 @@ def activity_details(request, pk):
 
                 graphActivies.append({
                     str('criterias'): criterias,
-                    str('groupId'): str('Submitted by Group ID:- ' + assig.groupId), #TODO
+                    str('groupId'): str(),
                     str('assigId'): assig.pk,
                 })
 
