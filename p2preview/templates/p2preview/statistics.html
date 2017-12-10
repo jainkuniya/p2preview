@@ -37,7 +37,9 @@
                               <th>Reviewed By</th>
                               <th>Criteria</th>
                               <th>Response</th>
-                              <th>Points</th>
+                              {% if total_points != 0%}
+                                <th>Points (<b>Max:</b> {{ total_points }})</th>
+                              {% endif %}
                             </tr>
                         </thead>
                         <tbody>
@@ -71,9 +73,11 @@
                                      Comment:- {{ response.comment }} <hr>
                                   {% endfor %}
                                 </td>
-                                <td>
-                                  {{ indi.points }}
-                                </td>
+                                {% if total_points != 0%}
+                                  <td>
+                                    {{ indi.points }}
+                                  </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>

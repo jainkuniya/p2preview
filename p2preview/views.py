@@ -166,6 +166,7 @@ def activity_details(request, pk):
                 'assigments': graphActivies,
                 'individual': individual,
                 'activity': activity[0],
+                'total_points': get_total_points_for_activity(activity[0])
             }
             return HttpResponse(template.render(context, request))
         else:
@@ -176,6 +177,19 @@ def activity_details(request, pk):
 
     else:
         return redirectToLogin()
+
+def get_total_points_for_activity(activity):
+    points = 0
+    criterias = Criteria.objects.filter(rubricId=activity.rubricId)
+    for criteria in criterias:
+        genericOptions = GenericOption.objects.filter(genericId=criteria.genericId)
+        maximum_points = 0
+        for genericOpt in genericOptions:
+            if genericOpt.points > maximum_points:
+                maximum_points = genericOpt.points
+        points += maximum_points
+
+    return points
 
 def activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
