@@ -471,6 +471,11 @@ def register_group_to_activity_data(group_id, activity_code):
                         },
                         'criteria': criterias_data,
                         'registeredGroupPK': registeredGroupsForActivity.pk,
+                        'groups': [{
+                            'members': get_group_members(group[0]),
+                            'name': group[0].name,
+                            'id': group[0].pk
+                        }]
                     }
                 }
                 return data
@@ -509,6 +514,11 @@ def register_group_to_activity_data(group_id, activity_code):
                         },
                         'criteria': criterias_data,
                         'registeredGroupPK': registeredGroupsForActivity.pk,
+                        'groups': [{
+                            'members': get_group_members(group[0]),
+                            'name': group[0].name,
+                            'id': group[0].pk
+                        }]
                     }
                 }
                 return data
@@ -1150,13 +1160,6 @@ def create_student_group(request):
             if ('activity_code' in request.POST):
                 """register group to activity"""
                 data = register_group_to_activity_data(group.pk, request.POST['activity_code'])
-                data['data'].update({
-                    'groups': [{
-                        'members': get_group_members(group),
-                        'name': group.name,
-                        'id': group.pk
-                    }]
-                })
             else:
                 data = {
                     'success': 1,
