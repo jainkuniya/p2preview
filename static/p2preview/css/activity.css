@@ -84,7 +84,7 @@ input:checked + .slider:before {
 	border-radius: 50%;
 }
 img{
-	width: 100%;
+	width: 350px;
 }
 .items{
 	margin-top: 5px;

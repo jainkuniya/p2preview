@@ -100,10 +100,11 @@ def activity_details(request, pk):
                                 str('name'): str(gen.option),
                                 str('data'): (count*100)/totalCount,
                             })
-                    series.append({
-                        str('name'): str('Unattempted'),
-                        str('data'): ((totalCount-totalAttempt)*100)/totalCount,
-                    })
+                    if totalCount != 0:
+                        series.append({
+                            str('name'): str('Unattempted'),
+                            str('data'): ((totalCount-totalAttempt)*100)/totalCount,
+                        })
 
                     criterias.append({
                         str('criteria'): str(criteria.genericId.description),

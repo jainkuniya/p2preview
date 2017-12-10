@@ -11,9 +11,6 @@
 .card:hover{
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-.card{
-
-}
 .circle{
 	border-radius: 100%;
 	width: 150px;
@@ -31,7 +28,7 @@
 	font-size: 1.5rem;
 	position: absolute;
 	top: 35%;
-	left: 42%;
+	left: 45%;
 }
 .label{
 	padding-top: 20px;
