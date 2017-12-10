@@ -127,7 +127,12 @@ def activity_details(request, pk):
                 responses = Response.objects.filter(registeredGroup=rg)
                 criterias_data = []
                 responses_data = []
+                points = 0
                 for res in responses:
+                    try:
+                        points += GenericOption.objects.get(genericId=res.criteria.genericId, optionNo=res.response).points
+                    except:
+                        points = points + 0
                     criterias_data.append(res.criteria)
                     responses_data.append({
                         'response': res.response,
@@ -147,6 +152,7 @@ def activity_details(request, pk):
                     },
                     'criterias': criterias_data,
                     'responses': responses_data,
+                    'points': points,
                 })
 
             template = loader.get_template('p2preview/statistics.html')

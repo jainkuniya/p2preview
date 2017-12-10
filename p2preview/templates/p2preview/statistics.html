@@ -37,6 +37,7 @@
                               <th>Reviewed By</th>
                               <th>Criteria</th>
                               <th>Response</th>
+                              <th>Points</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,6 +70,9 @@
                                      {{ forloop.counter }} Response:- {{ response.response }} <br>
                                      Comment:- {{ response.comment }} <hr>
                                   {% endfor %}
+                                </td>
+                                <td>
+                                  {{ indi.points }}
                                 </td>
                             </tr>
                             {% endfor %}
