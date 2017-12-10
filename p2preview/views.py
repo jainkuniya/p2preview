@@ -129,15 +129,21 @@ def activity_details(request, pk):
                 responses_data = []
                 points = 0
                 for res in responses:
+                    criterias_data.append(res.criteria)
                     try:
-                        points += GenericOption.objects.get(genericId=res.criteria.genericId, optionNo=res.response).points
+                        generic = GenericOption.objects.filter(genericId=res.criteria.genericId, optionNo=res.response)
+                        if (generic.count() == 1):
+                            points += generic[0].points
+                            responses_data.append({
+                                'response': generic[0].option,
+                                'comment': res.comment,
+                            })
                     except:
                         points = points + 0
-                    criterias_data.append(res.criteria)
-                    responses_data.append({
-                        'response': res.response,
-                        'comment': res.comment,
-                    })
+                        responses_data.append({
+                            'response': '-',
+                            'comment': '',
+                        })
 
                 if activity[0].textOrImage:
                     assigment = ActivityAssigment.objects.get(pk=rg.assigmentPk)

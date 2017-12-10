@@ -91,7 +91,7 @@ class Generic(models.Model):
 
 class GenericOption(models.Model):
     genericId = models.ForeignKey(Generic, on_delete=models.CASCADE)
-    option = models.CharField(max_length=100, blank=False, default='')
+    option = models.TextField(blank=False, default='')
     points = models.IntegerField(default=0)
     optionNo = models.IntegerField(default=0)
 
