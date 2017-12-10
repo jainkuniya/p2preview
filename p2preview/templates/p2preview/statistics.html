@@ -81,17 +81,19 @@
                                          </div>
                                       </div>
                                    </div>
-                                    
+
                                   </td>
                                 {% else %}
-                                  <td>{{ indi.reviewOf.fileURL }}</td>
+                                  <td>
+                                    <img src="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}{{ indi.reviewOf.fileURL }}" width="200">
+                                  </td>
                                 {% endif %}
 
                                 <td>
                                   Group Id: <b>{{ indi.reviewBy.groupId }}</b> <br>
                                   Group Name: <b>{{ indi.reviewBy.groupName }}</b> <br>
                                   {% for mem in indi.reviewBy.groupMembers %}
-                                     <b>#{{ forloop.counter }}</b> {{ mem.name }} ({{ mem.rollNo }})
+                                     <b>#{{ forloop.counter }}</b> {{ mem.name }} ({{ mem.rollNo }})<br>
                                   {% endfor %}
                                 </td>
                                 <!--<td>
@@ -102,7 +104,7 @@
                                 <td>
                                   {% for response in indi.responses %}
                                     <div class="response" data-toggle="tooltip" data-placement="top" title="{{ response.criteria.genericId.description }}">
-                                      <b>#{{ forloop.counter }}</b> 
+                                      <b>#{{ forloop.counter }}</b>
                                       {% if response.response == 'Unattempted' %}
                                         <span class="red">
                                           {{ response.response }}
