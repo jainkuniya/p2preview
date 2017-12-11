@@ -106,11 +106,11 @@ def activity_details(request, pk):
                             str('data'): ((totalCount-totalAttempt)*100)/totalCount,
                         })
 
-                    criterias.append({
-                        str('criteria'): str(criteria.genericId.description),
-                        str('criteria_id'): str(criteria.pk),
-                        str('series'): list(series),
-                        })
+                        criterias.append({
+                            str('criteria'): str(criteria.genericId.description),
+                            str('criteria_id'): str(criteria.pk),
+                            str('series'): list(series),
+                            })
 
                 graphActivies.append({
                     str('criterias'): criterias,
