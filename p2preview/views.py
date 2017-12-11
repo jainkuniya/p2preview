@@ -807,14 +807,11 @@ def upload_file(request):
     try:
         new_file = UploadFile(file = request.FILES['file'])
         new_file.save()
-        url = str(new_file.file).split('/')
-        del url[0]
-        relativeUrl = '/' + ('/').join(url)
         data = {
             'success': 1,
             'message': 'Successfully uploaded',
             'data': {
-                'url': relativeUrl
+                'url': '/' + str(new_file.file)
             }
         }
     except:
