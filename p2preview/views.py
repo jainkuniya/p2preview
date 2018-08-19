@@ -15,6 +15,9 @@ import string
 import random
 import ast
 
+def is_ascii(s):
+    return all(ord(c) < 128 for c in s)
+
 @require_http_methods(["GET"])
 @csrf_exempt
 def fetch_self(request):
@@ -272,6 +275,8 @@ def create_course(request):
                         description=request.POST['description'],
                         instructorId=instrutor[0],
                         code=getRandomString(5))
+        if(not is_ascii(request.POST['name']) or not is_ascii(request.POST['description'])):
+            raise ValueError('Non ASCCI value entered')
         try:
             course.save()
             data = {
