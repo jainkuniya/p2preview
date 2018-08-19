@@ -30,9 +30,10 @@ class Student(models.Model):
 
 class Instrutor(models.Model):
     iId = models.ForeignKey(Person, on_delete=models.CASCADE)
-    department = models.CharField(max_length=5, blank=False, default='')
-    office = models.CharField(max_length=10, blank=False, default='')
-    visitingHours = models.CharField(max_length=20, blank=False, default='')
+    department = models.CharField(max_length=5, blank=False, default='CSE')
+    office = models.CharField(max_length=10, blank=False, default='1102')
+    visitingHours = models.CharField(
+        max_length=20, blank=False, default='10AM-5PM')
 
     def __str__(self):
         return self.iId.name
