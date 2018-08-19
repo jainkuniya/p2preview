@@ -23,7 +23,7 @@
               </div>
               <div class="col-sm-12 col-lg-3">
                 {% if forloop.counter > 2 %}
-                <b>Course Code</b> : This is BUG {% else %}
+                <b>Course Code</b> : {{ courses.0.course.code }} {% else %}
                 <b>Course Code</b> : {{ courseDetails.course.code }} {% endif %}
               </div>
             </div>
