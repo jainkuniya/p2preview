@@ -1034,15 +1034,21 @@ def login(request):
     """
     if request.method == 'POST':
         person = Person.objects.filter(email=request.POST['email'], password=request.POST['password'])
-        if (person.count() == 1):
-            char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
-            token = ''.join(random.sample(char_set*10, 10))
-            person.update(token=token, lastLogined=datetime.now())
-            data = {
-                'success': 1,
-                'token': token,
-                'message': 'Successfully logged In'
-            }
+        if (person.count() >= 1):
+            if(person[0].logincount == 1):
+                date = {
+                    'success': 0,
+                    'message': 'Maximun login limit'
+                }
+            else:
+                char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
+                token = ''.join(random.sample(char_set*10, 10))
+                person.update(token=token, lastLogined=datetime.now(), logincount=person[0].logincount+1)
+                data = {
+                    'success': 1,
+                    'token': token,
+                    'message': 'Successfully logged In'
+                }
         elif (person.count() > 1):
             data = {
                 'success': 0,
