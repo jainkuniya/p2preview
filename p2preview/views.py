@@ -14,6 +14,7 @@ from datetime import datetime
 import string
 import random
 import ast
+import time
 
 def is_ascii(s):
     return all(ord(c) < 128 for c in s)
@@ -31,7 +32,7 @@ def fetch_self(request):
                 'self': {
                     'name': person[0].name,
                     'email': person[0].email,
-                    'login_time': datetime(person[0].lastLogined).strftime('%s'),
+                    'login_time': time.mktime(person[0].lastLogined.timetuple())*1000 + 19800000,
                     'task_time_in_min': person[0].tasktimeinmin
                 }
             }

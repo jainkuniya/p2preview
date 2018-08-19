@@ -1,0 +1,10 @@
+{
+    "eslint.autoFixOnSave": false,
+    "editor.formatOnSave": false,
+    "prettier.eslintIntegration": false,
+    "prettier.parser": "flow",
+    "prettier.trailingComma": "all",
+    "prettier.singleQuote": true,
+    "prettier.printWidth": 80
+  }
+  

@@ -1,3 +1,6 @@
+var loginTime = 0;
+var allowedTimeInMin = 0;
+
 function logout() {
   $.ajax({
     url: '/api/v1/logout/', //the page containing php script
@@ -15,15 +18,19 @@ $(document).ready(function() {
   fetchSelf();
 });
 
-function checkForTimeLeft(loginTime, allowedTimeInMin) {
+async function checkForTimeLeft() {
   var t = Date.now() - loginTime;
-  if (t > allowedTimeInMin * 60) {
+  
+  if (t > allowedTimeInMin * 60 * 1000) {
     alert('Time completed');
     logout();
     return;
   }
-  $('#dropdownMenuLink').text('Time left:' + t / 60 + 'mins ' + (t % 60) + 'secs ');
-  setTimeout(checkForTimeLeft(loginTime, allowedTimeInMin), 500);
+
+  var timeRemaining =  (allowedTimeInMin * 60 * 1000 - t)/1000;
+
+  $('#timeleft').text('Time left: ' + parseInt(timeRemaining / 60) + ' mins ' + parseInt(timeRemaining % 60) + ' secs ');
+  setTimeout(checkForTimeLeft, 1000);
 }
 
 function fetchSelf() {
@@ -37,9 +44,9 @@ function fetchSelf() {
       },
       success: function(result) {
         if (result.success === 1) {
-          var loginTime = result.self.login_time;
-          var allowedTimeInMin = result.self.task_time_in_min;
-          checkForTimeLeft(loginTime, allowedTimeInMin);
+          loginTime = result.self.login_time;
+          allowedTimeInMin = result.self.task_time_in_min;
+          checkForTimeLeft();
           $('#dropdownMenuLink').text('Hi, ' + result.self.name + '!');
           $('#login').addClass('hideItem');
           $('#signUp').addClass('hideItem');
