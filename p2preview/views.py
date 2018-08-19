@@ -1036,7 +1036,7 @@ def login(request):
         person = Person.objects.filter(email=request.POST['email'], password=request.POST['password'])
         if (person.count() >= 1):
             if(person[0].logincount == 1):
-                date = {
+                data = {
                     'success': 0,
                     'message': 'Maximun login limit'
                 }
