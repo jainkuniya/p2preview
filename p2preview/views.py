@@ -1018,7 +1018,7 @@ def login(request):
         if (person.count() == 1):
             char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
             token = ''.join(random.sample(char_set*10, 10))
-            person.update(token=token)
+            person.update(token=token, lastLogined=datetime.now())
             data = {
                 'success': 1,
                 'token': token,
