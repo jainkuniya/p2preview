@@ -276,7 +276,7 @@ def create_course(request):
                         instructorId=instrutor[0],
                         code=getRandomString(5))
         if(not is_ascii(request.POST['name']) or not is_ascii(request.POST['description'])):
-            count = 6 / 0
+            # count = 6 / 0
             raise ValueError('Non ASCCI value entered')
         try:
             course.save()
@@ -833,6 +833,9 @@ def upload_file(request):
 def create_activity(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
+        if(not is_ascii(request.POST['activity_name'])):
+            # count = 6 / 0
+            raise ValueError('Non ASCCI value entered')
         try:
             course = Course.objects.filter(pk=request.POST["course_id"])
             if (course.count() == 1):
@@ -905,6 +908,9 @@ def create_activity(request):
 def create_rubric(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
+        if(not is_ascii(request.POST['rubric_name'])):
+            # count = 6 / 0
+            raise ValueError('Non ASCCI value entered')
         try:
             """create rubric"""
             rubric = Rubric(iId=instrutor[0],
@@ -942,6 +948,9 @@ def create_rubric(request):
 def create_generic(request):
     instrutor = validateInstructor(request.COOKIES.get('token'))
     if instrutor != -1:
+        if(not is_ascii(request.POST['description'])):
+            # count = 6 / 0
+            raise ValueError('Non ASCCI value entered')
         try:
             """create generic"""
             generic = Generic(description=request.POST["description"],
