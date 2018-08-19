@@ -9,6 +9,7 @@ from django.shortcuts import render, render_to_response
 from django.template import loader
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile, ActivityAssigment, ActivityImageAssigment
+from datetime import datetime
 
 import string
 import random
@@ -1052,7 +1053,7 @@ def login(request):
 def logout(request):
     person = validatePerson(request.META['HTTP_TOKEN'])
     if (person != -1):
-        person.update(token='')
+        person.update(token='', lastLogouted=datetime.now())
     data = {
         'success': 1,
         'message': "Successfully logged off"
