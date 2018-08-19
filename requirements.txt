@@ -3,4 +3,4 @@ Django==1.9.12
 gunicorn==19.6.0
 whitenoise==3.0
 djangorestframework==3.6.3
-Pillow==4.3.0
+Pillow==5.0.0
