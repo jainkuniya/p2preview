@@ -1006,7 +1006,8 @@ def rubric_template(request):
         return redirectToLogin()
 
 def signUp_page(request):
-    return render(request, 'p2preview/signup.html')
+    return redirectToLogin()
+    # return render(request, 'p2preview/signup.html')
 
 @csrf_exempt
 def login(request):
