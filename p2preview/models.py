@@ -14,6 +14,7 @@ class Person(models.Model):
     lastLogined = models.DateTimeField(auto_now_add=True)
     lastLogouted = models.DateTimeField(auto_now_add=True)
     token = models.CharField(max_length=20, blank=True, default='')
+    tasktimeinmin = models.IntegerField(blank=False, default=60)
 
     def __str__(self):
         return self.name
