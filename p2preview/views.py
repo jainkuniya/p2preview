@@ -31,7 +31,7 @@ def fetch_self(request):
                 'self': {
                     'name': person[0].name,
                     'email': person[0].email,
-                    'login_time': datetime.datetime(person[0].lastLogined).strftime('%s'),
+                    'login_time': datetime(person[0].lastLogined).strftime('%s'),
                     'task_time_in_min': person[0].tasktimeinmin
                 }
             }
