@@ -276,6 +276,7 @@ def create_course(request):
                         instructorId=instrutor[0],
                         code=getRandomString(5))
         if(not is_ascii(request.POST['name']) or not is_ascii(request.POST['description'])):
+            count = 6 / 0
             raise ValueError('Non ASCCI value entered')
         try:
             course.save()
