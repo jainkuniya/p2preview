@@ -743,6 +743,29 @@ def student_activities(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def admin_delete_instructor(request):
+    persons = Person.objects.filter(email=request.POST['email'])
+    if (persons.count() > 0):
+        try:
+            persons[0].delete()
+            data = {
+                'success': 0,
+                'message': 'User with email: ' + request.POST['email'] + ' is successfully deleted.'
+            }
+        except:
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': 0,
+            'message': request.POST['email'] +  ' is associated with no account.',
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def admin_create_instructor(request):
     password = getRandomString(7)
     person = Person(name=request.POST['name'],

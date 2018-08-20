@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^api/v1/toggle_activity_status', views.toggle_activity_status),
 
     url(r'^api/v1/admin/create_user', views.admin_create_instructor),
+    url(r'^api/v1/admin/delete_user', views.admin_delete_instructor),
 ]
