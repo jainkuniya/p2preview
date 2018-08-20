@@ -16,6 +16,8 @@ import random
 import ast
 import time
 
+ADMIN_KEY = 'qatestingtask'
+
 def is_ascii(s):
     return all(ord(c) < 128 for c in s)
 
@@ -743,6 +745,8 @@ def student_activities(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def admin_set_time_interval(request):
+    if (not request.POST['key'] == ADMIN_KEY): 
+        return JsonResponse({'message': 'Unknown auth'}, safe=True) 
     try:
         Person.objects.filter().update(tasktimeinmin=request.POST['task_time_in_min'])
         data = {
@@ -759,6 +763,8 @@ def admin_set_time_interval(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def admin_set_login_limit_instructor(request):
+    if (not request.POST['key'] == ADMIN_KEY): 
+        return JsonResponse({'message': 'Unknown auth'}, safe=True) 
     persons = Person.objects.filter(email=request.POST['email'])
     if (persons.count() > 0):
         try:
@@ -782,6 +788,8 @@ def admin_set_login_limit_instructor(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def admin_delete_instructor(request):
+    if (not request.POST['key'] == ADMIN_KEY): 
+        return JsonResponse({'message': 'Unknown auth'}, safe=True) 
     persons = Person.objects.filter(email=request.POST['email'])
     if (persons.count() > 0):
         try:
@@ -805,6 +813,8 @@ def admin_delete_instructor(request):
 @require_http_methods(["POST"])
 @csrf_exempt
 def admin_create_instructor(request):
+    if (not request.POST['key'] == ADMIN_KEY): 
+        return JsonResponse({'message': 'Unknown auth'}, safe=True) 
     password = getRandomString(7)
     person = Person(name=request.POST['name'],
                     email=request.POST['email'],
