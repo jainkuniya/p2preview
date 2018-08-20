@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^activity/upload_file', views.upload_file),
     url(r'^api/v1/create_activity', views.create_activity),
     url(r'^api/v1/toggle_activity_status', views.toggle_activity_status),
+
+    url(r'^api/v1/admin/create_user', views.admin_create_instructor),
 ]

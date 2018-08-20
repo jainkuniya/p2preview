@@ -11,6 +11,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile, ActivityAssigment, ActivityImageAssigment
 from datetime import datetime
 
+import requests
 import string
 import random
 import ast
@@ -739,6 +740,39 @@ def student_activities(request):
             'course': []
         }
     return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def admin_create_instructor(request):
+    password = getRandomString(7)
+    person = Person(name=request.POST['name'],
+                    email=request.POST['email'],
+                    password=password,
+                    personType=1)
+    try:
+        person.save()
+        instrutor = Instrutor(iId=person)
+        instrutor.save()
+        data = {
+            'success': 1,
+            'message': 'Successfully created. Use email and password to login.',
+            'password': password,
+            'name': request.POST['name'],
+            'email': request.POST['email']
+        }
+    except:
+        """Check if email already registered"""
+        persons = Person.objects.filter(email=request.POST['email'])
+        if (persons.count() > 0):
+            message = request.POST['email'] +  ' is already associated with another account.'
+        else:
+            message = 'Please try again'
+        data = {
+            'success': 0,
+            'message': message,
+        }
+    return JsonResponse(data, safe=True)
+
 
 @require_http_methods(["POST"])
 @csrf_exempt
