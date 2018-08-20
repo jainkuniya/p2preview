@@ -743,13 +743,29 @@ def student_activities(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def admin_set_time_interval(request):
+    try:
+        Person.objects.filter().update(tasktimeinmin=request.POST['task_time_in_min'])
+        data = {
+            'success': 1,
+            'message': 'Successfully updated task time to ' + request.POST['task_time_in_min'] + ' min for all users.'
+        }
+    except:
+        data = {
+            'success': 0,
+            'message': 'Please try again'
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def admin_delete_instructor(request):
     persons = Person.objects.filter(email=request.POST['email'])
     if (persons.count() > 0):
         try:
             persons[0].delete()
             data = {
-                'success': 0,
+                'success': 1,
                 'message': 'User with email: ' + request.POST['email'] + ' is successfully deleted.'
             }
         except:

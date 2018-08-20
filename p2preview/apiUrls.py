@@ -19,4 +19,5 @@ urlpatterns = [
 
     url(r'^api/v1/admin/create_user', views.admin_create_instructor),
     url(r'^api/v1/admin/delete_user', views.admin_delete_instructor),
+    url(r'^api/v1/admin/set_time_interval', views.admin_set_time_interval),
 ]
