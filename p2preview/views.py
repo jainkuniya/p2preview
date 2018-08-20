@@ -11,7 +11,6 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from p2preview.models import Person, Student, Instrutor, Course, RegisteredCourses, GroupDetail, Group, Activity, RegisteredGroupsForActivity, Criteria, GenericOption, Response, Rubric, Generic, UploadFile, ActivityAssigment, ActivityImageAssigment
 from datetime import datetime
 
-import requests
 import string
 import random
 import ast
