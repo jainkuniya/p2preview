@@ -1,9 +1,9 @@
 alert(`Important Instructions:
-1. This is a sample app with functional bugs, and you have 45 minutes of time to uncover all the the bugs. 
+1. This is a sample app with known bugs, and you have 1 hour of time to uncover all the bugs. 
 2. To understand the product: https://www.youtube.com/watch?v=JmY7h8w4wEo
-3. Time starts as soon as you login so make sure you keep all your required things for testing and noting down the bugs like screenshot taker, notepad, pen paper etc.
+3. Time starts as soon as you login so make sure you keep all your required things for testing and noting down the bugs and data for which they occur-  like screenshot taker, notepad, pen paper etc.
 4. Do NOT logout until you plan to, because you won’t be allowed to take the test again.
-5. After the test, share the bugs or observations you had with the application.`);
+5. After the test, share the bugs found with the test data or observations you had with the application.`);
 
 $("#signInForm").submit(function () {
   $('#id_error').text('');

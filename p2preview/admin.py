@@ -9,7 +9,7 @@ from .models import Person, Student, Instrutor, Course, RegisteredCourses, Group
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'email', 'password',
-                    'lastLogined', 'lastLogouted', 'personType', 'token', 'tasktimeinmin', 'logincount']
+                    'lastLogined', 'lastLogouted', 'personType', 'token', 'tasktimeinmin', 'time_lapsed', 'logincount']
 
 
 class StudentAdmin(admin.ModelAdmin):

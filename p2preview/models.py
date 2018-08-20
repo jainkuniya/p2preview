@@ -16,6 +16,7 @@ class Person(models.Model):
     token = models.CharField(max_length=20, blank=True, default='')
     tasktimeinmin = models.IntegerField(blank=False)
     logincount = models.IntegerField(default=0)
+    time_lapsed = models.CharField(max_length=10, blank=True, default='')
 
     def __str__(self):
         return self.name

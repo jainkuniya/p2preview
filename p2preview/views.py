@@ -1185,7 +1185,9 @@ def login(request):
 def logout(request):
     person = validatePerson(request.META['HTTP_TOKEN'])
     if (person != -1):
-        person.update(token='', lastLogouted=datetime.now())
+        time_lapsed = time.mktime(datetime.now().timetuple()) - time.mktime(person[0].lastLogined.timetuple()) - 19800
+        time_lapsed_string = str(round(time_lapsed / 60)) + ' mins ' + str(round(time_lapsed % 60)) + ' secs'
+        person.update(token='', lastLogouted=datetime.now(), time_lapsed=time_lapsed_string)
     data = {
         'success': 1,
         'message': "Successfully logged off"
