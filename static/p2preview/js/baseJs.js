@@ -22,7 +22,7 @@ async function checkForTimeLeft() {
   var t = Date.now() - loginTime;
   
   if (t > allowedTimeInMin * 60 * 1000) {
-    alert('Time completed');
+    alert('Thank you for your time, please revert to the mail along with the bugs you found with your observations in your prefered way. Our team will evaluate and get to you max within 2 days.');
     logout();
     return;
   }
