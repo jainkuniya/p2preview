@@ -759,6 +759,29 @@ def admin_set_time_interval(request):
 
 @require_http_methods(["POST"])
 @csrf_exempt
+def admin_set_login_limit_instructor(request):
+    persons = Person.objects.filter(email=request.POST['email'])
+    if (persons.count() > 0):
+        try:
+            persons.update(logincount=0)
+            data = {
+                'success': 1,
+                'message': 'User with email: ' + request.POST['email'] + ' is successfully enabled.'
+            }
+        except:
+            data = {
+                'success': 0,
+                'message': 'Please try again'
+            }
+    else:
+        data = {
+            'success': 0,
+            'message': request.POST['email'] +  ' is associated with no account.',
+        }
+    return JsonResponse(data, safe=True)
+
+@require_http_methods(["POST"])
+@csrf_exempt
 def admin_delete_instructor(request):
     persons = Person.objects.filter(email=request.POST['email'])
     if (persons.count() > 0):
