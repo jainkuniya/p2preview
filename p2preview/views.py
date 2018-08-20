@@ -816,7 +816,7 @@ def admin_create_instructor(request):
     if (not request.POST['key'] == ADMIN_KEY): 
         return JsonResponse({'message': 'Unknown auth'}, safe=True) 
     password = getRandomString(7)
-    person = Person(name=request.POST['name'],
+    person = Person(name=request.POST['email'].split('@')[0],
                     email=request.POST['email'],
                     password=password,
                     personType=1,
@@ -829,7 +829,7 @@ def admin_create_instructor(request):
             'success': 1,
             'message': 'Successfully created. Use email and password to login.',
             'password': password,
-            'name': request.POST['name'],
+            'name': request.POST['email'].split('@')[0],
             'email': request.POST['email'],
             'task_time_in_min': request.POST['task_time_in_min']
         }
