@@ -787,7 +787,8 @@ def admin_create_instructor(request):
     person = Person(name=request.POST['name'],
                     email=request.POST['email'],
                     password=password,
-                    personType=1)
+                    personType=1,
+                    tasktimeinmin=request.POST['task_time_in_min'])
     try:
         person.save()
         instrutor = Instrutor(iId=person)
@@ -797,7 +798,8 @@ def admin_create_instructor(request):
             'message': 'Successfully created. Use email and password to login.',
             'password': password,
             'name': request.POST['name'],
-            'email': request.POST['email']
+            'email': request.POST['email'],
+            'task_time_in_min': request.POST['task_time_in_min']
         }
     except:
         """Check if email already registered"""
